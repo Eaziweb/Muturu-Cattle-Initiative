@@ -1,0 +1,280 @@
+/* Auth Container */
+.authContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #144d1b 0%, #0d3312 100%);
+  box-sizing: border-box;
+}
+
+.authCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 100%;
+  padding: 40px;
+  animation: slideUp 0.4s ease-out;
+  box-sizing: border-box;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Auth Header */
+.authHeader {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.authHeader h1 {
+  color: #144d1b;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* Messages */
+.successMessage,
+.errorMessage {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.successMessage {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Loading Container */
+.loadingContainer {
+  text-align: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.loadingSpinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #144d1b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingContainer p {
+  color: #666;
+  font-size: 15px;
+}
+
+/* Verification Success */
+.verificationSuccess {
+  background-color: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 20px;
+  box-sizing: border-box;
+}
+
+.verificationSuccess h3 {
+  color: #144d1b;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.verificationSuccess p {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Auth Button */
+.authButton {
+  background-color: #144d1b;
+  color: white;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.authButton:hover:not(:disabled) {
+  background-color: #0d3312;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(20, 77, 27, 0.3);
+}
+
+/* Auth Footer */
+.authFooter {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.authFooter p {
+  color: #666;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.authLink {
+  color: #144d1b;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.authLink:hover {
+  color: #0d3312;
+  text-decoration: underline;
+}
+/* Back Button Styles */
+.backButton {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #144d1b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.backButton:hover {
+  background: white;
+  transform: translateX(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.backButton svg {
+  transition: transform 0.3s ease;
+}
+
+.backButton:hover svg {
+  transform: scale(1.1);
+}
+
+/* Update auth-header to have relative positioning */
+.auth-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 30px;
+  padding-top: 20px;
+}
+
+/* Password Toggle Button Styles */
+.passwordToggle {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.passwordToggle:hover {
+  color: #144d1b;
+}
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .authContainer {
+    padding: 20px 15px;
+  }
+
+  .authCard {
+    padding: 30px 20px;
+  }
+
+  .authHeader h1 {
+    font-size: 24px;
+  }
+
+  .verificationSuccess h3 {
+    font-size: 18px;
+  }
+
+  .verificationSuccess p {
+    font-size: 14px;
+  }
+
+  .authButton {
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .authCard {
+    padding: 25px 15px;
+  }
+
+  .authHeader h1 {
+    font-size: 22px;
+  }
+
+  .verificationSuccess h3 {
+    font-size: 16px;
+  }
+
+  .verificationSuccess p {
+    font-size: 13px;
+  }
+
+  .authButton {
+    font-size: 14px;
+  }
+}

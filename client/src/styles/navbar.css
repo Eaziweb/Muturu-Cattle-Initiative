@@ -1,0 +1,357 @@
+/* Enhanced Navbar Styles */
+.navbar {
+  background-color: #144d1b;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.nav-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo-box {
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 2px;
+  padding: 10px 18px;
+  background-color: #0d3513;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.logo-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: inherit;
+  padding: 10px 16px;
+  border-radius: 6px;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #a8d5a8;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+  color: #a8d5a8;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 3px;
+  background-color: #a8d5a8;
+  border-radius: 2px;
+}
+
+/* Dropdown Styles */
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arrow {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  margin-top: 15px;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.nav-dropdown:hover .dropdown-menu,
+.nav-dropdown:focus-within .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 14px 20px;
+  color: #144d1b;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f8f0;
+  color: #0d3513;
+  padding-left: 25px;
+}
+
+.dropdown-item:first-child {
+  border-radius: 10px 10px 0 0;
+}
+
+.dropdown-item:last-child {
+  border-radius: 0 0 10px 10px;
+}
+
+/* Button Styles */
+.nav-button {
+  background-color: white;
+  color: #144d1b;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button:hover {
+  background-color: #a8d5a8;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.nav-button.secondary {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 10px 22px;
+}
+
+.nav-button.secondary:hover {
+  background-color: white;
+  color: #144d1b;
+}
+
+/* Hamburger Menu */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 3px 0;
+  transition: 0.3s;
+  border-radius: 2px;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 1024px) {
+  .nav-container {
+    padding: 0 20px;
+  }
+  
+  .nav-menu {
+    gap: 0;
+  }
+  
+  .nav-link {
+    padding: 10px 14px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: auto;
+    padding-bottom: 10px;
+  }
+  
+  .nav-container {
+    height: 70px;
+    padding: 0 15px;
+  }
+  
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    flex-direction: column;
+    background-color: #144d1b;
+    width: 100%;
+    text-align: left;
+    transition: 0.4s;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    gap: 0;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .nav-link {
+    padding: 16px 25px;
+    width: 100%;
+    display: block;
+    text-align: left;
+    border-radius: 0;
+    font-size: 16px;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding-left: 30px;
+  }
+
+  .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .nav-link.active::after {
+    display: none;
+  }
+
+  .nav-button {
+    margin: 15px 25px;
+    display: inline-block;
+    width: calc(100% - 50px);
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    background-color: #0d3513;
+    margin-top: 0;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+    max-height: 0;
+    overflow: hidden;
+    border-radius: 0;
+  }
+
+  .nav-dropdown:hover .dropdown-menu,
+  .nav-dropdown:focus-within .dropdown-menu {
+    max-height: none;
+  }
+
+  .dropdown-item {
+    color: white;
+    padding: 14px 25px;
+    background-color: #0d3513;
+  }
+
+  .dropdown-item:hover {
+    background-color: #1a5c23;
+    padding-left: 30px;
+  }
+
+  .dropdown-item:first-child,
+  .dropdown-item:last-child {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 0 15px;
+  }
+  
+  .logo-box {
+    font-size: 20px;
+    padding: 8px 14px;
+  }
+  
+  .nav-link {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+  
+  .nav-button {
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+}
+
+/* Animation for hamburger menu */
+.nav-toggle.active .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.nav-toggle.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.active .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}

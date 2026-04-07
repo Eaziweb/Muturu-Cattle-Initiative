@@ -1,0 +1,182 @@
+.payment-verify-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #144d1b 0%, #0d3513 100%);
+}
+
+.payment-verify-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 50px 40px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.status-icon-container {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.status-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.status-icon.verifying {
+  color: #144d1b;
+  animation: rotate 2s linear infinite;
+}
+
+.status-icon.success {
+  color: #28a745;
+  animation: scaleIn 0.5s ease;
+}
+
+.status-icon.failed {
+  color: #dc3545;
+  animation: scaleIn 0.5s ease;
+}
+
+.status-icon.error {
+  color: #ffc107;
+  animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.status-message {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.download-section {
+  margin: 30px 0;
+  padding: 25px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid #144d1b;
+}
+
+.download-section p {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.download-btn {
+  margin-top: 20px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #144d1b 0%, #0d3513 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(20, 77, 27, 0.3);
+}
+
+.back-btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .payment-verify-card {
+    padding: 40px 30px;
+  }
+
+  .status-message {
+    font-size: 20px;
+  }
+
+  .download-section {
+    padding: 20px;
+  }
+
+  .download-section p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-verify-container {
+    padding: 15px;
+  }
+
+  .payment-verify-card {
+    padding: 30px 20px;
+  }
+
+  .status-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .status-message {
+    font-size: 18px;
+  }
+
+  .download-btn,
+  .back-btn {
+    width: 100%;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

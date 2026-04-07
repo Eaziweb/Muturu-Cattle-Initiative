@@ -1,0 +1,432 @@
+.adminPublicationsPage {
+  padding: 2rem;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.adminHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #2c6e49;
+}
+
+.adminHeader h1 {
+  font-size: 2rem;
+  color: #0d3513;
+  font-weight: 700;
+}
+
+.createBtn {
+  background: linear-gradient(135deg, #2c6e49 0%, #144d1b 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(44, 110, 73, 0.2);
+}
+
+.createBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(44, 110, 73, 0.3);
+}
+
+.errorMessage {
+  background: #fee;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #c33;
+}
+
+.publicationFormModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(13, 53, 19, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.formContainer {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #0d3513 0%, #144d1b 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.formHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.closeBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.publicationForm {
+  padding: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #0d3513;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #2c6e49;
+  box-shadow: 0 0 0 3px rgba(44, 110, 73, 0.1);
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.formGroup small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.arrayInput {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.arrayInput input {
+  flex: 1;
+}
+
+.arrayInput button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.arrayInput button:hover {
+  background: #c82333;
+}
+
+.formGroup > button[type="button"] {
+  background: #2c6e49;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.formGroup > button[type="button"]:hover {
+  background: #144d1b;
+}
+
+.imagePreview {
+  margin-top: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #e0e0e0;
+}
+
+.imagePreview img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e0e0e0;
+}
+
+.formActions button {
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.formActions button[type="button"] {
+  background: #e0e0e0;
+  border: none;
+  color: #333;
+}
+
+.formActions button[type="button"]:hover {
+  background: #d0d0d0;
+}
+
+.formActions button[type="submit"] {
+  background: linear-gradient(135deg, #2c6e49 0%, #144d1b 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 6px rgba(44, 110, 73, 0.2);
+}
+
+.formActions button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(44, 110, 73, 0.3);
+}
+
+.publicationsList {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.publicationsList h2 {
+  color: #0d3513;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.loading,
+.noPublications {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.publicationsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.publicationCard {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.publicationCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(44, 110, 73, 0.15);
+  border-color: #2c6e49;
+}
+
+.publicationHeader {
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.publicationHeader h3 {
+  margin: 0;
+  color: #0d3513;
+  font-size: 1.1rem;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.statusBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusBadge.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.statusBadge.inactive {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.publicationImage {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.publicationImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.publicationCard:hover .publicationImage img {
+  transform: scale(1.05);
+}
+
+.publicationDetails {
+  padding: 1.5rem;
+}
+
+.publicationDetails p {
+  margin: 0.5rem 0;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.publicationDetails strong {
+  color: #0d3513;
+  font-weight: 600;
+}
+
+.publicationActions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-top: 2px solid #e0e0e0;
+}
+
+.publicationActions button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.publicationActions button:first-child {
+  background: #2c6e49;
+  color: white;
+}
+
+.publicationActions button:first-child:hover {
+  background: #144d1b;
+}
+
+.publicationActions button:last-child {
+  background: #dc3545;
+  color: white;
+}
+
+.publicationActions button:last-child:hover {
+  background: #c82333;
+}
+
+@media (max-width: 768px) {
+  .adminPublicationsPage {
+    padding: 1rem;
+  }
+
+  .adminHeader {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .createBtn {
+    width: 100%;
+  }
+
+  .publicationsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .formContainer {
+    max-width: 100%;
+  }
+}

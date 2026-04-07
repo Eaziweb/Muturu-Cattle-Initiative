@@ -1,0 +1,710 @@
+/* Muturu Cattle Page Styles */
+
+.muturu-cattle-page {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.muturu-hero {
+  background: linear-gradient(135deg, #144d1b 0%, #1a6024 100%);
+  color: white;
+  padding: 80px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  min-height: 500px;
+}
+
+.hero-content {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+  padding-top: 30px;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+.hero-image {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+}
+
+.hero-img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+  max-height: 400px;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Introduction Section */
+.main-muturu-intro {
+  padding: 80px 20px;
+  background: white;
+}
+
+.intro-content h2 {
+  font-size: 2.5rem;
+  color: #144d1b;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.intro-content p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+/* Section Header */
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: #144d1b;
+  margin-bottom: 15px;
+}
+
+.section-header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Names Section */
+.muturu-names {
+  padding: 80px 20px;
+  background: #f8f9fa;
+}
+
+.names-content {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.names-image {
+  flex: 1;
+  min-width: 300px;
+}
+
+.names-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.names-text h3 {
+  font-size: 2rem;
+  color: #144d1b;
+  margin-bottom: 20px;
+}
+
+.names-text ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.names-text ul li {
+  font-size: 1.1rem;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.names-text ul li strong {
+  color: #144d1b;
+}
+
+.names-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+}
+
+.section-img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  max-height: 700px;
+}
+
+/* Comparison Section */
+.muturu-comparison {
+  padding: 80px 20px;
+  background: white;
+}
+
+.comparison-content {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.comparison-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.comparison-text h3 {
+  font-size: 2rem;
+  color: #144d1b;
+  margin-bottom: 20px;
+}
+
+.comparison-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.key-points {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+  border-left: 4px solid #144d1b;
+}
+
+.key-points h4 {
+  font-size: 1.3rem;
+  color: #144d1b;
+  margin-bottom: 15px;
+}
+
+.key-points ul {
+  list-style: none;
+  padding: 0;
+}
+
+.key-points ul li {
+  font-size: 1rem;
+  padding: 8px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.key-points ul li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #144d1b;
+  font-weight: bold;
+}
+
+.comparison-image {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Improvement Section */
+.muturu-improvement {
+  padding: 80px 20px;
+  background: #f8f9fa;
+}
+
+.improvement-content {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.improvement-image {
+  flex: 1;
+  min-width: 300px;
+}
+
+.improvement-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.improvement-text h3 {
+  font-size: 2rem;
+  color: #144d1b;
+  margin-bottom: 20px;
+}
+
+.improvement-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.improvement-text ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.improvement-text ul li {
+  font-size: 1rem;
+  padding: 10px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.improvement-text ul li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #144d1b;
+  font-weight: bold;
+}
+
+.stats-highlight {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.stats-highlight h4 {
+  font-size: 1.3rem;
+  color: #144d1b;
+  margin-bottom: 15px;
+}
+
+.stats-highlight ul {
+  list-style: none;
+  padding: 0;
+}
+
+.stats-highlight ul li {
+  font-size: 1rem;
+  padding: 8px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.stats-highlight ul li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #144d1b;
+  font-weight: bold;
+}
+
+/* Distribution Section */
+.muturu-distribution {
+  padding: 80px 20px;
+  background: white;
+}
+
+.distribution-content {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.distribution-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.distribution-text h3 {
+  font-size: 2rem;
+  color: #144d1b;
+  margin-bottom: 20px;
+}
+
+.distribution-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.distribution-insights {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.distribution-insights h4 {
+  font-size: 1.3rem;
+  color: #144d1b;
+  margin-bottom: 15px;
+}
+
+.distribution-insights ul {
+  list-style: none;
+  padding: 0;
+}
+
+.distribution-insights ul li {
+  font-size: 1rem;
+  padding: 8px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.distribution-insights ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #144d1b;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.conservation-note {
+  background: #fff3cd;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #144d1b;
+}
+
+.conservation-note h4 {
+  font-size: 1.2rem;
+  color: #144d1b;
+  margin-bottom: 10px;
+}
+
+.conservation-note p {
+  font-size: 1rem;
+  color: #856404;
+  margin: 0;
+}
+
+.distribution-image {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Conservation Section */
+.muturu-conservation {
+  padding: 80px 20px;
+  background: #144d1b;
+  color: white;
+}
+
+.conservation-content h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.conservation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.muturu-conservation-item {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.muturu-conservation-item:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.15);
+ 
+}
+
+.conservation-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.muturu-conservation-item h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #0f3a14;
+}
+
+.muturu-conservation-item p {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  color: #1a6024;
+}
+.muturu-conservation-item:hover .conservation-icon {
+color: white;
+}
+.muturu-conservation-item:hover h3 {
+color: white;
+}
+.muturu-conservation-item:hover p {
+color: white;
+}
+/* CTA Section */
+.muturu-cta {
+  padding: 80px 20px;
+  background: white;
+  text-align: center;
+}
+
+.cta-content h2 {
+  font-size: 2.5rem;
+  color: #144d1b;
+  margin-bottom: 20px;
+}
+
+.cta-content p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 40px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.8;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  padding: 15px 35px;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.cta-btn.primary {
+  background: #144d1b;
+  color: white;
+}
+
+.cta-btn.primary:hover {
+  background: #0f3a14;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(20, 77, 27, 0.3);
+}
+
+.cta-btn.secondary {
+  background: white;
+  color: #144d1b;
+  border: 2px solid #144d1b;
+}
+
+.cta-btn.secondary:hover {
+  background: #144d1b;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.cta-btn.tertiary {
+  background: #f8f9fa;
+  color: #144d1b;
+  border: 2px solid #e0e0e0;
+}
+
+.cta-btn.tertiary:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
+}
+.conservation-icon {
+  font-size: 2.5rem;
+  color: #2c6e49; /* Or whatever color matches your theme */
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.muturu-conservation-item {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.muturu-conservation-item:hover {
+  transform: translateY(-5px);
+}
+
+.conservation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .muturu-hero {
+    padding: 60px 20px;
+    min-height: auto;
+  }
+
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-content p {
+    font-size: 1.2rem;
+  }
+
+  .hero-img {
+    max-height: 300px;
+  }
+
+  .main-muturu-intro,
+  .muturu-names,
+  .muturu-comparison,
+  .muturu-improvement,
+  .muturu-distribution,
+  .muturu-conservation,
+  .muturu-cta {
+    padding: 50px 15px;
+  }
+
+  .section-header h2,
+  .intro-content h2,
+  .conservation-content h2,
+  .cta-content h2 {
+    font-size: 2rem;
+  }
+
+  .section-header p {
+    font-size: 1rem;
+  }
+
+  .intro-content p,
+  .names-text p,
+  .comparison-text p,
+  .improvement-text p,
+  .distribution-text p {
+    font-size: 1rem;
+  }
+
+  .names-text h3,
+  .comparison-text h3,
+  .improvement-text h3,
+  .distribution-text h3 {
+    font-size: 1.6rem;
+  }
+
+  .names-text ul li,
+  .comparison-text ul li,
+  .improvement-text ul li {
+    font-size: 0.95rem;
+  }
+
+  .section-img {
+    max-height: 400px;
+  }
+
+  .conservation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .muturu-conservation-item {
+    padding: 25px;
+  }
+
+  .conservation-icon {
+    font-size: 2.5rem;
+  }
+
+  .muturu-conservation-item h3 {
+    font-size: 1.3rem;
+  }
+
+  .muturu-conservation-item p {
+    font-size: 0.95rem;
+  }
+
+  .cta-content h2 {
+    font-size: 2rem;
+  }
+
+  .cta-content p {
+    font-size: 1rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-btn {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+
+  .names-content,
+  .comparison-content,
+  .improvement-content,
+  .distribution-content {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .section-header h2,
+  .intro-content h2,
+  .conservation-content h2,
+  .cta-content h2 {
+    font-size: 1.6rem;
+  }
+
+  .names-text h3,
+  .comparison-text h3,
+  .improvement-text h3,
+  .distribution-text h3 {
+    font-size: 1.4rem;
+  }
+
+  .key-points h4,
+  .stats-highlight h4,
+  .distribution-insights h4 {
+    font-size: 1.1rem;
+  }
+}

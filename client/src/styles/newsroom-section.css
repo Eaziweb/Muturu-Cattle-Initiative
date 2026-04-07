@@ -1,0 +1,253 @@
+.newsroom-section {
+  padding: 80px 0;
+  background: #f8f9fa;
+}
+
+.newsroom-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.newsroom-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.newsroom-header .section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.newsroom-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.newsroom-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.newsroom-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.newsroom-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.newsroom-card.featured {
+  grid-row: span 2;
+}
+
+.newsroom-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.newsroom-card.featured .newsroom-image {
+  height: 300px;
+}
+
+.newsroom-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.newsroom-card:hover .newsroom-image img {
+  transform: scale(1.05);
+}
+
+.newsroom-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 100, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.newsroom-card:hover .newsroom-overlay {
+  opacity: 1;
+}
+
+.newsroom-read-btn {
+  background: white;
+  color: #006400;
+  padding: 12px 24px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+
+.newsroom-read-btn:hover {
+  transform: scale(1.05);
+}
+
+.newsroom-content {
+  padding: 25px;
+}
+
+.newsroom-card.featured .newsroom-content {
+  padding: 30px;
+}
+
+.newsroom-meta {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.newsroom-author {
+  font-weight: 600;
+  color: #006400;
+}
+
+.newsroom-title {
+  margin-bottom: 12px;
+}
+
+.newsroom-title a {
+  color: #333;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.4;
+  transition: color 0.3s ease;
+}
+
+.newsroom-card.featured .newsroom-title a {
+  font-size: 1.5rem;
+}
+
+.newsroom-title a:hover {
+  color: #006400;
+}
+
+.newsroom-excerpt {
+  color: #666;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.newsroom-card.featured .newsroom-excerpt {
+  font-size: 1rem;
+}
+
+.newsroom-footer {
+  text-align: center;
+}
+
+.view-all-btn {
+  display: inline-block;
+  background: #006400;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.view-all-btn:hover {
+  background: #228b22;
+  transform: translateY(-2px);
+}
+
+.loading-newsroom,
+.no-news {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.no-news p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .newsroom-section {
+    padding: 60px 0;
+  }
+
+  .newsroom-container {
+    padding: 0 15px;
+  }
+
+  .newsroom-header .section-title {
+    font-size: 2rem;
+  }
+
+  .newsroom-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .newsroom-card.featured {
+    grid-row: span 1;
+  }
+
+  .newsroom-card.featured .newsroom-image {
+    height: 200px;
+  }
+
+  .newsroom-meta {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .newsroom-content {
+    padding: 20px;
+  }
+
+  .newsroom-card.featured .newsroom-content {
+    padding: 20px;
+  }
+
+  .newsroom-title a,
+  .newsroom-card.featured .newsroom-title a {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .newsroom-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .newsroom-card.featured {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  .newsroom-card.featured .newsroom-image {
+    height: 250px;
+  }
+}

@@ -1,0 +1,566 @@
+.adminGalleryPage {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.adminHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #2c6e49;
+}
+
+.adminHeader h1 {
+  color: #0d3513;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.createBtn {
+  background: #2c6e49;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(44, 110, 73, 0.2);
+}
+
+.createBtn:hover {
+  background: #144d1b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(44, 110, 73, 0.3);
+}
+
+.errorMessage {
+  background: #fee;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #c33;
+}
+
+.galleryFormModal,
+.imageUploadModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(13, 53, 19, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.formContainer {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 2px solid #2c6e49;
+  background: linear-gradient(135deg, #0d3513 0%, #144d1b 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.formHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.galleryForm,
+.uploadForm {
+  padding: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  color: #0d3513;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="file"],
+.formGroup textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #2c6e49;
+  box-shadow: 0 0 0 3px rgba(44, 110, 73, 0.1);
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.formGroup small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.formGroup input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.imagePreview {
+  margin-top: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #e0e0e0;
+}
+
+.imagePreview img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  display: block;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e0e0e0;
+}
+
+.formActions button {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.formActions button[type="button"] {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.formActions button[type="button"]:hover {
+  background: #ccc;
+}
+
+.formActions button[type="submit"],
+.formActions button:last-child {
+  background: #2c6e49;
+  color: white;
+  box-shadow: 0 2px 4px rgba(44, 110, 73, 0.2);
+}
+
+.formActions button[type="submit"]:hover,
+.formActions button:last-child:hover {
+  background: #144d1b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(44, 110, 73, 0.3);
+}
+
+.galleriesList {
+  margin-top: 2rem;
+}
+
+.galleriesList h2 {
+  color: #0d3513;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.loading,
+.noGalleries {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.galleriesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.galleryCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.galleryCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(44, 110, 73, 0.15);
+  border-color: #2c6e49;
+}
+
+.galleryPreview {
+  height: 200px;
+  background: #f0f0f0;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.previewImages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+  gap: 2px;
+}
+
+.previewImage {
+  overflow: hidden;
+  background: #e0e0e0;
+}
+
+.previewImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.galleryCard:hover .previewImage img {
+  transform: scale(1.1);
+}
+
+.moreImages {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(13, 53, 19, 0.9);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.noImages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+.galleryInfo {
+  padding: 1.5rem;
+}
+
+.galleryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.galleryHeader h3 {
+  color: #0d3513;
+  font-size: 1.2rem;
+  margin: 0;
+  flex: 1;
+  font-weight: 700;
+}
+
+.statusBadge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusBadge.published {
+  background: #d4edda;
+  color: #155724;
+}
+
+.statusBadge.draft {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.galleryInfo p {
+  color: #555;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.imageCount {
+  display: inline-block;
+  background: #f0f0f0;
+  color: #0d3513;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.galleryActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid #f0f0f0;
+}
+
+.galleryActions button {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.galleryActions button:nth-child(1) {
+  background: #2c6e49;
+  color: white;
+}
+
+.galleryActions button:nth-child(1):hover {
+  background: #144d1b;
+}
+
+.galleryActions button:nth-child(2) {
+  background: #e8f5e9;
+  color: #2c6e49;
+}
+
+.galleryActions button:nth-child(2):hover {
+  background: #c8e6c9;
+}
+
+.galleryActions button:nth-child(3) {
+  background: #fee;
+  color: #c33;
+}
+
+.galleryActions button:nth-child(3):hover {
+  background: #fdd;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(13, 53, 19, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.galleryModal {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.closeModal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #0d3513;
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.closeModal:hover {
+  background: #144d1b;
+  transform: rotate(90deg);
+}
+
+.modalHeader {
+  padding: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.modalHeader h2 {
+  color: #0d3513;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.modalHeader p {
+  color: #555;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.modalImages {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.modalImage {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.modalImage:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.modalImage img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+}
+
+.imageActions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modalImage:hover .imageActions {
+  opacity: 1;
+}
+
+.deleteImageBtn {
+  background: #c33;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.deleteImageBtn:hover {
+  background: #a22;
+}
+
+@media (max-width: 768px) {
+  .adminGalleryPage {
+    padding: 1rem;
+  }
+
+  .adminHeader {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .galleriesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .modalImages {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .galleryActions {
+    flex-direction: column;
+  }
+}
