@@ -96,14 +96,15 @@ const createDefaultSuperAdmin = async () => {
     if (!exists) {
       const superAdmin = new Admin({
         username: "superadmin",
-        email: SUPERADMIN_EMAIL,
-        password: process.env.SUPER_ADMIN_PASSWORD,
+        email: "superadmin@example.com",
+        password: process.env.SUPER_ADMIN_PASSWORD || "superadmin123",
         role: "super_admin",
         createdAt: new Date(),
         isActive: true,
       })
       await superAdmin.save()
       console.log("✅ Default superadmin created")
+      console.log("⚠️  Change the default password in production!")
     }
   } catch (err) {
     console.error("❌ Error creating superadmin:", err.message)
@@ -114,13 +115,3 @@ module.exports = async (req, res) => {
   await connectDB()
   return app(req, res)
 }
-
-// Near your other app.use/app.get calls
-app.get('/', (req, res) => {
-  res.send('Muturu Cattle Initiative API is live!');
-});
-
-// IMPORTANT: Ensure your 404 handler is at the VERY BOTTOM
-app.use((req, res) => {
-  res.status(404).json({ success: false, message: "Route not found" });
-});
