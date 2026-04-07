@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 require("dotenv").config()
 
-// const Admin = require("./routes/admin")
+const Admin = require("./models/Admin")
 const authRoutes = require("./routes/auth")
 const userRoutes = require("./routes/users")
 const donationRoutes = require("./routes/donations")
@@ -96,15 +96,14 @@ const createDefaultSuperAdmin = async () => {
     if (!exists) {
       const superAdmin = new Admin({
         username: "superadmin",
-        email: "superadmin@example.com",
-        password: process.env.SUPER_ADMIN_PASSWORD || "superadmin123",
+        email: SUPERADMIN_EMAIL,
+        password: process.env.SUPER_ADMIN_PASSWORD,
         role: "super_admin",
         createdAt: new Date(),
         isActive: true,
       })
       await superAdmin.save()
       console.log("✅ Default superadmin created")
-      console.log("⚠️  Change the default password in production!")
     }
   } catch (err) {
     console.error("❌ Error creating superadmin:", err.message)
@@ -115,3 +114,13 @@ module.exports = async (req, res) => {
   await connectDB()
   return app(req, res)
 }
+
+// Near your other app.use/app.get calls
+app.get('/', (req, res) => {
+  res.send('Muturu Cattle Initiative API is live!');
+});
+
+// IMPORTANT: Ensure your 404 handler is at the VERY BOTTOM
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: "Route not found" });
+});
