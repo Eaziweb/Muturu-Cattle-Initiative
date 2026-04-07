@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 require("dotenv").config()
 
-const Admin = require("./models/Admin")
+// const Admin = require("./routes/admin")
 const authRoutes = require("./routes/auth")
 const userRoutes = require("./routes/users")
 const donationRoutes = require("./routes/donations")
