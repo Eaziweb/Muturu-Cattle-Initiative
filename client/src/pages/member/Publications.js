@@ -10,8 +10,9 @@ const Publications = () => {
   const [publications, setPublications] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [selectedPublication, setSelectedPublication] = useState(null)
+  const [selectedPub, setSelectedPub] = useState(null)
   const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
   const [paymentLoading, setPaymentLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("all")
@@ -19,7 +20,6 @@ const Publications = () => {
   const [totalPages, setTotalPages] = useState(1)
 
   const userToken = localStorage.getItem("token")
-
   const categories = ["Research Paper", "Conference Paper", "Book Chapter", "Thesis", "Report", "Other"]
 
   useEffect(() => {
@@ -30,30 +30,30 @@ const Publications = () => {
     try {
       setLoading(true)
       const response = await api.get("/publications", {
-        params: {
-          page: currentPage,
-          limit: 12,
-          search: searchTerm,
-          category: categoryFilter,
-        },
+        params: { page: currentPage, limit: 12, search: searchTerm, category: categoryFilter },
       })
       setPublications(response.data.publications)
       setTotalPages(response.data.totalPages)
     } catch (err) {
       setError("Error fetching publications")
-      console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
-  const handlePurchase = (publication) => {
+  const handleOpenDetails = (pub) => {
+    setSelectedPub(pub)
+    setShowDetailsModal(true)
+  }
+
+  const handlePurchase = (pub) => {
     if (!userToken) {
       alert("Please login to purchase publications")
       window.location.href = "/login"
       return
     }
-    setSelectedPublication(publication)
+    setSelectedPub(pub)
+    setShowDetailsModal(false)
     setShowPaymentModal(true)
   }
 
@@ -62,9 +62,8 @@ const Publications = () => {
       setPaymentLoading(true)
       const response = await userApi.post("/payments/initialize", {
         itemType: "publication",
-        itemId: selectedPublication._id,
+        itemId: selectedPub._id,
       })
-
       if (response.data.status === "success") {
         window.location.href = response.data.data.link
       }
@@ -75,155 +74,119 @@ const Publications = () => {
     }
   }
 
-  const handleSearch = (e) => {
-    e.preventDefault()
-    setCurrentPage(1)
-    fetchPublications()
-  }
-
-  if (loading && publications.length === 0) {
-    return (
-      <div className="publications-page">
-        <div className="loading">Loading publications...</div>
-      </div>
-    )
-  }
-
   return (
     <div className="publications-page">
-            <Navbar/>
-      <div className="publications-header">
+      <Navbar />
+      <div className="publications-hero">
         <h1>Academic Publications</h1>
-        <p>Discover and access cutting-edge research publications</p>
+        <p>Explore full-text research, conference papers, and technical reports</p>
       </div>
 
-      {/* Search and Filter Section */}
-      <div className="search-filter-section">
-        <form onSubmit={handleSearch} className="search-form">
-          <input
-            type="text"
-            placeholder="Search publications..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-          <button type="submit" className="search-btn">
-            Search
-          </button>
-        </form>
+      <div className="publications-content">
+        <div className="search-filter-row">
+          <form onSubmit={(e) => { e.preventDefault(); setCurrentPage(1); fetchPublications(); }} className="pub-search-bar">
+            <input
+              type="text"
+              placeholder="Search by title, DOI, or author..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button type="submit">Search</button>
+          </form>
 
-        <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="category-filter">
-          <option value="all">All Categories</option>
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
+          <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="pub-category-select">
+            <option value="all">All Document Types</option>
+            {categories.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
+          </select>
+        </div>
 
-      {error && <div className="error-message">{error}</div>}
-
-      {/* Publications Grid */}
-      <div className="publications-grid">
-        {publications.map((publication) => (
-          <div key={publication._id} className="publication-card">
-            <div className="publication-image">
-              {publication.coverImage ? (
-                <img
-                  src={publication.coverImage}
-                  alt={publication.title}
-                  onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/300x400?text=No+Cover"
-                  }}
-                />
-              ) : (
-                <div className="no-cover-image">
-                  <div className="no-cover-text">No Cover</div>
+        {loading ? (
+          <div className="pub-loading"><div className="loader-dot"></div><p>Loading Library...</p></div>
+        ) : (
+          <div className="pub-grid">
+            {publications.map((pub) => (
+              <div key={pub._id} className="pub-card">
+                <div className="pub-card-img">
+                  <img 
+                    src={pub.coverImage || "https://via.placeholder.com/300x400?text=Academic+Paper"} 
+                    alt={pub.title} 
+                  />
+                  <span className="pub-tag">{pub.category}</span>
                 </div>
-              )}
-            </div>
-
-            <div className="publication-content">
-              <div className="publication-category">{publication.category}</div>
-              <h3 className="publication-title">{publication.title}</h3>
-              <div className="publication-authors">By: {publication.authors.join(", ")}</div>
-              <div className="publication-meta">
-                <span>Published: {new Date(publication.publishedDate).toLocaleDateString()}</span>
-                {publication.pages && <span>{publication.pages} pages</span>}
+                <div className="pub-card-info">
+                  <h3 className="pub-card-title">{pub.title}</h3>
+                  <p className="pub-card-authors">{pub.authors.join(", ")}</p>
+                  <div className="pub-card-meta">
+                    <button className="info-trigger" onClick={() => handleOpenDetails(pub)}>View Abstract</button>
+                    <span className="pub-card-price">{pub.currency} {pub.price}</span>
+                  </div>
+                  <button className="pub-buy-now" onClick={() => handlePurchase(pub)}>Purchase</button>
+                </div>
               </div>
-              <p className="publication-abstract">{publication.abstract.substring(0, 150)}...</p>
-              <div className="publication-footer">
-                <div className="publication-price">
-                  {publication.currency} {publication.price}
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* --- PUBLICATION DETAILS MODAL --- */}
+      {showDetailsModal && selectedPub && (
+        <div className="modal-overlay" onClick={() => setShowDetailsModal(false)}>
+          <div className="details-modal-box" onClick={(e) => e.stopPropagation()}>
+            <button className="close-modal-btn" onClick={() => setShowDetailsModal(false)}>&times;</button>
+            <div className="details-modal-layout">
+              <div className="details-modal-aside">
+                <img src={selectedPub.coverImage || "https://via.placeholder.com/300x400?text=Paper"} alt="Cover" />
+                <div className="aside-stats">
+                  <p><strong>Pages:</strong> {selectedPub.pages || "N/A"}</p>
+                  <p><strong>Date:</strong> {new Date(selectedPub.publishedDate).toLocaleDateString()}</p>
+                  <p><strong>Lang:</strong> {selectedPub.language || "English"}</p>
+                  {selectedPub.doi && <p className="doi-label"><strong>DOI:</strong> {selectedPub.doi}</p>}
                 </div>
-                <button className="purchase-btn" onClick={() => handlePurchase(publication)}>
-                  Purchase & Download
-                </button>
+              </div>
+              <div className="details-modal-main">
+                <h2 className="modal-header-title">{selectedPub.title}</h2>
+                <p className="modal-authors-list">By {selectedPub.authors.join(", ")}</p>
+                
+                <div className="modal-tags-container">
+                    {selectedPub.keywords?.map(k => <span key={k} className="pub-keyword">{k}</span>)}
+                </div>
+                
+                <div className="modal-section">
+                  <h4>Abstract</h4>
+                  <p className="modal-abstract-text">{selectedPub.abstract || selectedPub.description}</p>
+                </div>
+
+                <div className="modal-section">
+                  <h4>Publication Details</h4>
+                  <div className="metadata-table">
+                    <div><strong>Publisher:</strong> {selectedPub.publisher || "MCI Press"}</div>
+                    {selectedPub.journal && <div><strong>Journal:</strong> {selectedPub.journal}</div>}
+                    {selectedPub.isbn && <div><strong>ISBN:</strong> {selectedPub.isbn}</div>}
+                  </div>
+                </div>
+
+                <div className="modal-action-footer">
+                    <span className="footer-price">{selectedPub.currency} {selectedPub.price}</span>
+                    <button className="footer-buy-btn" onClick={() => handlePurchase(selectedPub)}>Buy Full Document</button>
+                </div>
               </div>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="pagination-btn"
-          >
-            Previous
-          </button>
-          <span className="pagination-info">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-            className="pagination-btn"
-          >
-            Next
-          </button>
         </div>
       )}
 
-      {/* Payment Modal */}
-      {showPaymentModal && (
-        <div className="modal-overlay">
-          <div className="payment-modal">
-            <div className="modal-header">
-              <h3>Purchase Publication</h3>
-              <button className="close-btn" onClick={() => setShowPaymentModal(false)}>
-                ×
-              </button>
-            </div>
-            <div className="modal-content">
-              <h4>{selectedPublication.title}</h4>
-              <p>Authors: {selectedPublication.authors.join(", ")}</p>
-              <div className="payment-details">
-                <div className="price-display">
-                  <span className="price-label">Total Amount:</span>
-                  <span className="price-amount">
-                    {selectedPublication.currency} {selectedPublication.price}
-                  </span>
-                </div>
-                <div className="payment-info">
-                  <p>• Secure payment via Flutterwave</p>
-                  <p>• Download link valid for 24 hours</p>
-                  <p>• Up to 3 downloads allowed</p>
-                  <p>• Confirmation email will be sent</p>
-                </div>
-              </div>
-              <div className="modal-actions">
-                <button className="cancel-btn" onClick={() => setShowPaymentModal(false)}>
-                  Cancel
+      {/* --- PAYMENT MODAL --- */}
+      {showPaymentModal && selectedPub && (
+        <div className="modal-overlay" onClick={() => setShowPaymentModal(false)}>
+          <div className="simple-payment-card" onClick={(e) => e.stopPropagation()}>
+            <h3>Secure Checkout</h3>
+            <p>You are about to purchase: <strong>{selectedPub.title}</strong></p>
+            <div className="total-box">Total: {selectedPub.currency} {selectedPub.price}</div>
+            <div className="payment-buttons">
+                <button className="cancel-pay" onClick={() => setShowPaymentModal(false)}>Go Back</button>
+                <button className="confirm-pay" onClick={processPayment} disabled={paymentLoading}>
+                    {paymentLoading ? "Connecting..." : "Pay with Flutterwave"}
                 </button>
-                <button className="pay-btn" onClick={processPayment} disabled={paymentLoading}>
-                  {paymentLoading ? "Processing..." : "Proceed to Payment"}
-                </button>
-              </div>
             </div>
           </div>
         </div>

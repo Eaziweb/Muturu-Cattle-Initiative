@@ -56,7 +56,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <div className="footer-bottom-content">
-          <p>&copy; {new Date().getFullYear()} Muturu Cattle Research Network. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Muturu Cattle Initiative. All rights reserved.</p>
           <div className="legal-links">
             <Link to="/privacy">Privacy Policy</Link>
             <Link to="/terms">Terms of Service</Link>

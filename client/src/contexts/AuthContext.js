@@ -67,21 +67,21 @@ export const AuthProvider = ({ children }) => {
   }
 
   const register = async (userData) => {
-    try {
-      const response = await userApi.post("/auth/register", userData)
-      return {
-        success: true,
-        message: response.data.message,
-        memberID: response.data.memberID,
-        email: userData.email, // Return email for the redirect to Verify page
-      }
-    } catch (error) {
-      return {
-        success: false,
-        message: error.response?.data?.message || "Registration failed",
-      }
+  try {
+    const response = await userApi.post("/auth/register", userData)
+    return {
+      success: true,
+      message: response.data.message,
+      memberID: response.data.memberID,
+      email: userData.email.toLowerCase().trim(), // ← fix casing
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || "Registration failed",
     }
   }
+}
 
   const verifyEmail = async (email, code) => {
     try {

@@ -331,10 +331,10 @@ const Donate = () => {
               <p>Contact our team for more information about donations and how your contribution makes a difference.</p>
               <div className="contact-info">
                 <p>
-                  <strong>Email:</strong> donations@mcrn.org
+                  <strong>Email:</strong> muturucattleinitiative@gmail.com
                 </p>
                 <p>
-                  <strong>Phone:</strong> +234 (0) 123 456 7890
+                  <strong>Phone:</strong> +2348150420699
                 </p>
               </div>
             </div>

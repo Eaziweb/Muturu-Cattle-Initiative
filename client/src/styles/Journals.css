@@ -511,7 +511,209 @@
   background: #ccc;
   cursor: not-allowed;
 }
+/* Update to existing styles and additions for the new Popup */
 
+.journal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.journal-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.view-details-btn {
+  background: transparent;
+  color: #144d1b;
+  border: 1.5px solid #144d1b;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.view-details-btn:hover {
+  background: #144d1b;
+  color: white;
+}
+
+.purchase-btn-main {
+  width: 100%;
+  background: linear-gradient(135deg, #144d1b, #1a6625);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* --- DETAILS MODAL STYLES --- */
+.details-modal {
+  background: white;
+  width: 95%;
+  max-width: 900px;
+  max-height: 90vh;
+  border-radius: 20px;
+  position: relative;
+  overflow-y: auto;
+  padding: 40px;
+  animation: modalScale 0.3s ease-out;
+}
+
+@keyframes modalScale {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+}
+
+.modal-close-x {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: #666;
+  outline: none !important;
+}
+
+.details-sidebar img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+}
+
+.sidebar-info p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #444;
+}
+
+.if-score {
+  background: #fff9e6;
+  padding: 8px;
+  border-radius: 6px;
+  color: #b88c00;
+  font-weight: 700;
+}
+
+.modal-title {
+  color: #144d1b;
+  font-size: 24px;
+  margin-bottom: 15px;
+  line-height: 1.3;
+}
+
+.keyword-tag {
+  display: inline-block;
+  background: #f0f4f0;
+  color: #144d1b;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.info-section {
+  margin-top: 25px;
+}
+
+.info-section h4 {
+  color: #144d1b;
+  border-bottom: 2px solid #e8f5e9;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.modal-footer-btns {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-price {
+  font-size: 28px;
+  font-weight: 800;
+  color: #144d1b;
+}
+
+.modal-buy-btn {
+  background: #144d1b;
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* --- RESPONSIVE FIXES --- */
+@media (max-width: 850px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+  .details-sidebar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .details-sidebar img {
+    width: 150px;
+    margin-bottom: 0;
+  }
+  .details-modal {
+      padding: 25px;
+  }
+}
+
+@media (max-width: 500px) {
+  .details-sidebar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .details-sidebar img {
+    width: 100%;
+  }
+  .modal-footer-btns {
+      flex-direction: column;
+      gap: 15px;
+  }
+  .modal-buy-btn {
+      width: 100%;
+  }
+}
+
+/* General Cleanup */
+button:focus {
+    outline: none !important;
+}
 /* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 768px) {
   .journals-page {

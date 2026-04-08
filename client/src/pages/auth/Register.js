@@ -77,25 +77,30 @@ const Register = () => {
   }
 
 const handleSubmit = async (e) => {
-  e.preventDefault();
+  e.preventDefault()
+  if (!validateForm()) return
 
-  if (!validateForm()) return;
+  setLoading(true)
+  setErrors({})
 
-  setLoading(true);
-  setErrors({});
+  try {
+    const result = await register(formData)
 
-  const result = await register(formData);
-
-  if (result.success) {
-    // PASS THE EMAIL IN THE STATE OBJECT
-    navigate("/verify-email", { 
-      state: { email: result.email } 
-    });
-  } else {
-    setErrors({ general: result.message });
-    setLoading(false); // Only stop loading if it fails; if it succeeds, we navigate away
+    if (result.success) {
+      navigate("/verify-email", {
+        state: { email: result.email },
+        replace: true,   // ← prevents going back to register via browser back
+      })
+      // Don't setLoading(false) here — component unmounts on navigate
+    } else {
+      setErrors({ general: result.message })
+      setLoading(false)
+    }
+  } catch (err) {
+    setErrors({ general: "An unexpected error occurred. Please try again." })
+    setLoading(false)
   }
-};
+}
 
   return (
     <div className={styles.authContainer}>

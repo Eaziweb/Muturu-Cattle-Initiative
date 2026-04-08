@@ -1,164 +1,117 @@
 "use client"
 
-import { useState, useContext } from "react"
+import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext"  // Use the useAuth hook instead
+import { useAuth } from "../contexts/AuthContext"
 import "../styles/navbar.css"
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isResourcesOpen, setIsResourcesOpen] = useState(false)
-  const [isUpdatesOpen, setIsUpdatesOpen] = useState(false)
+  const [menuVisible, setMenuVisible] = useState(false)
+  const [resDropdown, setResDropdown] = useState(false)
+  const [updDropdown, setUpdDropdown] = useState(false)
   const location = useLocation()
-  const { user, logout } = useAuth()  // Use the useAuth hook instead of useContext
+  const { user, logout } = useAuth()
 
-  const isActive = (path) => location.pathname === path
+  const checkPath = (path) => location.pathname === path
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
+  const resetNav = () => {
+    setMenuVisible(false)
+    setResDropdown(false)
+    setUpdDropdown(false)
   }
 
-  const closeMenu = () => {
-    setIsMenuOpen(false)
-    setIsResourcesOpen(false)
-    setIsUpdatesOpen(false)
+  const togglePrimaryMenu = () => setMenuVisible(!menuVisible)
+
+  const toggleRes = (e) => {
+    e.stopPropagation()
+    setResDropdown(!resDropdown)
+    setUpdDropdown(false)
   }
 
-  const toggleResources = () => {
-    setIsResourcesOpen(!isResourcesOpen)
-    setIsUpdatesOpen(false)
+  const toggleUpd = (e) => {
+    e.stopPropagation()
+    setUpdDropdown(!updDropdown)
+    setResDropdown(false)
   }
 
-  const toggleUpdates = () => {
-    setIsUpdatesOpen(!isUpdatesOpen)
-    setIsResourcesOpen(false)
-  }
-
-  const handleLogout = () => {
+  const exitSession = () => {
     logout()
-    closeMenu()
+    resetNav()
   }
 
   return (
-    <navbar className="navbar">
-      <div className="navbar-container">
-        <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          <div className="logo-box">MCI</div>
+    <nav className="site-header">
+      <div className="header-wrapper">
+        <Link to="/" className="brand-anchor" onClick={resetNav}>
+          <div className="brand-badge">MCI</div>
         </Link>
 
-        <div className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
-          <Link to="/" className={`navbar-link ${isActive("/") ? "active" : ""}`} onClick={closeMenu}>
+        <div className={`nav-portal ${menuVisible ? "show-portal" : ""}`}>
+          <Link to="/" className={`portal-item ${checkPath("/") ? "active-item" : ""}`} onClick={resetNav}>
             Home
           </Link>
 
-          <Link to="/about" className={`navbar-link ${isActive("/about") ? "active" : ""}`} onClick={closeMenu}>
+          <Link to="/about" className={`portal-item ${checkPath("/about") ? "active-item" : ""}`} onClick={resetNav}>
             About
           </Link>
 
-          <Link
-            to="/muturu-cattle"
-            className={`navbar-link ${isActive("/muturu-cattle") ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Muturu Cattle Research
+          <Link to="/muturu-cattle" className={`portal-item ${checkPath("/muturu-cattle") ? "active-item" : ""}`} onClick={resetNav}>
+            Research
           </Link>
 
-          <Link
-            to="/members"
-            className={`navbar-link ${isActive("/members") ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Find Members
-          </Link>
-
-          <Link
-            to="/donate"
-            className={`navbar-link ${isActive("/donate") ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            Donate
-          </Link>
-
-          {/* Resources Dropdown */}
-          <div className="navbar-nav-dropdown">
-            <div
-              className={`navbar-link nav-dropdown-toggle ${isActive("/publications") || isActive("/journals") ? "active" : ""}`} 
-              onClick={toggleResources}
+          {/* Resources Group */}
+          <div className="nested-group">
+            <button 
+              className={`portal-item group-trigger ${checkPath("/publications") || checkPath("/journals") ? "active-item" : ""}`} 
+              onClick={toggleRes}
             >
-              Resources
-              <span className={`arrow ${isResourcesOpen ? "open" : ""}`}>▼</span>
-            </div>
-            <div className="nav-dropdown-menu">
-              <Link to="/publications" className="nav-dropdown-item" onClick={closeMenu}>
-                Publications
-              </Link>
-              <Link to="/journals" className="nav-dropdown-item" onClick={closeMenu}>
-                Journals
-              </Link>
+              Resources <span className={`chevron ${resDropdown ? "flip" : ""}`}>▼</span>
+            </button>
+            <div className={`group-content ${resDropdown ? "content-open" : ""}`}>
+              <Link to="/publications" className="group-link" onClick={resetNav}>Publications</Link>
+              <Link to="/journals" className="group-link" onClick={resetNav}>Journals</Link>
             </div>
           </div>
 
-          {/* Updates Dropdown */}
-          <div className="navbar-nav-dropdown">
-            <div 
-              className={`navbar-link nav-dropdown-toggle ${isActive("/blogs") || isActive("/announcements") || isActive("/gallery") || isActive("/events") || isActive("/contact") ? "active" : ""}`} 
-              onClick={toggleUpdates}
+          {/* Updates Group */}
+          <div className="nested-group">
+            <button 
+              className={`portal-item group-trigger ${checkPath("/blogs") || checkPath("/events") ? "active-item" : ""}`} 
+              onClick={toggleUpd}
             >
-              Updates
-              <span className={`arrow ${isUpdatesOpen ? "open" : ""}`}>▼</span>
-            </div>
-            <div className="nav-dropdown-menu">
-              <Link to="/blogs" className="nav-dropdown-item" onClick={closeMenu}>
-                Blog
-              </Link>
-              <Link to="/announcements" className="nav-dropdown-item" onClick={closeMenu}>
-                Announcements
-              </Link>
-              <Link to="/gallery" className="nav-dropdown-item" onClick={closeMenu}>
-                Gallery
-              </Link>
-              <Link to="/events" className="nav-dropdown-item" onClick={closeMenu}>
-                Events
-              </Link>
-              <Link to="/contact" className="nav-dropdown-item" onClick={closeMenu}>
-                Contact
-              </Link>
+              Updates <span className={`chevron ${updDropdown ? "flip" : ""}`}>▼</span>
+            </button>
+            <div className={`group-content ${updDropdown ? "content-open" : ""}`}>
+              <Link to="/blogs" className="group-link" onClick={resetNav}>Blog</Link>
+              <Link to="/announcements" className="group-link" onClick={resetNav}>Announcements</Link>
+              <Link to="/gallery" className="group-link" onClick={resetNav}>Gallery</Link>
+              <Link to="/events" className="group-link" onClick={resetNav}>Events</Link>
+              <Link to="/contact" className="group-link" onClick={resetNav}>Contact</Link>
             </div>
           </div>
 
-          {/* Conditional rendering based on authentication status */}
           {user ? (
             <>
-              <Link 
-                to="/dashboard" 
-                className={`navbar-link ${isActive("/dashboard") ? "active" : ""}`} 
-                onClick={closeMenu}
-              >
+              <Link to="/dashboard" className={`portal-item ${checkPath("/dashboard") ? "active-item" : ""}`} onClick={resetNav}>
                 Dashboard
               </Link>
-              <button onClick={handleLogout} className="navbar-button secondary">
-                Logout
-              </button>
+              <button onClick={exitSession} className="action-btn alt-style">Logout</button>
             </>
           ) : (
             <>
-              <Link to="/login" className={`navbar-link ${isActive("/login") ? "active" : ""}`} onClick={closeMenu}>
-                Login
-              </Link>
-              <Link to="/register" className="navbar-button" onClick={closeMenu}>
-                Register
-              </Link>
+              <Link to="/login" className="portal-item" onClick={resetNav}>Login</Link>
+              <Link to="/register" className="action-btn" onClick={resetNav}>Register</Link>
             </>
           )}
         </div>
 
-        <div className={`navbar-toggle ${isMenuOpen ? "active" : ""}`} onClick={toggleMenu}>
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
-        </div>
+        <button className={`menu-hamburger ${menuVisible ? "switch" : ""}`} onClick={togglePrimaryMenu}>
+          <i className="stripe"></i>
+          <i className="stripe"></i>
+          <i className="stripe"></i>
+        </button>
       </div>
-    </navbar>
+    </nav>
   )
 }
 
