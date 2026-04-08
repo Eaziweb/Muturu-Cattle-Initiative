@@ -1,8 +1,11 @@
-// api/index.js  ← rename/move your server.js here
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
-require("dotenv").config()
+
+// Only load dotenv locally, Vercel injects env vars directly
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config()
+}
 
 const Admin = require("./models/Admin")
 const authRoutes = require("./routes/auth")
@@ -28,8 +31,8 @@ const app = express()
 app.use(cors())
 app.use(express.json({ limit: "10mb" }))
 app.use(express.urlencoded({ extended: true, limit: "10mb" }))
-
-
+// NO express.static — Vercel filesystem is read-only, use Cloudinary URLs directly
+// NO fs.mkdirSync — same reason
 
 // ─── Routes ──────────────────────────────────────────────────────────────────
 app.use("/api/auth", authRoutes)
@@ -49,7 +52,7 @@ app.use("/api/revenue", revenueRoutes)
 app.use("/api/partnership", partnershipRoutes)
 app.use("/api/partners", partnersRoutes)
 
-// ─── Health check ─────────────────────────────────────────────────────────────
+// ─── Health check ────────────────────────────────────────────────────────────
 app.get("/api/health", (req, res) => {
   res.json({
     message: "Server is running!",
@@ -58,10 +61,6 @@ app.get("/api/health", (req, res) => {
   })
 })
 
-// ─── 404 ──────────────────────────────────────────────────────────────────────
-app.use("*", (req, res) => {
-  res.status(404).json({ success: false, message: "Route not found" })
-})
 
 // ─── Global error handler ─────────────────────────────────────────────────────
 app.use((error, req, res, next) => {
@@ -73,44 +72,27 @@ app.use((error, req, res, next) => {
   })
 })
 
-// ─── MongoDB: cached connection (critical for serverless) ─────────────────────
+// ─── MongoDB cached connection (critical for serverless) ──────────────────────
 let isConnected = false
 
 const connectDB = async () => {
-  if (isConnected) return // reuse existing connection on warm invocations
+  if (isConnected) return
+
+  if (!process.env.MONGODB_URI) {
+    throw new Error("MONGODB_URI environment variable is not set")
+  }
 
   await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000, // fail fast rather than hanging
+    serverSelectionTimeoutMS: 5000,
   })
 
   isConnected = true
   console.log("✅ Connected to MongoDB")
-  await createDefaultSuperAdmin()
 }
 
-const createDefaultSuperAdmin = async () => {
-  try {
-    const exists = await Admin.findOne({ role: "super_admin" })
-    if (!exists) {
-      const superAdmin = new Admin({
-        username: "superadmin",
-        email: "superadmin@example.com",
-        password: process.env.SUPER_ADMIN_PASSWORD || "superadmin123",
-        role: "super_admin",
-        createdAt: new Date(),
-        isActive: true,
-      })
-      await superAdmin.save()
-      console.log("✅ Default superadmin created")
-      console.log("⚠️  Change the default password in production!")
-    }
-  } catch (err) {
-    console.error("❌ Error creating superadmin:", err.message)
-  }
-}
-
+// ─── Serverless export (Vercel calls this per request) ────────────────────────
 module.exports = async (req, res) => {
   await connectDB()
   return app(req, res)
