@@ -53,7 +53,7 @@ app.use("/partnership", partnershipRoutes)
 app.use("/partners", partnersRoutes)
 
 // ─── Health check ────────────────────────────────────────────────────────────
-app.get("/api/health", (req, res) => {
+app.get("/health", (req, res) => {
   res.json({
     message: "Server is running!",
     timestamp: new Date().toISOString(),
@@ -89,16 +89,15 @@ const connectDB = async () => {
   isConnected = true
   console.log("✅ Connected to MongoDB")
 }
-
-// ─── Serverless export (Vercel calls this per request) ────────────────────────
-module.exports = async (req, res) => {
-  await connectDB()
-  return app(req, res)
-}
-
 app.get('/', (req, res) => {
   res.status(200).json({
     message: "Muturu Cattle Initiative API is live and connected!",
     status: "Healthy"
   });
 });
+// ─── Serverless export (Vercel calls this per request) ────────────────────────
+module.exports = async (req, res) => {
+  await connectDB()
+  return app(req, res)
+}
+

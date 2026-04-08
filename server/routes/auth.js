@@ -8,178 +8,207 @@ const { auth } = require("../middleware/auth")
 
 const router = express.Router()
 
+// ─── Register ─────────────────────────────────────────────────────────────────
 router.post("/register", async (req, res) => {
   try {
-    const { email, password, fullName, ...otherData } = req.body;
+    const { email, password, fullName, ...otherData } = req.body
+    const cleanEmail = email.toLowerCase().trim()
 
-    // 1. Check if user already exists
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: cleanEmail })
 
     if (user) {
-      // IF USER IS ALREADY VERIFIED -> Block re-registration
       if (user.isVerified) {
-        return res.status(400).json({ 
-          success: false, 
-          message: "An account with this email is already verified. Please login." 
-        });
+        return res.status(400).json({
+          success: false,
+          message: "An account with this email is already verified. Please login.",
+        })
       }
 
-      // IF USER EXISTS BUT IS NOT VERIFIED -> Allow "Overwriting" their registration
-      // This helps if they made a typo in their name or want to reset their code
-      const newCode = Math.floor(100000 + Math.random() * 900000).toString();
-      
-      user.fullName = fullName;
-      user.password = password; // The pre-save hook in your model will hash this
-      user.verificationCode = newCode;
-      // Update any other fields provided
-      Object.assign(user, otherData);
+      // ── Unverified account: clear old code FIRST, save, then set new code ──
+      // This prevents the old code from ever being valid again
+      user.verificationCode = undefined
+      await user.save()
 
-      await user.save();
+      const newCode = Math.floor(100000 + Math.random() * 900000).toString().trim()
+      user.fullName = fullName
+      user.password = password
+      user.verificationCode = newCode
+      Object.assign(user, otherData)
+      await user.save()
 
-      // Send the NEW code
-      await sendVerificationEmail(email, newCode, user.memberID);
+      await sendVerificationEmail(cleanEmail, newCode, user.memberID)
 
       return res.status(200).json({
         success: true,
         message: "Registration updated! A new verification code has been sent.",
         email: user.email,
-        memberID: user.memberID
-      });
+        memberID: user.memberID,
+      })
     }
 
-    // 2. NORMAL FLOW: If user doesn't exist at all, create new
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const memberID = generateMemberID();
+    // ── New user ──────────────────────────────────────────────────────────────
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString().trim()
+    const memberID = generateMemberID()
 
     user = new User({
       memberID,
       fullName,
-      email,
+      email: cleanEmail,
       password,
       verificationCode,
-      ...otherData
-    });
+      ...otherData,
+    })
 
-    await user.save();
-    await sendVerificationEmail(email, verificationCode, memberID);
+    await user.save()
+    await sendVerificationEmail(cleanEmail, verificationCode, memberID)
 
     res.status(201).json({
       success: true,
       message: "Registration successful! Please verify your email.",
       email: user.email,
-      memberID
-    });
-
+      memberID,
+    })
   } catch (error) {
-    console.error("Registration error:", error);
-    res.status(500).json({ success: false, message: "Server error during registration" });
+    console.error("Registration error:", error)
+    res.status(500).json({ success: false, message: "Server error during registration" })
   }
-});
+})
 
-/**
- * @route   POST /api/auth/verify-email
- * @desc    Verify user email using the 6-digit code
- */
+// ─── Verify Email ─────────────────────────────────────────────────────────────
 router.post("/verify-email", async (req, res) => {
   try {
-    const { email, code } = req.body;
+    const { email, code } = req.body
 
-    // 1. Validate inputs exist
     if (!email || !code) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Email and verification code are required." 
-      });
+      return res.status(400).json({
+        success: false,
+        message: "Email and verification code are required.",
+      })
     }
 
-    // 2. Clean the data to prevent simple mismatch errors
-    const cleanEmail = email.toLowerCase().trim();
-    const cleanCode = code.toString().trim();
+    const cleanEmail = email.toLowerCase().trim()
+    const cleanCode = code.toString().trim()
 
-    // 3. Find user with matching email and code
-    const user = await User.findOne({ 
-      email: cleanEmail, 
-      verificationCode: cleanCode 
-    });
+    // Find by email only
+    const user = await User.findOne({ email: cleanEmail })
 
     if (!user) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Invalid or expired verification code. Please check your email and try again." 
-      });
+      return res.status(400).json({
+        success: false,
+        message: "No account found with this email address.",
+      })
     }
 
-    // 4. Update user
-    user.isVerified = true;
-    user.verificationCode = undefined; // Remove the code so it can't be used again
-    await user.save();
+    if (user.isVerified) {
+      return res.status(400).json({
+        success: false,
+        message: "This account is already verified. Please login.",
+      })
+    }
 
-    // 5. Send welcome email
+    const storedCode = user.verificationCode
+      ? user.verificationCode.toString().trim()
+      : null
+
+    if (!storedCode) {
+      return res.status(400).json({
+        success: false,
+        message: "No active verification code. Please request a new one.",
+      })
+    }
+
+    if (storedCode !== cleanCode) {
+      return res.status(400).json({
+        success: false,
+        message: "Incorrect verification code. Please check and try again.",
+      })
+    }
+
+    // ── Clear code and mark verified atomically ────────────────────────────────
+    user.isVerified = true
+    user.verificationCode = undefined
+    await user.save()
+
     try {
-      await sendWelcomeEmail(user.email, user.fullName, user.memberID);
+      await sendWelcomeEmail(user.email, user.fullName, user.memberID)
     } catch (mailError) {
-      console.error("Welcome email failed to send:", mailError);
-      // We don't return error here because the user is already verified
+      console.error("Welcome email failed:", mailError)
     }
 
-    res.status(200).json({ 
-      success: true, 
-      message: "Email verified successfully!" 
-    });
-
+    res.status(200).json({
+      success: true,
+      message: "Email verified successfully!",
+    })
   } catch (error) {
-    console.error("Verification Route Error:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    console.error("Verification error:", error)
+    res.status(500).json({ success: false, message: "Internal server error" })
   }
-});
+})
 
+// ─── Resend Code ──────────────────────────────────────────────────────────────
 router.post("/resend-code", async (req, res) => {
   try {
-    const { email } = req.body;
-    const user = await User.findOne({ email, isVerified: false });
+    const { email } = req.body
+    const cleanEmail = email.toLowerCase().trim()
+
+    const user = await User.findOne({ email: cleanEmail, isVerified: false })
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "Unverified user not found" });
+      return res.status(404).json({
+        success: false,
+        message: "No unverified account found with this email.",
+      })
     }
 
-    const newCode = Math.floor(100000 + Math.random() * 900000).toString();
-    user.verificationCode = newCode;
-    await user.save();
+    // ── Clear old code first, then set new one ────────────────────────────────
+    user.verificationCode = undefined
+    await user.save()
 
-    await sendVerificationEmail(email, newCode, user.memberID);
+    const newCode = Math.floor(100000 + Math.random() * 900000).toString().trim()
+    user.verificationCode = newCode
+    await user.save()
 
-    res.json({ success: true, message: "A new verification code has been sent to your email." });
+    await sendVerificationEmail(cleanEmail, newCode, user.memberID)
+
+    res.json({
+      success: true,
+      message: "A new verification code has been sent to your email.",
+    })
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error resending code" });
+    console.error("Resend code error:", error)
+    res.status(500).json({ success: false, message: "Error resending code" })
   }
-});
+})
 
-// Login
+// ─── Login ────────────────────────────────────────────────────────────────────
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body
+    const cleanEmail = email.toLowerCase().trim()
 
-    // Find user
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email: cleanEmail })
     if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" })
+      return res.status(400).json({ success: false, message: "Invalid credentials" })
     }
 
-    // Check password
     const isMatch = await user.comparePassword(password)
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" })
+      return res.status(400).json({ success: false, message: "Invalid credentials" })
     }
 
-    // Check if email is verified
     if (!user.isVerified) {
-      return res.status(400).json({ message: "Please verify your email before logging in" })
+      return res.status(400).json({
+        success: false,
+        message: "Please verify your email before logging in.",
+      })
     }
 
-    // Generate JWT
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    })
 
     res.json({
+      success: true,
       token,
       user: {
         id: user._id,
@@ -191,37 +220,36 @@ router.post("/login", async (req, res) => {
     })
   } catch (error) {
     console.error("Login error:", error)
-    res.status(500).json({ message: "Server error during login" })
+    res.status(500).json({ success: false, message: "Server error during login" })
   }
 })
 
-// Forgot password
+// ─── Forgot Password ──────────────────────────────────────────────────────────
 router.post("/forgot-password", async (req, res) => {
   try {
     const { email } = req.body
+    const cleanEmail = email.toLowerCase().trim()
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email: cleanEmail })
     if (!user) {
-      return res.status(404).json({ message: "User not found with this email" })
+      return res.status(404).json({ success: false, message: "No account found with this email" })
     }
 
-    // Generate reset token
     const resetToken = crypto.randomBytes(32).toString("hex")
     user.resetPasswordToken = resetToken
-    user.resetPasswordExpires = Date.now() + 3600000 // 1 hour
+    user.resetPasswordExpires = Date.now() + 3600000
     await user.save()
 
-    // Send reset email
-    await sendPasswordResetEmail(email, resetToken)
+    await sendPasswordResetEmail(cleanEmail, resetToken)
 
-    res.json({ message: "Password reset email sent" })
+    res.json({ success: true, message: "Password reset email sent" })
   } catch (error) {
     console.error("Forgot password error:", error)
-    res.status(500).json({ message: "Server error during password reset request" })
+    res.status(500).json({ success: false, message: "Server error" })
   }
 })
 
-// Reset password
+// ─── Reset Password ───────────────────────────────────────────────────────────
 router.post("/reset-password/:token", async (req, res) => {
   try {
     const { token } = req.params
@@ -233,7 +261,7 @@ router.post("/reset-password/:token", async (req, res) => {
     })
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid or expired reset token" })
+      return res.status(400).json({ success: false, message: "Invalid or expired reset token" })
     }
 
     user.password = password
@@ -241,21 +269,21 @@ router.post("/reset-password/:token", async (req, res) => {
     user.resetPasswordExpires = undefined
     await user.save()
 
-    res.json({ message: "Password reset successful" })
+    res.json({ success: true, message: "Password reset successful" })
   } catch (error) {
     console.error("Reset password error:", error)
-    res.status(500).json({ message: "Server error during password reset" })
+    res.status(500).json({ success: false, message: "Server error" })
   }
 })
 
-// Get current user
+// ─── Get Current User ─────────────────────────────────────────────────────────
 router.get("/me", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password")
     res.json(user)
   } catch (error) {
     console.error("Get user error:", error)
-    res.status(500).json({ message: "Server error" })
+    res.status(500).json({ success: false, message: "Server error" })
   }
 })
 

@@ -80,47 +80,47 @@ const Navbar = () => {
           </Link>
 
           {/* Resources Dropdown */}
-          <div className="navbar-dropdown">
-            <button 
-              className={`navbar-link dropdown-toggle ${isActive("/publications") || isActive("/journals") ? "active" : ""}`} 
+          <div className="navbar-nav-dropdown">
+            <div
+              className={`navbar-link nav-dropdown-toggle ${isActive("/publications") || isActive("/journals") ? "active" : ""}`} 
               onClick={toggleResources}
             >
               Resources
               <span className={`arrow ${isResourcesOpen ? "open" : ""}`}>▼</span>
-            </button>
-            <div className="dropdown-menu">
-              <Link to="/publications" className="dropdown-item" onClick={closeMenu}>
+            </div>
+            <div className="nav-dropdown-menu">
+              <Link to="/publications" className="nav-dropdown-item" onClick={closeMenu}>
                 Publications
               </Link>
-              <Link to="/journals" className="dropdown-item" onClick={closeMenu}>
+              <Link to="/journals" className="nav-dropdown-item" onClick={closeMenu}>
                 Journals
               </Link>
             </div>
           </div>
 
           {/* Updates Dropdown */}
-          <div className="navbar-dropdown">
-            <button 
-              className={`navbar-link dropdown-toggle ${isActive("/blogs") || isActive("/announcements") || isActive("/gallery") || isActive("/events") || isActive("/contact") ? "active" : ""}`} 
+          <div className="navbar-nav-dropdown">
+            <div 
+              className={`navbar-link nav-dropdown-toggle ${isActive("/blogs") || isActive("/announcements") || isActive("/gallery") || isActive("/events") || isActive("/contact") ? "active" : ""}`} 
               onClick={toggleUpdates}
             >
               Updates
               <span className={`arrow ${isUpdatesOpen ? "open" : ""}`}>▼</span>
-            </button>
-            <div className="dropdown-menu">
-              <Link to="/blogs" className="dropdown-item" onClick={closeMenu}>
+            </div>
+            <div className="nav-dropdown-menu">
+              <Link to="/blogs" className="nav-dropdown-item" onClick={closeMenu}>
                 Blog
               </Link>
-              <Link to="/announcements" className="dropdown-item" onClick={closeMenu}>
+              <Link to="/announcements" className="nav-dropdown-item" onClick={closeMenu}>
                 Announcements
               </Link>
-              <Link to="/gallery" className="dropdown-item" onClick={closeMenu}>
+              <Link to="/gallery" className="nav-dropdown-item" onClick={closeMenu}>
                 Gallery
               </Link>
-              <Link to="/events" className="dropdown-item" onClick={closeMenu}>
+              <Link to="/events" className="nav-dropdown-item" onClick={closeMenu}>
                 Events
               </Link>
-              <Link to="/contact" className="dropdown-item" onClick={closeMenu}>
+              <Link to="/contact" className="nav-dropdown-item" onClick={closeMenu}>
                 Contact
               </Link>
             </div>
