@@ -162,7 +162,7 @@
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: url('/hero-img.jpg') center/cover no-repeat;
+    background: linear-gradient(rgba(20, 77, 27, 0.452), rgba(20, 77, 27, 0.8)), url("../../public/hero-img.jpg") center / cover;
   z-index: 0;
 }
 .hero-grain {

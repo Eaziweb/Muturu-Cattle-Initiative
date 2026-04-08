@@ -1,190 +1,121 @@
-// components/ProfileEdit.jsx
-"use client"
-
-import { useState, useEffect } from "react"
-import { useAuth } from "../contexts/AuthContext"
+import { useState } from "react"
 import api from "../utils/userApi"
+import { useAuth } from "../contexts/AuthContext"
 
 const ProfileEdit = ({ user }) => {
-  const { updateUser, fetchCurrentUser } = useAuth()
+  const { fetchCurrentUser } = useAuth()
   const [formData, setFormData] = useState({
-    fullName: "",
-    title: "",
-    profession: "",
-    academicQualifications: "",
-    researchDisciplines: "",
-    country: "",
-    profileImage: "",
+    title: user?.title || "",
+    academicQualifications: user?.academicQualifications || "",
+    researchDisciplines: user?.researchDisciplines || "",
+    googleScholarProfile: user?.googleScholarProfile || "",
+    researchGateProfile: user?.researchGateProfile || "",
+    bio: user?.bio || "",
+    phoneNumber: user?.phoneNumber || "",
+    gender: user?.gender || "",
   })
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState("")
-
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        fullName: user.fullName || "",
-        title: user.title || "",
-        profession: user.profession || "",
-        academicQualifications: user.academicQualifications || "",
-        researchDisciplines: user.researchDisciplines || "",
-        country: user.country || "",
-        profileImage: user.profileImage || "",
-      })
-    }
-  }, [user])
+  const [status, setStatus] = useState({ type: "", msg: "" })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, profileImage: reader.result }))
-      }
-      reader.readAsDataURL(file)
-    }
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
-    setError("")
-    setSuccess(false)
+    setIsSubmitting(true)
+    setStatus({ type: "", msg: "" })
 
     try {
-      const response = await api.put("/users/profile", formData)
-      updateUser(response.data)
-      setSuccess(true)
-      
-      // Fetch the latest user data from the server
-      await fetchCurrentUser()
+      await api.put("/users/profile", formData)
+      await fetchCurrentUser() // Refresh global user state
+      setStatus({ type: "success", msg: "Profile updated successfully!" })
     } catch (error) {
-      setError(error.response?.data?.message || "Failed to update profile")
+      setStatus({ type: "error", msg: error.response?.data?.message || "Update failed" })
     } finally {
-      setLoading(false)
+      setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="profile-edit-container">
-      <h2>Edit Profile</h2>
-      
-      {success && (
-        <div className="success-message">
-          Profile updated successfully!
-        </div>
-      )}
-      
-      {error && (
-        <div className="error-message">
-          {error}
-        </div>
-      )}
-      
-      <form onSubmit={handleSubmit}>
-        <div className="profile-image-section">
-          <div className="current-image">
-            {formData.profileImage ? (
-              <img src={formData.profileImage} alt="Profile" className="profile-img-preview" />
-            ) : (
-              <div className="avatar-placeholder">
-                {formData.fullName
-                  ? formData.fullName
-                    .split(" ")
-                    .map((name) => name[0])
-                    .join("")
-                    .toUpperCase()
-                  : "U"}
-              </div>
-            )}
-          </div>
-          <div className="image-upload">
-            <label htmlFor="profileImage">Change Profile Picture</label>
-            <input
-              type="file"
-              id="profileImage"
-              name="profileImage"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </div>
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="fullName">Full Name</label>
-          <input
-            type="text"
-            id="fullName"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            required
+    <div className="profile-edit-form">
+      <h2>Edit Professional Profile</h2>
+      {status.msg && <div className={`status-alert ${status.type}`}>{status.msg}</div>}
+
+      <form onSubmit={handleSubmit} className="edit-grid">
+        <div className="form-group full-width">
+          <label>Professional Bio</label>
+          <textarea 
+            name="bio" 
+            value={formData.bio} 
+            onChange={handleChange} 
+            placeholder="Tell us about your research and experience..."
           />
         </div>
-        
+
         <div className="form-group">
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
+          <label>Academic Title (e.g. Prof, Dr, Mr)</label>
+          <input name="title" value={formData.title} onChange={handleChange} />
+        </div>
+
+        <div className="form-group">
+          <label>Phone Number</label>
+          <input name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+        </div>
+
+        <div className="form-group">
+          <label>Academic Qualifications</label>
+          <input 
+            name="academicQualifications" 
+            value={formData.academicQualifications} 
+            onChange={handleChange} 
+            placeholder="BSc, MSc, PhD..." 
           />
         </div>
-        
+
         <div className="form-group">
-          <label htmlFor="profession">Profession</label>
-          <input
-            type="text"
-            id="profession"
-            name="profession"
-            value={formData.profession}
-            onChange={handleChange}
+          <label>Research Disciplines</label>
+          <input 
+            name="researchDisciplines" 
+            value={formData.researchDisciplines} 
+            onChange={handleChange} 
+            placeholder="Genetics, Nutrition, etc."
           />
         </div>
-        
+
         <div className="form-group">
-          <label htmlFor="academicQualifications">Academic Qualifications</label>
-          <textarea
-            id="academicQualifications"
-            name="academicQualifications"
-            value={formData.academicQualifications}
-            onChange={handleChange}
-            rows={3}
+          <label>Google Scholar URL</label>
+          <input 
+            name="googleScholarProfile" 
+            value={formData.googleScholarProfile} 
+            onChange={handleChange} 
+            placeholder="https://scholar.google.com/..."
           />
         </div>
-        
+
         <div className="form-group">
-          <label htmlFor="researchDisciplines">Research Disciplines</label>
-          <textarea
-            id="researchDisciplines"
-            name="researchDisciplines"
-            value={formData.researchDisciplines}
-            onChange={handleChange}
-            rows={3}
+          <label>ResearchGate URL</label>
+          <input 
+            name="researchGateProfile" 
+            value={formData.researchGateProfile} 
+            onChange={handleChange} 
+            placeholder="https://researchgate.net/profile/..."
           />
         </div>
-        
+
         <div className="form-group">
-          <label htmlFor="country">Country</label>
-          <input
-            type="text"
-            id="country"
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-          />
+          <label>Gender</label>
+          <select name="gender" value={formData.gender} onChange={handleChange}>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
-        
-        <div className="form-actions">
-          <button type="submit" disabled={loading}>
-            {loading ? "Saving..." : "Save Changes"}
+
+        <div className="form-actions full-width">
+          <button type="submit" className="save-btn" disabled={isSubmitting}>
+            {isSubmitting ? "Saving Changes..." : "Save Profile Updates"}
           </button>
         </div>
       </form>

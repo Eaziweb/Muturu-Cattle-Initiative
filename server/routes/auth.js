@@ -24,16 +24,15 @@ router.post("/register", async (req, res) => {
         })
       }
 
-      // ── Unverified account: clear old code FIRST, save, then set new code ──
-      // This prevents the old code from ever being valid again
-      user.verificationCode = undefined
-      await user.save()
+      // Generate the new code first
+      const newCode = Math.floor(100000 + Math.random() * 900000).toString()
 
-      const newCode = Math.floor(100000 + Math.random() * 900000).toString().trim()
+      // Update everything at once. DO NOT save twice.
       user.fullName = fullName
       user.password = password
-      user.verificationCode = newCode
+      user.verificationCode = newCode 
       Object.assign(user, otherData)
+      
       await user.save()
 
       await sendVerificationEmail(cleanEmail, newCode, user.memberID)
@@ -46,8 +45,8 @@ router.post("/register", async (req, res) => {
       })
     }
 
-    // ── New user ──────────────────────────────────────────────────────────────
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString().trim()
+    // New user logic (Keep as you had it, but ensure it's clean)
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
     const memberID = generateMemberID()
 
     user = new User({
@@ -80,67 +79,49 @@ router.post("/verify-email", async (req, res) => {
     const { email, code } = req.body
 
     if (!email || !code) {
-      return res.status(400).json({
-        success: false,
-        message: "Email and verification code are required.",
-      })
+      return res.status(400).json({ success: false, message: "Email and code are required." })
     }
 
     const cleanEmail = email.toLowerCase().trim()
-    const cleanCode = code.toString().trim()
+    const inputCode = code.toString().trim()
 
-    // Find by email only
     const user = await User.findOne({ email: cleanEmail })
 
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "No account found with this email address.",
-      })
+      return res.status(400).json({ success: false, message: "Account not found." })
     }
 
     if (user.isVerified) {
+      return res.status(400).json({ success: false, message: "Already verified. Please login." })
+    }
+
+    // Check if the code exists in DB
+    if (!user.verificationCode) {
       return res.status(400).json({
         success: false,
-        message: "This account is already verified. Please login.",
+        message: "No active verification code. Please click 'Resend Code'.",
       })
     }
 
-    const storedCode = user.verificationCode
-      ? user.verificationCode.toString().trim()
-      : null
-
-    if (!storedCode) {
+    // Safe comparison
+    if (user.verificationCode.toString() !== inputCode) {
       return res.status(400).json({
         success: false,
-        message: "No active verification code. Please request a new one.",
+        message: "Incorrect code. Please try again.",
       })
     }
 
-    if (storedCode !== cleanCode) {
-      return res.status(400).json({
-        success: false,
-        message: "Incorrect verification code. Please check and try again.",
-      })
-    }
-
-    // ── Clear code and mark verified atomically ────────────────────────────────
+    // Success: Update atomically
     user.isVerified = true
-    user.verificationCode = undefined
+    user.verificationCode = undefined // Now it is safe to remove it
     await user.save()
 
     try {
       await sendWelcomeEmail(user.email, user.fullName, user.memberID)
-    } catch (mailError) {
-      console.error("Welcome email failed:", mailError)
-    }
+    } catch (e) { console.error("Welcome email failed") }
 
-    res.status(200).json({
-      success: true,
-      message: "Email verified successfully!",
-    })
+    res.status(200).json({ success: true, message: "Email verified successfully!" })
   } catch (error) {
-    console.error("Verification error:", error)
     res.status(500).json({ success: false, message: "Internal server error" })
   }
 })

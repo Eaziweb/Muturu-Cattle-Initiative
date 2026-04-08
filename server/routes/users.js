@@ -7,6 +7,7 @@ const profileUpload = require("../middleware/profileUpload")
 const router = express.Router()
 
 // Update user profile
+// Update user profile
 router.put("/profile", auth, async (req, res) => {
   try {
     const { 
@@ -15,20 +16,24 @@ router.put("/profile", auth, async (req, res) => {
       researchDisciplines, 
       googleScholarProfile, 
       researchGateProfile,
+      bio, // New field
+      phoneNumber, // New field
+      gender, // New field
       profileImage 
     } = req.body
 
     const user = await User.findById(req.user.id)
-    if (!user) {
-      return res.status(404).json({ message: "User not found" })
-    }
+    if (!user) return res.status(404).json({ message: "User not found" })
 
-    // Update fields
+    // Update fields - adding more flexibility
     user.title = title || user.title
     user.academicQualifications = academicQualifications || user.academicQualifications
     user.researchDisciplines = researchDisciplines || user.researchDisciplines
     user.googleScholarProfile = googleScholarProfile || user.googleScholarProfile
     user.researchGateProfile = researchGateProfile || user.researchGateProfile
+    user.bio = bio || user.bio
+    user.phoneNumber = phoneNumber || user.phoneNumber
+    user.gender = gender || user.gender
     user.profileImage = profileImage || user.profileImage
 
     await user.save()
