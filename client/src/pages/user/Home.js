@@ -1,251 +1,206 @@
-"use client"
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import NewsroomSection from "../../components/NewsroomSection";
+import PartnerWithUs from "../../components/PartnerWithUs";
+import PartnerSlider from "../../components/PartnerSlider";
+import Navbar from "../../components/NavBar";
+import MuturuSectionSection from "../../components/MuturuCattleSection";
+import "../../styles/home.css";
 
-import { useState, useEffect, useRef } from "react"
-import { Link } from "react-router-dom"
-import NewsroomSection from "../../components/NewsroomSection"
-import PartnerWithUs from "../../components/PartnerWithUs"
-import PartnerSlider from "../../components/PartnerSlider"
-import Navbar from "../../components/NavBar"
-import MuturuSectionSection from "../../components/MuturuCattleSection"
-import "../../styles/home.css"
-
-/* ── Skeleton primitives ─────────────────────────────────────────────────── */
-/* ── Skeleton primitive aligned with skeleton.css ─────────────────────────── */
-const Sk = ({ w = "100%", h = "16px", r = "4px", style = {} }) => (
-  <span 
-    className="skeleton-shimmer" 
-    style={{ 
-      width: w, 
-      height: h, 
-      borderRadius: r, 
-      display: "block", 
-      ...style 
-    }} 
-  />
-)
-
-/* ── Animated counter ────────────────────────────────────────────────────── */
-const Counter = ({ target, suffix = "+" }) => {
-  const [val, setVal] = useState(0)
-  const ref = useRef(null)
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return
-      obs.disconnect()
-      let start = 0
-      const step = Math.ceil(target / 60)
-      const id = setInterval(() => {
-        start = Math.min(start + step, target)
-        setVal(start)
-        if (start >= target) clearInterval(id)
-      }, 24)
-    }, { threshold: 0.5 })
-    if (ref.current) obs.observe(ref.current)
-    return () => obs.disconnect()
-  }, [target])
-  return <span ref={ref}>{val}{suffix}</span>
-}
-
-/* ── Fade-in wrapper ──────────────────────────────────────────────────────── */
-const FadeIn = ({ children, delay = 0, className = "" }) => {
-  const [vis, setVis] = useState(false)
-  const ref = useRef(null)
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setVis(true); obs.disconnect() }
-    }, { threshold: 0.1 })
-    if (ref.current) obs.observe(ref.current)
-    return () => obs.disconnect()
-  }, [])
-  return (
-    <div
-      ref={ref}
-      className={`fade-wrap ${vis ? "fade-in" : ""} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
+// Separate Skeleton Component for a cleaner main component
+const HomeSkeleton = () => (
+  <div className="home">
+    <div className="skeleton skeleton-hero"></div>
+    <div className="container section">
+      <div className="skeleton skeleton-title-center"></div>
+      <div className="about-grid">
+        <div className="skeleton skeleton-img-box"></div>
+        <div className="about-text">
+          <div className="skeleton skeleton-line"></div>
+          <div className="skeleton skeleton-line"></div>
+          <div className="skeleton skeleton-line" style={{ width: '80%' }}></div>
+          <div className="skeleton skeleton-line" style={{ width: '40%', height: '45px', marginTop: '20px' }}></div>
+        </div>
+      </div>
     </div>
-  )
-}
-
-/* ══════════════════════════════════════════════════════════════════════════ */
+    <div className="container section">
+      <div className="skeleton skeleton-title-center"></div>
+      <div className="research-grid">
+        <div className="skeleton skeleton-card-box"></div>
+        <div className="skeleton skeleton-card-box"></div>
+        <div className="skeleton skeleton-card-box"></div>
+      </div>
+    </div>
+  </div>
+);
 
 const Home = () => {
-  const [loaded, setLoaded] = useState(false)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Mimic data fetching
-    const t = setTimeout(() => setLoaded(true), 1600)
-    return () => clearTimeout(t)
-  }, [])
+    // This simulates the time it takes to fetch data or load heavy images
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500); // 1.5 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <HomeSkeleton />
+      </>
+    );
+  }
 
   return (
     <div className="home">
       <Navbar />
 
-      {/* ── HERO (Always shows or uses transition anims) ────────────────── */}
-      <section className="hero">
-        <div className="hero-bg">
-          <div className="hero-grain" />
-          <div className="hero-overlay" />
-        </div>
-        <div className="hero-body">
-          <div className={`hero-eyebrow ${loaded ? "hero-anim-1" : ""}`}>
-            West Africa · Conservation Science · Indigenous Breeds
-          </div>
-          <h1 className={`hero-title ${loaded ? "hero-anim-2" : ""}`}>
-            Muturu Cattle<br />
-            <em>Research Network</em>
-          </h1>
-          <p className={`hero-sub ${loaded ? "hero-anim-3" : ""}`}>
-            Preserving indigenous cattle breeds and advancing sustainable livestock genetics
-            across Nigeria, Ghana, and Benin Republic.
-          </p>
-          <div className={`hero-actions ${loaded ? "hero-anim-4" : ""}`}>
-            <Link to="/register" className="btn-primary">Join Our Network</Link>
-            <Link to="/about" className="btn-ghost">Learn More</Link>
-          </div>
+      {/* Hero Section */}
+      <section className="home-hero">
+        <div className="home-hero-content">
+          <h1>Muturu Cattle Research Network</h1>
+          <p>Preserving indigenous cattle breeds and advancing sustainable livestock genetics across West Africa</p>
+          <Link to="/register" className="hero-btn">
+            Join Our Network
+          </Link>
         </div>
       </section>
 
-      {/* ── ABOUT PREVIEW (Split Grid Skeleton) ─────────────────────────── */}
-      <section className="section about-section">
+      {/* About Preview Section */}
+      <section className="section about-preview">
         <div className="container">
-          <FadeIn className="about-grid">
-            <div className="about-img-wrap">
-              {!loaded ? (
-                <Sk h="480px" r="12px" />
-              ) : (
-                <>
-                  <img src="/muturucattle.jpg" alt="Muturu Cattle" className="about-img" />
-                  <div className="about-img-badge">Est. 2018</div>
-                </>
-              )}
+          <h2 className="section-title">Who We Are</h2>
+          <div className="about-grid">
+            <div className="about-image">
+              <img src="/muturucattle.jpg" alt="Muturu Cattle" />
             </div>
-            <div className="about-copy">
-              <span className="section-label">Who We Are</span>
-              {!loaded ? (
-                <>
-                  <Sk w="85%" h="42px" style={{ marginBottom: 20 }} />
-                  <Sk h="14px" style={{ marginBottom: 12 }} />
-                  <Sk w="95%" h="14px" style={{ marginBottom: 12 }} />
-                  <Sk w="90%" h="14px" style={{ marginBottom: 12 }} />
-                  <Sk w="40%" h="14px" style={{ marginBottom: 32 }} />
-                  <Sk w="180px" h="50px" r="8px" />
-                </>
-              ) : (
-                <>
-                  <h2 className="about-heading">
-                    The largest species-based research network in Sub-Saharan Africa
-                  </h2>
-                  <p className="about-body">
-                    Our network comprises <strong>74 scientists</strong> across research stations and 
-                    academic institutions, united by a singular mission: preserve and improve the Muturu.
-                  </p>
-                  <p className="about-body">
-                    We bridge cutting-edge science with on-the-ground farming practice.
-                  </p>
-                  <Link to="/about" className="btn-primary">Our Story</Link>
-                </>
-              )}
+            <div className="about-text">
+              <p>
+                The Muturu Cattle Research Network comprises 74 scientists across research stations and academic
+                institutions in Nigeria, Ghana, and Benin Republic. We are the largest species-based research network in
+                Sub-Saharan Africa, dedicated to preserving and improving the Muturu cattle breed.
+              </p>
+              <p>
+                Our network focuses on genetic conservation, sustainable breeding practices, and empowering local
+                farmers with knowledge and resources to maintain this valuable indigenous breed.
+              </p>
+              <Link to="/about" className="learn-more-btn">
+                Learn More About Us
+              </Link>
             </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ── IMPACT NUMBERS (Centered Card Skeletons) ───────────────────── */}
-      <section className="impact-band">
-        <div className="container">
-          <div className="impact-grid">
-            {[
-              { num: 74, suffix: "+", label: "Research Scientists", sub: "Across 3 nations" },
-              { num: 3, suffix: "", label: "Countries", sub: "Nigeria · Ghana · Benin" },
-              { num: 50, suffix: "+", label: "Active Projects", sub: "Ongoing research" },
-              { num: 12, suffix: "+", label: "Years of Data", sub: "Longitudinal records" },
-            ].map((item, i) => (
-              <FadeIn key={i} delay={i * 100} className="impact-card">
-                {!loaded ? (
-                  <>
-                    <Sk w="70px" h="48px" style={{ margin: "0 auto 12px" }} />
-                    <Sk w="60%" h="14px" style={{ margin: "0 auto 8px" }} />
-                    <Sk w="40%" h="11px" style={{ margin: "0 auto" }} />
-                  </>
-                ) : (
-                  <>
-                    <div className="impact-number">
-                      <Counter target={item.num} suffix={item.suffix} />
-                    </div>
-                    <div className="impact-label">{item.label}</div>
-                    <div className="impact-sub">{item.sub}</div>
-                  </>
-                )}
-              </FadeIn>
-            ))}
           </div>
         </div>
       </section>
 
-      {/* ── RESEARCH FOCUS (Card-style Skeletons) ─────────────────────── */}
-      <section className="section research-section">
+      {/* Research Focus Section */}
+      <section className="section research-focus">
         <div className="container">
-          <span className="section-label">What We Study</span>
-          <h2 className="section-heading">Our Research Focus</h2>
+          <h2 className="section-title">Our Research Focus</h2>
           <div className="research-grid">
-            {[1, 2, 3].map((_, i) => (
-              <FadeIn key={i} delay={i * 120} className="research-card">
-                {!loaded ? (
-                  <>
-                    <Sk h="240px" r="0" />
-                    <div className="research-body">
-                      <Sk w="70%" h="22px" style={{ marginBottom: 12 }} />
-                      <Sk h="13px" style={{ marginBottom: 8 }} />
-                      <Sk w="90%" h="13px" style={{ marginBottom: 8 }} />
-                      <Sk w="50%" h="13px" />
-                    </div>
-                  </>
-                ) : (
-                  <CardContent i={i} /> /* Extract logic for cleaner code if needed */
-                )}
-              </FadeIn>
-            ))}
+            <div className="research-card">
+              <div className="research-image">
+                <img src="/genetic-research.jpg" alt="Genetic Research" />
+              </div>
+              <h3>Genetic Conservation</h3>
+              <p>Preserving the unique genetic traits of Muturu cattle for future generations</p>
+            </div>
+            <div className="research-card">
+              <div className="research-image">
+                <img src="/breeding.jpg" alt="Breeding Programs" />
+              </div>
+              <h3>Breeding Programs</h3>
+              <p>Developing sustainable breeding strategies to improve herd quality and productivity</p>
+            </div>
+            <div className="research-card">
+              <div className="research-image">
+                <img src="/health.jpg" alt="Animal Health" />
+              </div>
+              <h3>Disease Resistance</h3>
+              <p>Studying the natural disease resistance of Muturu cattle in tropical environments</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── VALUES SECTION (Icon + Text Skeletons) ────────────────────── */}
-      <section className="section values-section">
+      {/* Impact Section */}
+      <section className="section home-impact-section">
         <div className="container">
-          <span className="section-label">What Drives Us</span>
-          <h2 className="section-heading">Our Core Values</h2>
-          <div className="values-grid">
-            {[1, 2, 3].map((_, i) => (
-              <FadeIn key={i} delay={i * 110} className="value-card">
-                <div className="value-icon">
-                  {!loaded ? <Sk w="40px" h="40px" r="50%" /> : <IconComponent i={i} />}
-                </div>
-                {!loaded ? (
-                  <>
-                    <Sk w="40%" h="20px" style={{ marginBottom: 14 }} />
-                    <Sk h="13px" style={{ marginBottom: 8 }} />
-                    <Sk w="90%" h="13px" style={{ marginBottom: 8 }} />
-                    <Sk w="70%" h="13px" />
-                  </>
-                ) : (
-                  <ValueContent i={i} />
-                )}
-              </FadeIn>
-            ))}
+          <h2 className="section-title">Our Impact</h2>
+          <div className="home-impact-grid">
+            <div className="home-impact-card">
+              <div className="home-impact-number">74</div>
+              <div className="home-impact-label">Research Scientists</div>
+            </div>
+            <div className="home-impact-card">
+              <div className="home-impact-number">3</div>
+              <div className="home-impact-label">Countries</div>
+            </div>
+            <div className="home-impact-card">
+              <div className="home-impact-number">50</div>
+              <div className="home-impact-label">Research Projects</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Remaining sections like Newsroom, Partners, and CTA can follow same pattern */}
-      <NewsroomSection loaded={loaded} />
-      <PartnerSlider loaded={loaded} />
-      <MuturuSectionSection />
-      <PartnerWithUs />
-    </div>
-  )
-}
+      <NewsroomSection />
 
-export default Home
+      {/* Mission & Vision Section */}
+      <section className="section mission-section">
+        <div className="container">
+          <h2 className="section-title">Our Core Values</h2>
+          <div className="mission-grid">
+            <div className="mission-card">
+              <h3>Vision</h3>
+              <p>To be the leading research network for indigenous cattle conservation and sustainable livestock development in West Africa.</p>
+            </div>
+            <div className="mission-card">
+              <h3>Mission</h3>
+              <p>To conduct cutting-edge research and empower farmers with knowledge to preserve this breed for future generations.</p>
+            </div>
+            <div className="mission-card">
+              <h3>Objectives</h3>
+              <p>Advance understanding of genetics • Build capacity • Promote sustainable practices • Preserve resources.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Partnership Section */}
+      <section className="section partnership-section">
+        <div className="container">
+          <h2 className="section-title">Our Partners</h2>
+          <p className="section-subtitle">Collaborating with leading institutions across West Africa</p>
+          <PartnerSlider />
+        </div>
+      </section>
+
+      <MuturuSectionSection />
+
+      <PartnerWithUs />
+
+      {/* CTA Section */}
+      <section className="section cta-section">
+        <div className="container">
+          <div className="cta-content">
+            <h2 className="home_h2">Join Our Research Network</h2>
+            <p className="home_p">
+              Be part of the largest species-based research network in Sub-Saharan Africa. 
+              Collaborate with leading scientists today.
+            </p>
+            <div className="cta-buttons">
+              <Link to="/register" className="cta-btn primary">Become a Member</Link>
+              <Link to="/donate" className="cta-btn secondary">Support Our Work</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Home;
