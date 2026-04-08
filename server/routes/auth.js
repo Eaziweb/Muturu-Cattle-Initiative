@@ -84,38 +84,54 @@ router.post("/verify-email", async (req, res) => {
   try {
     const { email, code } = req.body;
 
+    // 1. Validate inputs exist
     if (!email || !code) {
-      return res.status(400).json({ success: false, message: "Email and code are required" });
+      return res.status(400).json({ 
+        success: false, 
+        message: "Email and verification code are required." 
+      });
     }
 
-    // Find user by email AND the numeric code
-    const user = await User.findOne({ email, verificationCode: code });
+    // 2. Clean the data to prevent simple mismatch errors
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanCode = code.toString().trim();
+
+    // 3. Find user with matching email and code
+    const user = await User.findOne({ 
+      email: cleanEmail, 
+      verificationCode: cleanCode 
+    });
 
     if (!user) {
       return res.status(400).json({ 
         success: false, 
-        message: "Invalid or expired verification code" 
+        message: "Invalid or expired verification code. Please check your email and try again." 
       });
     }
 
-    // Update user status
+    // 4. Update user
     user.isVerified = true;
-    user.verificationCode = undefined; // Remove code after successful use
+    user.verificationCode = undefined; // Remove the code so it can't be used again
     await user.save();
 
-    // Send the professional welcome email with Member ID
-    await sendWelcomeEmail(user.email, user.fullName, user.memberID);
+    // 5. Send welcome email
+    try {
+      await sendWelcomeEmail(user.email, user.fullName, user.memberID);
+    } catch (mailError) {
+      console.error("Welcome email failed to send:", mailError);
+      // We don't return error here because the user is already verified
+    }
 
-    res.json({ 
+    res.status(200).json({ 
       success: true, 
-      message: "Email verified successfully! You can now log in." 
+      message: "Email verified successfully!" 
     });
+
   } catch (error) {
-    console.error("Email verification error:", error);
-    res.status(500).json({ success: false, message: "Server error during email verification" });
+    console.error("Verification Route Error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
-
 
 router.post("/resend-code", async (req, res) => {
   try {

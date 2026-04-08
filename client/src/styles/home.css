@@ -144,7 +144,7 @@
 
 /* Impact Section */
 /* Impact Section */
-.impact-section {
+.home-impact-section {
   background: linear-gradient(135deg, #144d1b 0%, #0f3a14 100%);
   color: white;
   padding: 80px 0;
@@ -152,7 +152,7 @@
   overflow: hidden;
 }
 
-.impact-section::before {
+.home-impact-section::before {
   content: '';
   position: absolute;
   top: 0;
@@ -164,7 +164,7 @@
   z-index: 0;
 }
 
-.impact-section .container {
+.home-impact-section .container {
   position: relative;
   z-index: 1;
   max-width: 1200px;
@@ -172,7 +172,7 @@
   padding: 0 20px;
 }
 
-.impact-section .section-title {
+.home-impact-section .section-title {
   color: white;
   font-size: 2.8rem;
   font-weight: 700;
@@ -183,7 +183,7 @@
   width: 100%;
 }
 
-.impact-section .section-title::after {
+.home-impact-section .section-title::after {
   content: '';
   position: absolute;
   bottom: -15px;
@@ -195,14 +195,14 @@
   border-radius: 2px;
 }
 
-.impact-grid {
+.home-impact-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 30px;
   margin-top: 4rem;
 }
 
-.impact-card {
+.home-impact-card {
   text-align: center;
   padding: 40px 25px;
   background: rgba(255, 255, 255, 0.1);
@@ -215,7 +215,7 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
-.impact-card::before {
+.home-impact-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -227,17 +227,17 @@
   transition: opacity 0.3s ease;
 }
 
-.impact-card:hover {
+.home-impact-card:hover {
   transform: translateY(-10px);
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
-.impact-card:hover::before {
+.home-impact-card:hover::before {
   opacity: 1;
 }
 
-.impact-card-icon {
+.home-impact-card-icon {
   width: 60px;
   height: 60px;
   margin: 0 auto 20px;
@@ -248,13 +248,13 @@
   justify-content: center;
 }
 
-.impact-card-icon svg {
+.home-impact-card-icon svg {
   width: 30px;
   height: 30px;
   color: white;
 }
 
-.impact-number {
+.home-impact-number {
   font-size: 3.5rem;
   font-weight: 800;
   color: white;
@@ -264,7 +264,7 @@
   line-height: 1;
 }
 
-.impact-number::after {
+.home-impact-number::after {
   content: '+';
   position: absolute;
   top: 0;
@@ -273,7 +273,7 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.impact-label {
+.home-impact-label {
   font-size: 1.1rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
@@ -282,7 +282,7 @@
   margin-top: 10px;
 }
 
-.impact-description {
+.home-impact-description {
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.7);
   margin-top: 10px;
@@ -291,24 +291,24 @@
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
-  .impact-section {
+  .home-impact-section {
     padding: 70px 0;
   }
   
-  .impact-section .section-title {
+  .home-impact-section .section-title {
     font-size: 2.4rem;
   }
   
-  .impact-grid {
+  .home-impact-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 25px;
   }
   
-  .impact-card {
+  .home-impact-card {
     padding: 35px 20px;
   }
   
-  .impact-number {
+  .home-impact-number {
     font-size: 3rem;
   }
   
@@ -457,12 +457,12 @@
     grid-template-columns: 1fr;
   }
 
-  .impact-grid {
+  .home-impact-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 
-  .impact-number {
+  .home-impact-number {
     font-size: 2rem;
   }
 
@@ -486,77 +486,77 @@
   .cta-content p {
     font-size: 1rem;
   }
-   .impact-section {
+   .home-impact-section {
     padding: 60px 0;
   }
   
-  .impact-section .section-title {
+  .home-impact-section .section-title {
     font-size: 2rem;
     margin-bottom: 2.5rem;
   }
   
-  .impact-grid {
+  .home-impact-grid {
     grid-template-columns: 1fr;
     gap: 20px;
     margin-top: 3rem;
   }
   
-  .impact-card {
+  .home-impact-card {
     padding: 30px 20px;
   }
   
-  .impact-card-icon {
+  .home-impact-card-icon {
     width: 50px;
     height: 50px;
   }
   
-  .impact-card-icon svg {
+  .home-impact-card-icon svg {
     width: 24px;
     height: 24px;
   }
   
-  .impact-number {
+  .home-impact-number {
     font-size: 2.8rem;
   }
   
-  .impact-number::after {
+  .home-impact-number::after {
     font-size: 1.8rem;
     right: -15px;
   }
   
-  .impact-label {
+  .home-impact-label {
     font-size: 1rem;
   }
   
-  .impact-description {
+  .home-impact-description {
     font-size: 0.9rem;
   }
 }
 
 
 @media (max-width: 480px) {
-  .impact-section {
+  .home-impact-section {
     padding: 50px 0;
   }
   
-  .impact-section .section-title {
+  .home-impact-section .section-title {
     font-size: 1.8rem;
   }
   
-  .impact-card {
+  .home-impact-card {
     padding: 25px 15px;
   }
   
-  .impact-number {
+  .home-impact-number {
     font-size: 2.5rem;
   }
   
-  .impact-number::after {
+  .home-impact-number::after {
     font-size: 1.5rem;
     right: -12px;
   }
   
-  .impact-label {
+  .home-impact-label {
     font-size: 0.9rem;
   }
    .home-hero-content h1 {

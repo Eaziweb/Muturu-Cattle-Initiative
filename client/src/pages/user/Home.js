@@ -80,21 +80,21 @@ const Home = () => {
       </section>
 
       {/* Impact Section */}
-      <section className="section impact-section">
+      <section className="section home-impact-section">
         <div className="container">
           <h2 className="section-title">Our Impact</h2>
-          <div className="impact-grid">
-            <div className="impact-card">
-              <div className="impact-number">74</div>
-              <div className="impact-label">Research Scientists</div>
+          <div className="home-impact-grid">
+            <div className="home-impact-card">
+              <div className="home-impact-number">74</div>
+              <div className="home-impact-label">Research Scientists</div>
             </div>
-            <div className="impact-card">
-              <div className="impact-number">3</div>
-              <div className="impact-label">Countries</div>
+            <div className="home-impact-card">
+              <div className="home-impact-number">3</div>
+              <div className="home-impact-label">Countries</div>
             </div>
-            <div className="impact-card">
-              <div className="impact-number">50</div>
-              <div className="impact-label">Research Projects</div>
+            <div className="home-impact-card">
+              <div className="home-impact-number">50</div>
+              <div className="home-impact-label">Research Projects</div>
             </div>
           </div>
         </div>

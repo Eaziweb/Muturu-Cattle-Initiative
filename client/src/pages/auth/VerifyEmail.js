@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useNavigate, useLocation, Link } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import styles from "../../styles/VerifyEmail.module.css"
 import Navbar from "../../components/NavBar"
@@ -11,9 +11,8 @@ const VerifyEmail = () => {
   const location = useLocation()
   const { verifyEmail, resendCode } = useAuth()
 
-  // Get email from registration state; fallback to empty string
+  // Grab email from navigation state
   const [email, setEmail] = useState(location.state?.email || "")
-  
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false)
   const [resending, setResending] = useState(false)
@@ -21,14 +20,7 @@ const VerifyEmail = () => {
   const [error, setError] = useState("")
   const [countdown, setCountdown] = useState(0)
 
-  // Redirect if no email is found (prevents landing on this page without context)
-  useEffect(() => {
-    if (!email) {
-      setError("No email found. Please register or contact support.")
-    }
-  }, [email])
-
-  // Resend Countdown Timer logic
+  // Handle countdown for resend button
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000)
@@ -36,15 +28,14 @@ const VerifyEmail = () => {
     }
   }, [countdown])
 
-  const handleInputChange = (e) => {
-    const value = e.target.value.replace(/\D/g, "") // Only allow numbers
-    if (value.length <= 6) {
-      setCode(value)
-    }
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    if (!email) {
+      setError("Session expired. Please try registering again.")
+      return
+    }
+
     if (code.length !== 6) {
       setError("Please enter the full 6-digit code.")
       return
@@ -54,11 +45,12 @@ const VerifyEmail = () => {
     setError("")
     setMessage("")
 
+    // Call the AuthContext function
     const result = await verifyEmail(email, code)
 
     if (result.success) {
-      setMessage("Account verified successfully! Redirecting to login...")
-      setTimeout(() => navigate("/login"), 3000)
+      setMessage("Verification Successful! Redirecting to login...")
+      setTimeout(() => navigate("/login"), 2500)
     } else {
       setError(result.message)
       setLoading(false)
@@ -66,17 +58,17 @@ const VerifyEmail = () => {
   }
 
   const handleResend = async () => {
-    if (!email) return
+    if (!email) {
+      setError("Cannot resend: Email address is missing.")
+      return
+    }
 
     setResending(true)
-    setError("")
-    setMessage("")
-
     const result = await resendCode(email)
 
     if (result.success) {
-      setMessage("A new 6-digit code has been sent to your email.")
-      setCountdown(60) // Disable resend for 60 seconds
+      setMessage("A new code has been sent to your email.")
+      setCountdown(60)
     } else {
       setError(result.message)
     }
@@ -86,70 +78,41 @@ const VerifyEmail = () => {
   return (
     <div className={styles.verifyPage}>
       <Navbar />
-      
       <div className={styles.verifyContainer}>
         <div className={styles.verifyHeader}>
-          <button 
-            className={styles.backButton} 
-            onClick={() => navigate('/register')}
-            aria-label="Back to registration"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-          </button>
-          <h1>Verify Your Email</h1>
-          <p>We have sent a 6-digit verification code to:</p>
-          <strong>{email || "your email address"}</strong>
+          <h1>Verify Your Account</h1>
+          <p>Enter the 6-digit code sent to:</p>
+          <strong className={styles.emailDisplay}>{email || "your email"}</strong>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.verifyForm}>
           <div className={styles.codeInputContainer}>
-            <label htmlFor="verificationCode">Enter 6-Digit Code</label>
             <input
               type="text"
-              id="verificationCode"
-              name="verificationCode"
               value={code}
-              onChange={handleInputChange}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
               placeholder="000000"
               className={styles.codeInput}
-              autoComplete="one-time-code"
-              required
+              disabled={loading}
             />
           </div>
 
           {error && <div className={`${styles.message} ${styles.error}`}>{error}</div>}
           {message && <div className={`${styles.message} ${styles.success}`}>{message}</div>}
 
-          <button 
-            type="submit" 
-            className={styles.verifyBtn} 
-            disabled={loading || code.length !== 6}
-          >
-            {loading ? "Verifying..." : "Verify Account"}
+          <button type="submit" className={styles.verifyBtn} disabled={loading || code.length < 6}>
+            {loading ? "Verifying..." : "Verify Email"}
           </button>
         </form>
 
         <div className={styles.resendSection}>
-          <p>Didn't receive the code?</p>
           <button 
             className={styles.resendBtn} 
             onClick={handleResend}
-            disabled={resending || countdown > 0 || !email}
+            disabled={resending || countdown > 0}
           >
-            {resending 
-              ? "Sending..." 
-              : countdown > 0 
-                ? `Resend in ${countdown}s` 
-                : "Resend Code"
-            }
+            {resending ? "Sending..." : countdown > 0 ? `Resend in ${countdown}s` : "Resend Code"}
           </button>
-        </div>
-
-        <div className={styles.helpText}>
-          <p>Check your spam folder if you don't see the email.</p>
-          <p>Still having trouble? <Link to="/contact">Contact Support</Link></p>
         </div>
       </div>
     </div>

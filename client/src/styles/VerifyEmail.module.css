@@ -1,61 +1,50 @@
-/* Container and Background */
+/* Container & Background */
 .verifyPage {
   min-height: 100vh;
   background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 .verifyContainer {
-  background: white;
+  background: #ffffff;
   padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(20, 77, 27, 0.1);
   max-width: 450px;
   width: 100%;
   text-align: center;
-  transition: transform 0.3s ease;
+  border: 1px solid rgba(20, 77, 27, 0.05);
 }
 
-/* Header Styles */
+/* Header */
 .verifyHeader h1 {
-  color: #004d00;
-  margin-bottom: 12px;
-  font-size: 24px;
+  color: #144d1b;
+  font-size: 28px;
   font-weight: 800;
+  margin-bottom: 12px;
 }
 
 .verifyHeader p {
-  color: #666;
+  color: #4a6c5c;
   font-size: 15px;
-  line-height: 1.5;
+  margin-bottom: 8px;
 }
 
-.verifyHeader strong {
-  color: #006400;
+.emailDisplay {
+  color: #144d1b;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 25px;
   word-break: break-all;
 }
 
-/* Form Styles */
-.verifyForm {
-  margin-top: 30px;
-}
-
+/* 6-Digit Code Input */
 .codeInputContainer {
   margin-bottom: 25px;
-}
-
-.codeInputContainer label {
-  display: block;
-  margin-bottom: 15px;
-  font-weight: 600;
-  color: #333;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .codeInput {
@@ -63,20 +52,20 @@
   padding: 15px;
   font-size: 32px;
   text-align: center;
-  letter-spacing: 12px; /* Large spacing for the 6 digits */
-  border: 2px solid #e2e8f0;
+  letter-spacing: 12px;
+  border: 2px solid #e0e8e4;
   border-radius: 12px;
+  background: #fafcf9;
+  color: #144d1b;
   font-weight: 700;
-  color: #006400;
   transition: all 0.3s ease;
-  background-color: #f8fafc;
+  outline: none;
 }
 
 .codeInput:focus {
-  outline: none;
-  border-color: #006400;
-  background-color: white;
-  box-shadow: 0 0 0 4px rgba(0, 100, 0, 0.1);
+  border-color: #144d1b;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(20, 77, 27, 0.1);
 }
 
 .codeInput::placeholder {
@@ -84,58 +73,61 @@
   letter-spacing: 8px;
 }
 
-/* Buttons */
+/* Primary Verify Button */
 .verifyBtn {
   width: 100%;
-  background: #006400;
-  color: white;
+  background: linear-gradient(135deg, #144d1b 0%, #1a6625 100%);
+  color: #ffffff;
   padding: 16px;
   border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(20, 77, 27, 0.2);
 }
 
 .verifyBtn:hover:not(:disabled) {
-  background: #004d00;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 77, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(20, 77, 27, 0.3);
+  filter: brightness(1.1);
+}
+
+.verifyBtn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .verifyBtn:disabled {
   background: #cbd5e1;
+  color: #94a3b8;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-/* Resend Section */
+/* Resend Section & Button */
 .resendSection {
   margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #f1f5f9;
-}
-
-.resendSection p {
-  color: #64748b;
-  font-size: 14px;
-  margin-bottom: 12px;
+  padding-top: 25px;
+  border-top: 1px solid #eef2ef;
 }
 
 .resendBtn {
   background: transparent;
-  color: #006400;
-  border: 2px solid #006400;
-  padding: 8px 20px;
-  border-radius: 8px;
+  color: #144d1b;
+  border: 2px solid #144d1b;
+  padding: 10px 24px;
+  border-radius: 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .resendBtn:hover:not(:disabled) {
-  background: #f0fdf4;
+  background: #144d1b;
+  color: #ffffff;
 }
 
 .resendBtn:disabled {
@@ -144,14 +136,14 @@
   cursor: not-allowed;
 }
 
-/* Feedback Messages */
+/* Success/Error Messages */
 .message {
-  margin: 15px 0;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 14px;
+  border-radius: 10px;
   font-size: 14px;
-  font-weight: 500;
-  animation: fadeIn 0.3s ease;
+  font-weight: 600;
+  margin-bottom: 20px;
+  animation: slideDown 0.3s ease;
 }
 
 .success {
@@ -166,24 +158,25 @@
   border: 1px solid #fecaca;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
+/* Keyframes */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile Optimizations */
+/* Mobile Adjustments */
 @media (max-width: 480px) {
   .verifyContainer {
-    padding: 25px 20px;
+    padding: 30px 20px;
   }
-
+  
   .verifyHeader h1 {
-    font-size: 20px;
+    font-size: 22px;
   }
-
+  
   .codeInput {
     font-size: 24px;
-    letter-spacing: 6px;
+    letter-spacing: 8px;
     padding: 12px;
   }
 }
