@@ -77,9 +77,44 @@ const sendPasswordResetEmail = async (email, token) => {
 
   await transporter.sendMail(mailOptions)
 }
+// ... existing imports (nodemailer, transporter)
+
+const sendContactReplyEmail = async (email, name, originalMessage, replyText) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: `RE: Contact Inquiry - Agricultural Research Network`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+        <h2>Hello ${name},</h2>
+        <p>Thank you for reaching out to the Agricultural Research Network. Here is our response to your inquiry:</p>
+        
+        <div style="background-color: #f9f9f9; border-left: 4px solid #4CAF50; padding: 15px; margin: 20px 0;">
+          <p><strong>Our Response:</strong></p>
+          <p style="white-space: pre-wrap;">${replyText}</p>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+        
+        <div style="color: #666; font-size: 0.9em;">
+          <p><strong>Original Message sent by you:</strong></p>
+          <blockquote style="font-style: italic; border-left: 2px solid #ccc; padding-left: 10px;">
+            ${originalMessage}
+          </blockquote>
+        </div>
+
+        <p>Best regards,<br/>The Admin Team<br/>Agricultural Research Network</p>
+      </div>
+    `,
+  }
+
+  await transporter.sendMail(mailOptions)
+}
 
 module.exports = {
   sendVerificationEmail,
   sendWelcomeEmail,
   sendPasswordResetEmail,
+  sendContactReplyEmail, 
 }
+

@@ -59,7 +59,6 @@ const OverviewSection = () => {
         </div>
         <div className={styles.statCard}>
           <h3>Total Donations</h3>
-          <p className={styles.statNumber}>{stats.totalDonations || 0}</p>
         </div>
         <div className={styles.statCard}>
           <h3>Total Revenue</h3>

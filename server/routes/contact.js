@@ -3,8 +3,7 @@ const router = express.Router()
 const Contact = require("../models/Contact")
 const Blog = require("../models/Blog")
 const { adminAuth } = require("../middleware/adminAuth") 
-const nodemailer = require("nodemailer")
-
+const { sendContactReplyEmail } = require("../utils/email");
 // Create contact message (public)
 router.post("/", async (req, res) => {
   try {
@@ -83,26 +82,37 @@ router.put("/admin/:id/status", adminAuth, async (req, res) => {
 // Reply to contact (admin only)
 router.post("/admin/:id/reply", adminAuth, async (req, res) => {
   try {
-    const { reply } = req.body
-    const contact = await Contact.findById(req.params.id)
+    const { reply } = req.body;
+    const contact = await Contact.findById(req.params.id);
 
     if (!contact) {
-      return res.status(404).json({ message: "Contact not found" })
+      return res.status(404).json({ success: false, message: "Contact message not found" });
     }
 
-    contact.adminReply = reply
-    contact.status = "replied"
-    contact.repliedAt = new Date()
-    await contact.save()
+    // 1. Send the actual email
+    try {
+      await sendContactReplyEmail(
+        contact.email, 
+        contact.name, 
+        contact.message, 
+        reply
+      );
+    } catch (emailError) {
+      console.error("Email sending failed:", emailError);
+      return res.status(500).json({ success: false, message: "Failed to send email to user" });
+    }
 
-    // Here you could send an email reply to the user
-    // Implementation depends on your email service setup
+    // 2. Update database to record the reply
+    contact.adminReply = reply;
+    contact.repliedAt = new Date();
+    contact.status = "read"; // Auto-mark as read once replied
+    await contact.save();
 
-    res.json({ message: "Reply sent successfully", contact })
+    res.json({ success: true, message: "Reply sent and recorded successfully" });
   } catch (error) {
-    console.error("Error sending reply:", error)
-    res.status(500).json({ message: "Server error" })
+    console.error("Reply error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
-})
+});
 
 module.exports = router

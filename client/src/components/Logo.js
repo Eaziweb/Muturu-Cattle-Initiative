@@ -1,26 +1,22 @@
-import { Link } from "react-router-dom"
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import "../styles/logo.css";
 
 const Logo = () => {
-  const logoStyle = {
-    fontSize: "20px",
-    fontWeight: "800",
-    fontFamily: "Segoe UI, sans-serif",
-    color: "white",
-    letterSpacing: "2px",
-    textTransform: "uppercase",
-    padding: "8px 15px",
-    backgroundColor: "#006400", // very thick green
-    borderRadius: "8px",
-    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
-    display: "inline-block",
-  }
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Link to="/">
-      <div style={logoStyle}>MCRN</div>
+    <Link to="/" className="logo-link">
+      <div 
+        className={`logo-box ${isHovered ? 'hovered' : ''}`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <span className="logo-text">MCRN</span>
+        <span className="logo-subtitle">Management System</span>
+      </div>
     </Link>
-  )
-}
+  );
+};
 
-export default Logo
-    
+export default Logo;

@@ -44,24 +44,32 @@ const ContactsSection = () => {
     }
   }
 
-  const handleReply = async (contactId) => {
-    if (!replyText.trim()) return
+const handleReply = async (contactId) => {
+  if (!replyText.trim()) return;
 
-    setReplyLoading(true)
-    try {
-      await api.post(`/contact/admin/${contactId}/reply`, { reply: replyText })
-      setMessage("Reply sent successfully!")
-      setSelectedContact(null)
-      setReplyText("")
-      fetchContacts()
-      setTimeout(() => setMessage(""), 3000)
-    } catch (error) {
-      setError("Failed to send reply")
-      setTimeout(() => setError(""), 3000)
-    } finally {
-      setReplyLoading(false)
+  setReplyLoading(true);
+  try {
+    // This hits the route we created in Step 2
+    const response = await api.post(`/contact/admin/${contactId}/reply`, { reply: replyText });
+    
+    if (response.data.success) {
+      setMessage("Email sent to user and reply saved!");
+      setReplyText("");
+      
+      // Close modal and refresh list
+      setSelectedContact(null);
+      fetchContacts(); 
+      
+      setTimeout(() => setMessage(""), 5000);
     }
+  } catch (error) {
+    const errorMsg = error.response?.data?.message || "Failed to send reply";
+    setError(errorMsg);
+    setTimeout(() => setError(""), 5000);
+  } finally {
+    setReplyLoading(false);
   }
+};
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {

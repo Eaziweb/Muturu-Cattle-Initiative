@@ -144,6 +144,7 @@ router.post("/create", superAdminAuth, async (req, res) => {
   }
 })
 
+
 // Get all admins (Super Admin only)
 router.get("/list", superAdminAuth, async (req, res) => {
   try {
