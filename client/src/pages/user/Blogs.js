@@ -73,7 +73,7 @@ const Blogs = () => {
   if (loading && currentPage === 1) {
     return (
       <div className="loading-container">
-        <div className="spinner"></div>
+        <div className="loadingSpinner"></div>
         <p>Loading blogs...</p>
       </div>
     )

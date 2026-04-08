@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-section">
-          <h3>Muturu Cattle Research Network</h3>
+          <h3>Muturu Cattle Initiative</h3>
           <div className="ptag">Advancing livestock genetics and sustainable cattle farming across West Africa.</div>
           <div className="social-icons">
             <a href="https://facebook.com/mcrn" target="_blank" rel="noopener noreferrer" aria-label="Facebook">

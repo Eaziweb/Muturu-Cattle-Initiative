@@ -79,7 +79,7 @@ const NewsroomSection = () => {
             <p>Stay updated with the latest news, research findings, and developments from our network</p>
           </div>
           <div className="news-loading">
-            <div className="loading-spinner"></div>
+            <div className="loadingSpinner"></div>
             <p>Loading latest news...</p>
           </div>
         </div>

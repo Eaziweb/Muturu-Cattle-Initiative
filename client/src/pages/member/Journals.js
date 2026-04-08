@@ -94,7 +94,7 @@ const Journals = () => {
     return (
       <div className="journals-page">
         <div className="loading-container">
-          <div className="loading-spinner"></div>
+          <div className="loadingSpinner"></div>
           <p>Loading journals...</p>
         </div>
       </div>

@@ -89,7 +89,7 @@ const DownloadPage = () => {
     return (
       <div className="download-page">
         <div className="download-container">
-          <div className="loading-spinner">
+          <div className="loadingSpinner">
             <FaSpinner className="spinner-icon" />
           </div>
           <p>Verifying your download link...</p>

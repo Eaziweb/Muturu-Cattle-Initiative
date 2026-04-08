@@ -85,7 +85,7 @@ const Home = () => {
           <h2 className="section-title">Our Impact</h2>
           <div className="impact-grid">
             <div className="impact-card">
-              <div className="impact-number">74+</div>
+              <div className="impact-number">74</div>
               <div className="impact-label">Research Scientists</div>
             </div>
             <div className="impact-card">
@@ -93,12 +93,8 @@ const Home = () => {
               <div className="impact-label">Countries</div>
             </div>
             <div className="impact-card">
-              <div className="impact-number">50+</div>
+              <div className="impact-number">50</div>
               <div className="impact-label">Research Projects</div>
-            </div>
-            <div className="impact-card">
-              <div className="impact-number">5000+</div>
-              <div className="impact-label">Farmers Supported</div>
             </div>
           </div>
         </div>

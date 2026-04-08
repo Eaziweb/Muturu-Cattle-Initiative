@@ -82,7 +82,7 @@ const Dashboard = () => {
   if (authLoading || loading) {
     return (
       <div className="loading-container">
-        <div className="loading-spinner"></div>
+        <div className="loadingSpinner"></div>
         <p>Loading dashboard...</p>
       </div>
     )

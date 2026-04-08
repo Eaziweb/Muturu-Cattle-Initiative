@@ -40,24 +40,24 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="navbar">
-      <div className="nav-container">
-        <Link to="/" className="nav-logo" onClick={closeMenu}>
-          <div className="logo-box">MCRN</div>
+    <navbar className="navbar">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo" onClick={closeMenu}>
+          <div className="logo-box">MCI</div>
         </Link>
 
-        <div className={`nav-menu ${isMenuOpen ? "active" : ""}`}>
-          <Link to="/" className={`nav-link ${isActive("/") ? "active" : ""}`} onClick={closeMenu}>
+        <div className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
+          <Link to="/" className={`navbar-link ${isActive("/") ? "active" : ""}`} onClick={closeMenu}>
             Home
           </Link>
 
-          <Link to="/about" className={`nav-link ${isActive("/about") ? "active" : ""}`} onClick={closeMenu}>
+          <Link to="/about" className={`navbar-link ${isActive("/about") ? "active" : ""}`} onClick={closeMenu}>
             About
           </Link>
 
           <Link
             to="/muturu-cattle"
-            className={`nav-link ${isActive("/muturu-cattle") ? "active" : ""}`}
+            className={`navbar-link ${isActive("/muturu-cattle") ? "active" : ""}`}
             onClick={closeMenu}
           >
             Muturu Cattle Research
@@ -65,7 +65,7 @@ const Navbar = () => {
 
           <Link
             to="/members"
-            className={`nav-link ${isActive("/members") ? "active" : ""}`}
+            className={`navbar-link ${isActive("/members") ? "active" : ""}`}
             onClick={closeMenu}
           >
             Find Members
@@ -73,16 +73,16 @@ const Navbar = () => {
 
           <Link
             to="/donate"
-            className={`nav-link ${isActive("/donate") ? "active" : ""}`}
+            className={`navbar-link ${isActive("/donate") ? "active" : ""}`}
             onClick={closeMenu}
           >
             Donate
           </Link>
 
           {/* Resources Dropdown */}
-          <div className="nav-dropdown">
+          <div className="navbar-dropdown">
             <button 
-              className={`nav-link dropdown-toggle ${isActive("/publications") || isActive("/journals") ? "active" : ""}`} 
+              className={`navbar-link dropdown-toggle ${isActive("/publications") || isActive("/journals") ? "active" : ""}`} 
               onClick={toggleResources}
             >
               Resources
@@ -99,9 +99,9 @@ const Navbar = () => {
           </div>
 
           {/* Updates Dropdown */}
-          <div className="nav-dropdown">
+          <div className="navbar-dropdown">
             <button 
-              className={`nav-link dropdown-toggle ${isActive("/blogs") || isActive("/announcements") || isActive("/gallery") || isActive("/events") || isActive("/contact") ? "active" : ""}`} 
+              className={`navbar-link dropdown-toggle ${isActive("/blogs") || isActive("/announcements") || isActive("/gallery") || isActive("/events") || isActive("/contact") ? "active" : ""}`} 
               onClick={toggleUpdates}
             >
               Updates
@@ -131,34 +131,34 @@ const Navbar = () => {
             <>
               <Link 
                 to="/dashboard" 
-                className={`nav-link ${isActive("/dashboard") ? "active" : ""}`} 
+                className={`navbar-link ${isActive("/dashboard") ? "active" : ""}`} 
                 onClick={closeMenu}
               >
                 Dashboard
               </Link>
-              <button onClick={handleLogout} className="nav-button secondary">
+              <button onClick={handleLogout} className="navbar-button secondary">
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link to="/login" className={`nav-link ${isActive("/login") ? "active" : ""}`} onClick={closeMenu}>
+              <Link to="/login" className={`navbar-link ${isActive("/login") ? "active" : ""}`} onClick={closeMenu}>
                 Login
               </Link>
-              <Link to="/register" className="nav-button" onClick={closeMenu}>
+              <Link to="/register" className="navbar-button" onClick={closeMenu}>
                 Register
               </Link>
             </>
           )}
         </div>
 
-        <div className={`nav-toggle ${isMenuOpen ? "active" : ""}`} onClick={toggleMenu}>
+        <div className={`navbar-toggle ${isMenuOpen ? "active" : ""}`} onClick={toggleMenu}>
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>
         </div>
       </div>
-    </nav>
+    </navbar>
   )
 }
 

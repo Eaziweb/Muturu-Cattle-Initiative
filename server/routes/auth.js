@@ -13,85 +13,126 @@ router.post("/register", async (req, res) => {
   try {
     const {
       fullName,
+      email,
+      password,
+      phoneNumber,
+      country,
+      state,
+      profession,
       title,
       academicQualifications,
       researchDisciplines,
       googleScholarProfile,
       researchGateProfile,
-      email,
-      phoneNumber,
-      country,
-      state,
-      profession,
-      password,
-    } = req.body
+    } = req.body;
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email })
+    // 1. Check if user already exists
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists with this email" })
+      return res.status(400).json({ success: false, message: "User already exists with this email" });
     }
 
-    // Generate member ID and verification token
-    const memberID = generateMemberID()
-    const verificationToken = crypto.randomBytes(32).toString("hex")
+    // 2. Generate 6-digit numeric code and Member ID
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const memberID = generateMemberID();
 
-    // Create user
+    // 3. Create user (Ensure your User Schema has 'verificationCode' field)
     const user = new User({
       memberID,
       fullName,
+      email,
+      password,
+      phoneNumber,
+      country,
+      state,
+      profession,
       title,
       academicQualifications,
       researchDisciplines,
       googleScholarProfile,
       researchGateProfile,
-      email,
-      phoneNumber,
-      country,
-      state,
-      profession,
-      password,
-      verificationToken,
-    })
+      verificationCode, // Store the code instead of a token
+      isVerified: false
+    });
 
-    await user.save()
+    await user.save();
 
-    // Send verification email
-    await sendVerificationEmail(email, verificationToken, memberID)
+    // 4. Send the numeric code via email
+    await sendVerificationEmail(email, verificationCode, memberID);
 
     res.status(201).json({
-      message: "Registration successful! Please check your email to verify your account.",
+      success: true,
+      message: "Registration successful! Please check your email for the 6-digit verification code.",
+      email, // Return email so frontend can redirect to verify page with it
       memberID,
-    })
+    });
   } catch (error) {
-    console.error("Registration error:", error)
-    res.status(500).json({ message: "Server error during registration" })
+    console.error("Registration error:", error);
+    res.status(500).json({ success: false, message: "Server error during registration" });
   }
-})
+});
 
-// Verify email
-router.get("/verify-email/:token", async (req, res) => {
+/**
+ * @route   POST /api/auth/verify-email
+ * @desc    Verify user email using the 6-digit code
+ */
+router.post("/verify-email", async (req, res) => {
   try {
-    const { token } = req.params
+    const { email, code } = req.body;
 
-    const user = await User.findOne({ verificationToken: token })
-    if (!user) {
-      return res.status(400).json({ message: "Invalid or expired verification token" })
+    if (!email || !code) {
+      return res.status(400).json({ success: false, message: "Email and code are required" });
     }
 
-    user.isVerified = true
-    user.verificationToken = undefined
-    await user.save()
+    // Find user by email AND the numeric code
+    const user = await User.findOne({ email, verificationCode: code });
 
-    // Send welcome email
-    await sendWelcomeEmail(user.email, user.fullName, user.memberID)
+    if (!user) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Invalid or expired verification code" 
+      });
+    }
 
-    res.json({ message: "Email verified successfully! Welcome email sent." })
+    // Update user status
+    user.isVerified = true;
+    user.verificationCode = undefined; // Remove code after successful use
+    await user.save();
+
+    // Send the professional welcome email with Member ID
+    await sendWelcomeEmail(user.email, user.fullName, user.memberID);
+
+    res.json({ 
+      success: true, 
+      message: "Email verified successfully! You can now log in." 
+    });
   } catch (error) {
-    console.error("Email verification error:", error)
-    res.status(500).json({ message: "Server error during email verification" })
+    console.error("Email verification error:", error);
+    res.status(500).json({ success: false, message: "Server error during email verification" });
   }
-})
+});
+
+
+router.post("/resend-code", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email, isVerified: false });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "Unverified user not found" });
+    }
+
+    const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+    user.verificationCode = newCode;
+    await user.save();
+
+    await sendVerificationEmail(email, newCode, user.memberID);
+
+    res.json({ success: true, message: "A new verification code has been sent to your email." });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error resending code" });
+  }
+});
 
 // Login
 router.post("/login", async (req, res) => {

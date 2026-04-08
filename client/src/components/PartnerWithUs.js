@@ -12,7 +12,21 @@ const PartnerWithUs = () => {
             Join us in preserving indigenous cattle breeds and advancing sustainable livestock research
           </p>
         </div>
-
+  <div className="partner-cta">
+          <div className="cta-text">
+            <h3>Ready to make a difference?</h3>
+            <p>Join our network of partners committed to sustainable livestock research</p>
+          </div>
+          <div className="cta-buttons">
+            <Link to="/partnership" className="partner-btn primary">
+              Apply for Partnership
+            </Link>
+            <Link to="/contact" className="partner-btn secondary">
+              Contact Us
+            </Link>
+          </div>
+        </div>
+        
         <div className="partner-benefits">
           <div className="benefit-card">
             <div className="benefit-icon research">
@@ -146,20 +160,7 @@ const PartnerWithUs = () => {
           </div>
         </div>
 
-        <div className="partner-cta">
-          <div className="cta-text">
-            <h3>Ready to make a difference?</h3>
-            <p>Join our network of partners committed to sustainable livestock research</p>
-          </div>
-          <div className="cta-buttons">
-            <Link to="/partnership" className="partner-btn primary">
-              Apply for Partnership
-            </Link>
-            <Link to="/contact" className="partner-btn secondary">
-              Contact Us
-            </Link>
-          </div>
-        </div>
+       
       </div>
     </section>
   )

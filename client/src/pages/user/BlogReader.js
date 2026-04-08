@@ -75,7 +75,7 @@ const BlogReader = () => {
   if (loading) {
     return (
       <div className="loading-container">
-        <div className="spinner"></div>
+        <div className="loadingSpinner"></div>
         <p>Loading article...</p>
       </div>
     )

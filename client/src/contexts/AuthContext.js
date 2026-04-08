@@ -128,22 +128,28 @@ export const AuthProvider = ({ children }) => {
       }
     }
   }
-
-  const verifyEmail = async (token) => {
-    try {
-      const response = await userApi.get(`/auth/verify-email/${token}`)
-      return {
-        success: true,
-        message: response.data.message,
-      }
-    } catch (error) {
-      return {
-        success: false,
-        message: error.response?.data?.message || "Email verification failed",
-      }
-    }
+const verifyEmail = async (email, code) => {
+  try {
+    const response = await userApi.post(`/auth/verify-email`, { email, code });
+    return { success: true, message: response.data.message };
+  } catch (error) {
+    return { success: false, message: error.response?.data?.message || "Verification failed" };
   }
-
+};
+ const resendCode = async (email) => {
+  try {
+    const response = await userApi.post("/auth/resend-code", { email });
+    return { 
+      success: true, 
+      message: response.data.message || "A new code has been sent!" 
+    };
+  } catch (error) {
+    return { 
+      success: false, 
+      message: error.response?.data?.message || "Failed to resend code" 
+    };
+  }
+};
   const value = {
     user,
     loading,
@@ -154,7 +160,8 @@ export const AuthProvider = ({ children }) => {
     resetPassword,
     verifyEmail,
     updateUser,
-    fetchCurrentUser, // Expose this function
+    fetchCurrentUser,
+resendCode,    
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

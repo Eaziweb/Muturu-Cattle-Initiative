@@ -38,65 +38,7 @@ const MuturuCattleSection = () => {
               </div>
             </div>
           </div>
-
-          <div className="muturu-features">
-            <div className="feature-card">
-              <div className="feature-icon">
-                <FaDna />
-              </div>
-              <h3>Genetic Conservation</h3>
-              <p>
-                Preserving the unique genetic makeup of Muturu cattle through selective breeding programs and genetic
-                banking.
-              </p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">
-                <FaLandmark />
-              </div>
-              <h3>In-situ Conservation</h3>
-              <p>
-                Supporting traditional farmers and communities in maintaining Muturu cattle in their natural
-                environment.
-              </p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">
-                <FaFlask />
-              </div>
-              <h3>Research & Development</h3>
-              <p>Conducting research on breed characteristics, performance, and adaptation strategies.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">
-                <FaBook />
-              </div>
-              <h3>Documentation</h3>
-              <p>
-                Recording and documenting traditional knowledge and management practices associated with Muturu
-                cattle.
-              </p>
-            </div>
-          </div>
-
-          <div className="muturu-stats">
-            <div className="stat-item">
-              <div className="stat-number">74+</div>
-              <div className="stat-label">Research Scientists</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">3</div>
-              <div className="stat-label">Countries</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">200+</div>
-              <div className="stat-label">Research Publications</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">5000+</div>
-              <div className="stat-label">Farmers Trained</div>
-            </div>
-          </div>
+    
 
           <div className="muturu-cta">
             <h3>Join Our Conservation Efforts</h3>

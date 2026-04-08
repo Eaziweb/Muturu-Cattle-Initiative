@@ -10,21 +10,25 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-const sendVerificationEmail = async (email, token, memberID) => {
-  const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`
-
+const sendVerificationEmail = async (email, code, memberID) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Verify Your Email - Agricultural Research Network",
+    subject: `${code} is your verification code`,
     html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Welcome to Agricultural Research Network!</h2>
-        <p>Thank you for registering. Please click the link below to verify your email address:</p>
-        <a href="${verificationUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Verify Email</a>
-        <p>If the button doesn't work, copy and paste this link into your browser:</p>
-        <p>${verificationUrl}</p>
-        <p>This link will expire in 24 hours.</p>
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
+        <h2 style="color: #006400; text-align: center;">Verify Your Email</h2>
+        <p>Thank you for registering with the Muturu Cattle Research Network. Use the following code to verify your account:</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <span style="font-size: 32px; font-weight: 800; letter-spacing: 10px; color: #006400; background: #f0fdf4; padding: 15px 30px; border-radius: 8px; border: 2px dashed #006400;">
+            ${code}
+          </span>
+        </div>
+        
+        <p style="color: #666; font-size: 14px;">This code will expire in 24 hours. If you did not request this, please ignore this email.</p>
+        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+        <p style="font-size: 12px; color: #999; text-align: center;">Member ID: ${memberID}</p>
       </div>
     `,
   }

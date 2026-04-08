@@ -82,7 +82,7 @@ const Gallery = () => {
   if (loading)
     return (
       <div className="loading-container">
-        <div className="loading-spinner"></div>
+        <div className="loadingSpinner"></div>
         <p>Loading galleries...</p>
       </div>
     )

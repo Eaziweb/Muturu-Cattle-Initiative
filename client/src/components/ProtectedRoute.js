@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
   if (loading) {
     return (
       <div className="loading-container">
-        <div className="loading-spinner"></div>
+        <div className="loadingSpinner"></div>
         <p>Loading...</p>
       </div>
     )
