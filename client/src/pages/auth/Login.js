@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import styles from "../../styles/Login.module.css"
-import Navbar from "../../components/NavBar"
+// import Navbar from "../../components/NavBar"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
 
 const Login = () => {
