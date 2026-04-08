@@ -12,6 +12,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    // --- Profile Information ---
     title: {
       type: String,
       default: "",
@@ -20,6 +32,33 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    bio: {
+      type: String,
+      default: "",
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Other", ""],
+      default: "",
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    profession: {
+      type: String,
+      required: true,
+    },
+    // --- Geography ---
+    country: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    // --- Academic & Research ---
     academicQualifications: {
       type: String,
       default: "",
@@ -36,36 +75,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
-    country: {
-      type: String,
-      required: true,
-    },
-    state: {
-      type: String,
-      required: true,
-    },
-    profession: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
+    // --- Status & Security ---
     isVerified: {
       type: Boolean,
       default: false,
     },
-    verificationToken: {
+    verificationCode: { // Fixed: Matches your auth logic name
       type: String,
     },
     resetPasswordToken: {
@@ -78,6 +93,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // --- Notifications ---
     notifications: [
       {
         id: String,
@@ -90,16 +106,27 @@ const userSchema = new mongoose.Schema(
     ],
   },
   {
-    timestamps: true,
-  },
+    timestamps: true, // Automatically adds createdAt and updatedAt
+  }
 )
 
+// --- Middlewares ---
+
+// Hash password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next()
-  this.password = await bcrypt.hash(this.password, 12)
-  next()
+  try {
+    const salt = await bcrypt.genSalt(12)
+    this.password = await bcrypt.hash(this.password, salt)
+    next()
+  } catch (err) {
+    next(err)
+  }
 })
 
+// --- Methods ---
+
+// Compare input password with hashed password
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password)
 }
