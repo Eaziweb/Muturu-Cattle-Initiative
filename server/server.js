@@ -7,7 +7,6 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config()
 }
 
-const Admin = require("./models/Admin")
 const authRoutes = require("./routes/auth")
 const userRoutes = require("./routes/users")
 const donationRoutes = require("./routes/donations")
@@ -61,7 +60,6 @@ app.get("/api/health", (req, res) => {
   })
 })
 
-
 // ─── Global error handler ─────────────────────────────────────────────────────
 app.use((error, req, res, next) => {
   console.error("Server Error:", error)
@@ -72,7 +70,6 @@ app.use((error, req, res, next) => {
   })
 })
 
-// ─── MongoDB cached connection (critical for serverless) ──────────────────────
 let isConnected = false
 
 const connectDB = async () => {
@@ -97,3 +94,10 @@ module.exports = async (req, res) => {
   await connectDB()
   return app(req, res)
 }
+
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: "Muturu Cattle Initiative API is live and connected!",
+    status: "Healthy"
+  });
+});
