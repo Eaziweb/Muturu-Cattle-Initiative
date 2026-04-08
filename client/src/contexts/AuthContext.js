@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // Function to fetch current user data from the server
+  // Fetch fresh user data using the stored token
   const fetchCurrentUser = useCallback(async () => {
     try {
       const response = await userApi.get("/auth/me")
@@ -28,7 +28,6 @@ export const AuthProvider = ({ children }) => {
       return userData
     } catch (error) {
       console.error("Error fetching user data:", error)
-      // If token is invalid, clear localStorage
       localStorage.removeItem("token")
       localStorage.removeItem("user")
       setUser(null)
@@ -39,25 +38,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initializeAuth = async () => {
       const token = localStorage.getItem("token")
-      const userData = localStorage.getItem("user")
-
       if (token) {
-        // Always fetch fresh user data from server if token exists
         await fetchCurrentUser()
-      } else if (userData) {
-        // If no token but user data exists (unlikely scenario), clear it
+      } else {
         localStorage.removeItem("user")
       }
       setLoading(false)
     }
-
     initializeAuth()
   }, [fetchCurrentUser])
-
-  const updateUser = (userData) => {
-    setUser(userData)
-    localStorage.setItem("user", JSON.stringify(userData))
-  }
 
   const login = async (email, password) => {
     try {
@@ -84,11 +73,36 @@ export const AuthProvider = ({ children }) => {
         success: true,
         message: response.data.message,
         memberID: response.data.memberID,
+        email: userData.email, // Return email for the redirect to Verify page
       }
     } catch (error) {
       return {
         success: false,
         message: error.response?.data?.message || "Registration failed",
+      }
+    }
+  }
+
+  const verifyEmail = async (email, code) => {
+    try {
+      const response = await userApi.post(`/auth/verify-email`, { email, code })
+      return { success: true, message: response.data.message }
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message || "Verification failed" }
+    }
+  }
+
+  const resendCode = async (email) => {
+    try {
+      const response = await userApi.post("/auth/resend-code", { email })
+      return { 
+        success: true, 
+        message: response.data.message || "A new code has been sent!" 
+      }
+    } catch (error) {
+      return { 
+        success: false, 
+        message: error.response?.data?.message || "Failed to resend code" 
       }
     }
   }
@@ -102,54 +116,21 @@ export const AuthProvider = ({ children }) => {
   const forgotPassword = async (email) => {
     try {
       const response = await userApi.post("/auth/forgot-password", { email })
-      return {
-        success: true,
-        message: response.data.message,
-      }
+      return { success: true, message: response.data.message }
     } catch (error) {
-      return {
-        success: false,
-        message: error.response?.data?.message || "Failed to send reset email",
-      }
+      return { success: false, message: error.response?.data?.message || "Error" }
     }
   }
 
   const resetPassword = async (token, password) => {
     try {
       const response = await userApi.post(`/auth/reset-password/${token}`, { password })
-      return {
-        success: true,
-        message: response.data.message,
-      }
+      return { success: true, message: response.data.message }
     } catch (error) {
-      return {
-        success: false,
-        message: error.response?.data?.message || "Password reset failed",
-      }
+      return { success: false, message: error.response?.data?.message || "Error" }
     }
   }
-const verifyEmail = async (email, code) => {
-  try {
-    const response = await userApi.post(`/auth/verify-email`, { email, code });
-    return { success: true, message: response.data.message };
-  } catch (error) {
-    return { success: false, message: error.response?.data?.message || "Verification failed" };
-  }
-};
- const resendCode = async (email) => {
-  try {
-    const response = await userApi.post("/auth/resend-code", { email });
-    return { 
-      success: true, 
-      message: response.data.message || "A new code has been sent!" 
-    };
-  } catch (error) {
-    return { 
-      success: false, 
-      message: error.response?.data?.message || "Failed to resend code" 
-    };
-  }
-};
+
   const value = {
     user,
     loading,
@@ -159,9 +140,8 @@ const verifyEmail = async (email, code) => {
     forgotPassword,
     resetPassword,
     verifyEmail,
-    updateUser,
-    fetchCurrentUser,
-resendCode,    
+    resendCode,
+    fetchCurrentUser
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

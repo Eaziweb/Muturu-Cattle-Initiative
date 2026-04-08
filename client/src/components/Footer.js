@@ -42,14 +42,14 @@ const Footer = () => {
           <div className="footer-contact-info">
             <p>
               <FaEnvelope className="contact-icon" />
-              <a href="mailto:info@mcrn.org">info@mcrn.org</a>
+              <a href="mailto:info@mcrn.org">muturucattleinitiative@gmail.com</a>
             </p>
             <p>
               <FaPhone className="contact-icon" />
-              <a href="tel:+2341234567890">+234 (0) 123 456 7890</a>
+              <a href="tel:+2341234567890">+2348150420699</a>
             </p>
-            <p>123 Research Avenue, Lagos, Nigeria</p>
-            <p>PO Box 45678, Lagos</p>
+            <p>PMB1515, Kwara, Nigeria</p>
+            <p>P.M.B 1515, Lagos</p>
           </div>
         </div>
       </div>

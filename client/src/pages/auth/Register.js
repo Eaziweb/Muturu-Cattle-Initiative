@@ -76,41 +76,26 @@ const Register = () => {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = async (e) => { 
-    e.preventDefault()
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!validateForm()) return
+  if (!validateForm()) return;
 
-    setLoading(true)
-    setErrors({})
+  setLoading(true);
+  setErrors({});
 
-    const result = await register(formData)
+  const result = await register(formData);
 
-    if (result.success) {
-      setSuccess(
-        `Registration successful! Member ID: ${result.memberID}. Please check your email to verify your account.`,
-      )
-      setFormData({
-        fullName: "",
-        title: "",
-        academicQualifications: "",
-        researchDisciplines: "",
-        googleScholarProfile: "",
-        researchGateProfile: "",
-        email: "",
-        phoneNumber: "",
-        country: "",
-        state: "",
-        profession: "",
-        password: "",
-        confirmPassword: "",
-      })
-    } else {
-      setErrors({ general: result.message })
-    }
-
-    setLoading(false)
+  if (result.success) {
+    // PASS THE EMAIL IN THE STATE OBJECT
+    navigate("/verify-email", { 
+      state: { email: result.email } 
+    });
+  } else {
+    setErrors({ general: result.message });
+    setLoading(false); // Only stop loading if it fails; if it succeeds, we navigate away
   }
+};
 
   return (
     <div className={styles.authContainer}>
@@ -125,8 +110,8 @@ const Register = () => {
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
           </button>
-          <h1>Join Our Research Network</h1>
-          <p>Register to become a member of the Muturu Cattle Research Network</p>
+          <h1>Join Our Initiative</h1>
+          <p>Register to become a member of the Muturu Cattle Initiative</p>
         </div>
 
         {success && <div className={styles.successMessage}>{success}</div>}

@@ -87,7 +87,7 @@ const Login = () => {
             </svg>
           </button>
             <h1>Welcome Back</h1>
-            <p>Sign in to your Muturu Cattle Research Network account</p>
+            <p>Sign in to your Muturu Cattle Research Initiative</p>
           </div>
 
           {errors.general && <div className={styles.errorMessage}>{errors.general}</div>}
