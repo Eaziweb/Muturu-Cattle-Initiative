@@ -208,10 +208,6 @@
   color: white;
   border: 2px solid white;
   padding: 10px 22px;
-}
-
-.navbar-button.secondary:hover {
-  background-color: white;
   color: #144d1b;
 }
 

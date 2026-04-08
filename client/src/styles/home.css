@@ -205,13 +205,14 @@
 .impact-card {
   text-align: center;
   padding: 40px 25px;
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
 .impact-card::before {
@@ -228,7 +229,8 @@
 
 .impact-card:hover {
   transform: translateY(-10px);
-
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
 .impact-card:hover::before {
