@@ -16,34 +16,25 @@ router.post("/register", async (req, res) => {
 
     let user = await User.findOne({ email: cleanEmail })
 
-    if (user) {
-      if (user.isVerified) {
-        return res.status(400).json({
-          success: false,
-          message: "An account with this email is already verified. Please login.",
-        })
-      }
+ if (user) {
+  if (user.isVerified) {
+    return res.status(400).json({ message: "Email already verified." });
+  }
 
-      // Generate the new code first
-      const newCode = Math.floor(100000 + Math.random() * 900000).toString()
+  // Generate code FIRST
+  const newCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-      // Update everything at once. DO NOT save twice.
-      user.fullName = fullName
-      user.password = password
-      user.verificationCode = newCode 
-      Object.assign(user, otherData)
-      
-      await user.save()
+  // Update everything and save ONCE
+  user.fullName = fullName;
+  user.password = password;
+  user.verificationCode = newCode; // This will now work with the schema fix
+  Object.assign(user, otherData);
+  
+  await user.save();
+  await sendVerificationEmail(cleanEmail, newCode, user.memberID);
 
-      await sendVerificationEmail(cleanEmail, newCode, user.memberID)
-
-      return res.status(200).json({
-        success: true,
-        message: "Registration updated! A new verification code has been sent.",
-        email: user.email,
-        memberID: user.memberID,
-      })
-    }
+  return res.status(200).json({ success: true, message: "New code sent!" });
+}
 
     // New user logic (Keep as you had it, but ensure it's clean)
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
