@@ -8,64 +8,68 @@ const { auth } = require("../middleware/auth")
 
 const router = express.Router()
 
-// Register
 router.post("/register", async (req, res) => {
   try {
-    const {
-      fullName,
-      email,
-      password,
-      phoneNumber,
-      country,
-      state,
-      profession,
-      title,
-      academicQualifications,
-      researchDisciplines,
-      googleScholarProfile,
-      researchGateProfile,
-    } = req.body;
+    const { email, password, fullName, ...otherData } = req.body;
 
     // 1. Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ success: false, message: "User already exists with this email" });
+    let user = await User.findOne({ email });
+
+    if (user) {
+      // IF USER IS ALREADY VERIFIED -> Block re-registration
+      if (user.isVerified) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "An account with this email is already verified. Please login." 
+        });
+      }
+
+      // IF USER EXISTS BUT IS NOT VERIFIED -> Allow "Overwriting" their registration
+      // This helps if they made a typo in their name or want to reset their code
+      const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+      
+      user.fullName = fullName;
+      user.password = password; // The pre-save hook in your model will hash this
+      user.verificationCode = newCode;
+      // Update any other fields provided
+      Object.assign(user, otherData);
+
+      await user.save();
+
+      // Send the NEW code
+      await sendVerificationEmail(email, newCode, user.memberID);
+
+      return res.status(200).json({
+        success: true,
+        message: "Registration updated! A new verification code has been sent.",
+        email: user.email,
+        memberID: user.memberID
+      });
     }
 
-    // 2. Generate 6-digit numeric code and Member ID
+    // 2. NORMAL FLOW: If user doesn't exist at all, create new
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     const memberID = generateMemberID();
 
-    // 3. Create user (Ensure your User Schema has 'verificationCode' field)
-    const user = new User({
+    user = new User({
       memberID,
       fullName,
       email,
       password,
-      phoneNumber,
-      country,
-      state,
-      profession,
-      title,
-      academicQualifications,
-      researchDisciplines,
-      googleScholarProfile,
-      researchGateProfile,
-      verificationCode, // Store the code instead of a token
-      isVerified: false
+      verificationCode,
+      ...otherData
     });
 
     await user.save();
-
-    // 4. Send the numeric code via email
     await sendVerificationEmail(email, verificationCode, memberID);
 
     res.status(201).json({
       success: true,
-      message: "Registration successful! Please check your email for the 6-digit verification code.",
-      email, // Return email so frontend can redirect to verify page with it
-      memberID,
+      message: "Registration successful! Please verify your email.",
+      email: user.email,
+      memberID
     });
+
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({ success: false, message: "Server error during registration" });
