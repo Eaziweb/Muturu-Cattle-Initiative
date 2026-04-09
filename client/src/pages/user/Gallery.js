@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import api from "../../utils/api"
-import "../../styles/Gallery.css"
+import "../../styles/Gallery.module.css"
 import Navbar from "../../components/NavBar"
 
 const Gallery = () => {

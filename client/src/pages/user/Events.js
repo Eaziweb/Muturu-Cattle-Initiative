@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import api from "../../utils/api"
-import "../../styles/Events.css"
+import "../../styles/Events.module.css"
 import Navbar from "../../components/NavBar"
 import { FaCalendarAlt, FaMapMarkerAlt, FaMoneyBillWave } from "react-icons/fa"
 

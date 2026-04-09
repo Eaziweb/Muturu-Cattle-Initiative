@@ -3,12 +3,14 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import api from "../../utils/api"
-import "../../styles/members.css"
+import "../../styles/members.module.css"
 import Navbar from "../../components/NavBar"
 import { 
   FaSearch, FaTimes, FaUser, FaMapMarkerAlt, FaGraduationCap, 
   FaFlask, FaCalendarAlt, FaBook, FaResearchgate, FaUserPlus, 
-  FaHandHoldingUsd, FaChevronDown, FaChevronUp, FaFileAlt 
+  FaHandHoldingUsd, FaChevronDown, FaFileAlt, FaGlobe, 
+  FaUniversity, FaQuoteLeft, FaTwitter, FaLinkedin, FaEnvelope,
+  FaFilter, FaArrowLeft, FaArrowRight, FaSpinner
 } from "react-icons/fa"
 
 const FindMembers = () => {
@@ -23,11 +25,14 @@ const FindMembers = () => {
   const [selectedMember, setSelectedMember] = useState(null)
   const [loadingMemberDetails, setLoadingMemberDetails] = useState(false)
 
+  // Mobile filters sidebar
+  const [showMobileFilters, setShowMobileFilters] = useState(false)
+
   const [filters, setFilters] = useState({
     search: "",
     country: "",
     profession: "",
-    sortBy: "newest" // Added sort option
+    sortBy: "newest"
   })
   const [countries, setCountries] = useState([])
   const [professions, setProfessions] = useState([])
@@ -55,19 +60,17 @@ const FindMembers = () => {
         search: filters.search,
         country: filters.country,
         profession: filters.profession,
-        sort: filters.sortBy // Pass sort to backend if supported, otherwise handle in JS
+        sort: filters.sortBy
       })
 
       const response = await api.get(`/users/members?${queryParams}`)
       let users = response.data.users || []
 
-      // Client-side sorting if backend doesn't support the 'sort' param specifically
       if (filters.sortBy === "nameAsc") {
         users.sort((a, b) => a.fullName.localeCompare(b.fullName))
       } else if (filters.sortBy === "nameDesc") {
         users.sort((a, b) => b.fullName.localeCompare(a.fullName))
       }
-      // 'newest' is default backend behavior usually
 
       setMembers(users)
       setTotalPages(response.data.totalPages)
@@ -95,6 +98,7 @@ const FindMembers = () => {
   const clearFilters = () => {
     setFilters({ search: "", country: "", profession: "", sortBy: "newest" })
     setCurrentPage(1)
+    setShowMobileFilters(false)
   }
 
   const formatDate = (dateString) => {
@@ -109,20 +113,16 @@ const FindMembers = () => {
     setImageErrors(prev => ({ ...prev, [memberId]: true }))
   }
 
-  // --- Modal Logic ---
   const openModal = async (member) => {
-    setSelectedMember(member) // Set basic info immediately
+    setSelectedMember(member)
     setIsModalOpen(true)
     setLoadingMemberDetails(true)
 
     try {
-      // Fetch full details for this specific user
-      // This endpoint should return bio, publications list, detailed qualifications, etc.
-      const response = await api.get(`/users/${member._id}/details`) 
-      setSelectedMember(response.data) // Update with full details
+      const response = await api.get(`/users/${member._id}/details`)
+      setSelectedMember(response.data)
     } catch (error) {
       console.error("Could not fetch extra details", error)
-      // We keep the basic member info if the detailed fetch fails
     } finally {
       setLoadingMemberDetails(false)
     }
@@ -133,38 +133,80 @@ const FindMembers = () => {
     setSelectedMember(null)
   }
 
+  const getInitials = (fullName) => {
+    return fullName?.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) || "U"
+  }
+
+  const hasActiveFilters = () => {
+    return filters.search || filters.country || filters.profession || filters.sortBy !== "newest"
+  }
+
   return (
     <div className="member-section">
       <Navbar />
       
-      {/* Hero Section */}
+      {/* Hero Section - Redesigned */}
       <div className="members-hero">
-        <div className="hero-overlay"></div>
+        <div className="hero-bg-pattern"></div>
         <div className="hero-content">
           <div className="hero-text">
-            <h1>Find Members</h1>
-            <p>Connect with researchers and practitioners in our global agricultural network</p>
+            <h1>Research Community</h1>
+            <p>Connect with agricultural experts, researchers, and practitioners from around the globe</p>
+            <div className="hero-stats">
+              <div className="hero-stat">
+                <span className="stat-number">{totalMembers.toLocaleString()}</span>
+                <span className="stat-label">Researchers</span>
+              </div>
+              <div className="hero-stat">
+                <span className="stat-number">{countries.length}</span>
+                <span className="stat-label">Countries</span>
+              </div>
+              <div className="hero-stat">
+                <span className="stat-number">{professions.length}</span>
+                <span className="stat-label">Expertise Areas</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="members-container">
         <div className="members-content">
-          {/* Filters Section */}
-          <div className="filters-section">
+          {/* Mobile Filter Toggle */}
+          <div className="mobile-filter-toggle">
+            <button 
+              className="filter-toggle-btn"
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+            >
+              <FaFilter /> Filters
+              {hasActiveFilters() && <span className="filter-badge"></span>}
+            </button>
+            {hasActiveFilters() && (
+              <button onClick={clearFilters} className="mobile-clear-btn">
+                <FaTimes /> Clear
+              </button>
+            )}
+          </div>
+
+          {/* Filters Sidebar / Section */}
+          <div className={`filters-section ${showMobileFilters ? 'mobile-open' : ''}`}>
             <div className="filters-header">
-              <h3><FaSearch className="icon" /> Explore Directory</h3>
+              <h3><FaSearch className="icon" /> Refine Search</h3>
               <div className="filter-actions">
-                {Object.values(filters).some(v => v) && (
-                   <button onClick={clearFilters} className="clear-filters-btn">
-                    <FaTimes className="icon" /> Reset
+                {hasActiveFilters() && (
+                  <button onClick={clearFilters} className="clear-filters-btn">
+                    <FaTimes /> Reset all
+                  </button>
+                )}
+                {showMobileFilters && (
+                  <button onClick={() => setShowMobileFilters(false)} className="close-filters-btn">
+                    <FaTimes />
                   </button>
                 )}
               </div>
             </div>
 
             <div className="filters-grid">
-              {/* Search Input */}
               <div className="filter-group search-group">
                 <div className="input-wrapper">
                   <FaSearch className="input-icon" />
@@ -173,13 +215,12 @@ const FindMembers = () => {
                     name="search"
                     value={filters.search}
                     onChange={handleFilterChange}
-                    placeholder="Search by name, ID..."
+                    placeholder="Search by name, expertise..."
                     className="custom-input"
                   />
                 </div>
               </div>
 
-              {/* Sort Select */}
               <div className="filter-group">
                 <div className="select-wrapper">
                   <select 
@@ -188,7 +229,7 @@ const FindMembers = () => {
                     onChange={handleFilterChange}
                     className="custom-select"
                   >
-                    <option value="newest">Newest Members</option>
+                    <option value="newest">Newest first</option>
                     <option value="nameAsc">Name (A-Z)</option>
                     <option value="nameDesc">Name (Z-A)</option>
                   </select>
@@ -196,7 +237,6 @@ const FindMembers = () => {
                 </div>
               </div>
 
-              {/* Country Select */}
               <div className="filter-group">
                 <div className="select-wrapper">
                   <select 
@@ -212,7 +252,6 @@ const FindMembers = () => {
                 </div>
               </div>
 
-              {/* Profession Select */}
               <div className="filter-group">
                 <div className="select-wrapper">
                   <select 
@@ -230,23 +269,43 @@ const FindMembers = () => {
             </div>
 
             {/* Active Filter Tags */}
-            <div className="active-filters-container">
-              {filters.search && (
-                <span className="filter-tag">
-                  Search: "{filters.search}" <FaTimes onClick={() => setFilters(p => ({...p, search: ''}))} />
-                </span>
+            {hasActiveFilters() && (
+              <div className="active-filters-container">
+                {filters.search && (
+                  <span className="filter-tag">
+                    <span className="tag-label">Search:</span> "{filters.search}" 
+                    <FaTimes onClick={() => setFilters(p => ({...p, search: ''}))} />
+                  </span>
+                )}
+                {filters.country && (
+                  <span className="filter-tag">
+                    <span className="tag-label">Country:</span> {filters.country}
+                    <FaTimes onClick={() => setFilters(p => ({...p, country: ''}))} />
+                  </span>
+                )}
+                {filters.profession && (
+                  <span className="filter-tag">
+                    <span className="tag-label">Profession:</span> {filters.profession}
+                    <FaTimes onClick={() => setFilters(p => ({...p, profession: ''}))} />
+                  </span>
+                )}
+                {filters.sortBy !== "newest" && (
+                  <span className="filter-tag">
+                    <span className="tag-label">Sort:</span> {filters.sortBy === "nameAsc" ? "A-Z" : "Z-A"}
+                    <FaTimes onClick={() => setFilters(p => ({...p, sortBy: "newest"}))} />
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Results Summary */}
+          <div className="results-summary">
+            <p className="results-count">
+              {!loading && (
+                <>Found <strong>{totalMembers}</strong> {totalMembers === 1 ? 'researcher' : 'researchers'}</>
               )}
-              {filters.country && (
-                <span className="filter-tag">
-                  {filters.country} <FaTimes onClick={() => setFilters(p => ({...p, country: ''}))} />
-                </span>
-              )}
-              {filters.profession && (
-                <span className="filter-tag">
-                  {filters.profession} <FaTimes onClick={() => setFilters(p => ({...p, profession: ''}))} />
-                </span>
-              )}
-            </div>
+            </p>
           </div>
 
           {/* Members Grid */}
@@ -254,72 +313,74 @@ const FindMembers = () => {
             {loading ? (
               <div className="loading-container">
                 <div className="loading-spinner"></div>
-                <p>Searching directory...</p>
+                <p>Connecting with our community...</p>
               </div>
             ) : members.length === 0 ? (
               <div className="no-members">
                 <div className="no-members-icon"><FaUser /></div>
-                <h3>No members found</h3>
-                <p>Try adjusting your search terms.</p>
-                <button onClick={clearFilters} className="cta-button">Clear Filters</button>
+                <h3>No researchers found</h3>
+                <p>Try adjusting your search criteria to find more results.</p>
+                <button onClick={clearFilters} className="cta-button">Clear all filters</button>
               </div>
             ) : (
               <>
                 <div className="members-grid">
                   {members.map((member) => (
                     <div key={member._id} className="member-card">
-                      <div className="member-header">
-                        <div className="member-avatar">
-                          {member.profileImage && !imageErrors[member._id] ? (
-                            <img 
-                              src={getFullImageUrl(member.profileImage)} 
-                              alt={member.fullName} 
-                              onError={() => handleImageError(member._id)}
-                            />
-                          ) : (
-                            <div className="avatar-initials">
-                              {member.fullName?.split(" ").map(n => n[0]).join("").toUpperCase() || "U"}
-                            </div>
-                          )}
-                        </div>
-                        <div className="member-basic-info">
-                          <h3>{member.title} {member.fullName}</h3>
-                          <p className="member-role">{member.profession}</p>
-                          <div className="member-location">
-                            <FaMapMarkerAlt /> {member.state}, {member.country}
+                      <div className="member-card-inner">
+                        <div className="member-header">
+                          <div className="member-avatar">
+                            {member.profileImage && !imageErrors[member._id] ? (
+                              <img 
+                                src={getFullImageUrl(member.profileImage)} 
+                                alt={member.fullName} 
+                                onError={() => handleImageError(member._id)}
+                              />
+                            ) : (
+                              <div className="avatar-initials" style={{ backgroundColor: `hsl(${member.fullName?.length * 30 % 360}, 70%, 55%)` }}>
+                                {getInitials(member.fullName)}
+                              </div>
+                            )}
+                          </div>
+                          <div className="member-badge">
+                            <span className="badge-icon">✓</span>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="member-body">
-                        <div className="info-row">
-                          <span className="info-label">Qualifications:</span>
-                          <span className="info-value">{member.academicQualifications || "Not specified"}</span>
+                        <div className="member-info">
+                          <h3 className="member-name">{member.fullName}</h3>
+                          <p className="member-profession">{member.profession || "Researcher"}</p>
+                          <div className="member-location">
+                            <FaMapMarkerAlt /> 
+                            <span>{member.city ? `${member.city}, ` : ''}{member.country || "Location not specified"}</span>
+                          </div>
                         </div>
-                        
-                        <div className="info-row">
-                          <span className="info-label">Joined:</span>
-                          <span className="info-value">{formatDate(member.createdAt)}</span>
+
+                        <div className="member-qualification">
+                          <FaGraduationCap className="qual-icon" />
+                          <span>{member.academicQualifications?.split(',')[0] || "Academic"}</span>
                         </div>
-                      </div>
 
-                      {/* Always Visible Links */}
-                      <div className="member-socials">
-                        {member.googleScholarProfile && (
-                          <a href={member.googleScholarProfile} target="_blank" rel="noreferrer" className="social-link scholar">
-                            <FaBook /> Google Scholar
-                          </a>
-                        )}
-                        {member.researchGateProfile && (
-                          <a href={member.researchGateProfile} target="_blank" rel="noreferrer" className="social-link researchgate">
-                            <FaResearchgate /> ResearchGate
-                          </a>
-                        )}
-                      </div>
+                        <div className="member-socials">
+                          {member.googleScholarProfile && (
+                            <a href={member.googleScholarProfile} target="_blank" rel="noreferrer" className="social-link scholar" title="Google Scholar">
+                              <FaBook />
+                            </a>
+                          )}
+                          {member.researchGateProfile && (
+                            <a href={member.researchGateProfile} target="_blank" rel="noreferrer" className="social-link researchgate" title="ResearchGate">
+                              <FaResearchgate />
+                            </a>
+                          )}
+                          {member.linkedinProfile && (
+                            <a href={member.linkedinProfile} target="_blank" rel="noreferrer" className="social-link linkedin" title="LinkedIn">
+                              <FaLinkedin />
+                            </a>
+                          )}
+                        </div>
 
-                      <div className="member-footer">
-                        <button className="know-more-btn" onClick={() => openModal(member)}>
-                          View Full Profile
+                        <button className="view-profile-btn" onClick={() => openModal(member)}>
+                          View Profile
                         </button>
                       </div>
                     </div>
@@ -333,42 +394,39 @@ const FindMembers = () => {
                       <button 
                         onClick={() => setCurrentPage(p => Math.max(1, p - 1))} 
                         disabled={currentPage === 1}
-                        className="page-btn"
+                        className="page-btn prev"
                       >
-                        Previous
+                        <FaArrowLeft /> <span>Previous</span>
                       </button>
                       
                       <div className="page-numbers">
                         {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                           let pageNum = currentPage <= 3 ? i + 1 : 
-                                         currentPage >= totalPages - 2 ? totalPages - 4 + i : 
-                                         currentPage - 2 + i
-                           if (pageNum < 1) pageNum = 1
-                           if (pageNum > totalPages) pageNum = totalPages
-                           
-                           return (
-                             <button 
-                                key={pageNum} 
-                                onClick={() => setCurrentPage(pageNum)}
-                                className={`page-num ${currentPage === pageNum ? 'active' : ''}`}
-                             >
-                               {pageNum}
-                             </button>
-                           )
+                          let pageNum = currentPage <= 3 ? i + 1 : 
+                                        currentPage >= totalPages - 2 ? totalPages - 4 + i : 
+                                        currentPage - 2 + i
+                          if (pageNum < 1) pageNum = 1
+                          if (pageNum > totalPages) pageNum = totalPages
+                          
+                          return (
+                            <button 
+                              key={pageNum} 
+                              onClick={() => setCurrentPage(pageNum)}
+                              className={`page-num ${currentPage === pageNum ? 'active' : ''}`}
+                            >
+                              {pageNum}
+                            </button>
+                          )
                         })}
                       </div>
 
                       <button 
                         onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} 
                         disabled={currentPage === totalPages}
-                        className="page-btn"
+                        className="page-btn next"
                       >
-                        Next
+                        <span>Next</span> <FaArrowRight />
                       </button>
                     </div>
-                    <p className="page-info">
-                      Showing {(currentPage - 1) * 12 + 1} - {Math.min(currentPage * 12, totalMembers)} of {totalMembers} members
-                    </p>
                   </div>
                 )}
               </>
@@ -376,96 +434,111 @@ const FindMembers = () => {
           </div>
         </div>
 
-        {/* Footer Section */}
+        {/* Footer Section - Redesigned */}
         <div className="members-footer">
           <div className="footer-grid">
             <div className="footer-card">
-              <div className="footer-icon-bg"><FaUserPlus /></div>
+              <div className="footer-icon">
+                <FaUserPlus />
+              </div>
               <div className="footer-text">
                 <h4>Join Our Network</h4>
-                <p>Connect with agricultural researchers worldwide.</p>
-                <Link to="/register" className="footer-link">Become a Member</Link>
+                <p>Become part of a growing community of agricultural researchers and practitioners.</p>
+                <Link to="/register" className="footer-link">Become a Member →</Link>
               </div>
             </div>
             <div className="footer-card">
-              <div className="footer-icon-bg"><FaHandHoldingUsd /></div>
+              <div className="footer-icon">
+                <FaHandHoldingUsd />
+              </div>
               <div className="footer-text">
-                <h4>Support Our Mission</h4>
-                <p>Help advance sustainable agriculture.</p>
-                <Link to="/donate" className="footer-link donate">Make a Donation</Link>
+                <h4>Support Research</h4>
+                <p>Help us advance sustainable agriculture through research and collaboration.</p>
+                <Link to="/donate" className="footer-link donate-btn">Make a Donation →</Link>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Detailed Member Modal */}
+      {/* Detailed Member Modal - Redesigned */}
       {isModalOpen && selectedMember && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}><FaTimes /></button>
+            <button className="modal-close" onClick={closeModal}>
+              <FaTimes />
+            </button>
             
-            <div className="modal-header">
-              <div className="modal-avatar">
-                {selectedMember.profileImage && !imageErrors[selectedMember._id] ? (
-                  <img src={getFullImageUrl(selectedMember.profileImage)} alt="" />
-                ) : (
-                  <div className="avatar-initials">
-                    {selectedMember.fullName?.split(" ").map(n => n[0]).join("").toUpperCase()}
+            {loadingMemberDetails ? (
+              <div className="modal-loading">
+                <FaSpinner className="spinning" />
+                <p>Loading profile details...</p>
+              </div>
+            ) : (
+              <>
+                <div className="modal-header">
+                  <div className="modal-avatar">
+                    {selectedMember.profileImage && !imageErrors[selectedMember._id] ? (
+                      <img src={getFullImageUrl(selectedMember.profileImage)} alt="" />
+                    ) : (
+                      <div className="avatar-initials large" style={{ backgroundColor: `hsl(${selectedMember.fullName?.length * 30 % 360}, 70%, 55%)` }}>
+                        {getInitials(selectedMember.fullName)}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <div className="modal-title">
-                <h2>{selectedMember.title} {selectedMember.fullName}</h2>
-                <p className="modal-subtitle">{selectedMember.profession}</p>
-                <p className="modal-location"><FaMapMarkerAlt /> {selectedMember.state}, {selectedMember.country}</p>
-              </div>
-            </div>
-
-            <div className="modal-body">
-              {loadingMemberDetails ? (
-                <div className="modal-loading">
-                   <div className="spinner-small"></div> Loading full profile...
+                  <div className="modal-title">
+                    <h2>{selectedMember.fullName}</h2>
+                    <p className="modal-role">{selectedMember.profession || "Researcher"}</p>
+                    <div className="modal-location">
+                      <FaMapMarkerAlt /> 
+                      <span>{selectedMember.city ? `${selectedMember.city}, ` : ''}{selectedMember.country || "Location not specified"}</span>
+                    </div>
+                    <div className="modal-meta">
+                      <span className="meta-item">
+                        <FaCalendarAlt /> Member since {formatDate(selectedMember.createdAt)}
+                      </span>
+                      <span className="meta-item">
+                        <FaUniversity /> {selectedMember.academicQualifications?.split(',')[0] || "Academic"}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <>
-                  {/* Bio */}
+
+                <div className="modal-body">
                   {selectedMember.bio && (
-                    <div className="modal-section">
-                      <h4><FaUser className="section-icon" /> About</h4>
+                    <div className="modal-section bio-section">
+                      <FaQuoteLeft className="bio-quote" />
                       <p>{selectedMember.bio}</p>
                     </div>
                   )}
 
-                  {/* Academic Details */}
                   <div className="modal-section">
-                    <h4><FaGraduationCap className="section-icon" /> Academic Profile</h4>
+                    <h4><FaGraduationCap /> Academic Background</h4>
                     <div className="detail-grid">
                       <div className="detail-item">
-                        <span className="d-label">Highest Qualification:</span>
-                        <span className="d-value">{selectedMember.academicQualifications || "N/A"}</span>
+                        <span className="d-label">Qualifications</span>
+                        <span className="d-value">{selectedMember.academicQualifications || "Not specified"}</span>
                       </div>
                       <div className="detail-item">
-                        <span className="d-label">Research Disciplines:</span>
-                        <span className="d-value">{selectedMember.researchDisciplines || "N/A"}</span>
+                        <span className="d-label">Research Areas</span>
+                        <span className="d-value">{selectedMember.researchDisciplines || "Not specified"}</span>
                       </div>
                       <div className="detail-item">
-                        <span className="d-label">Member Since:</span>
-                        <span className="d-value">{formatDate(selectedMember.createdAt)}</span>
+                        <span className="d-label">Affiliation</span>
+                        <span className="d-value">{selectedMember.affiliation || "Not specified"}</span>
                       </div>
                       <div className="detail-item">
-                        <span className="d-label">Member ID:</span>
-                        <span className="d-value">{selectedMember.memberID}</span>
+                        <span className="d-label">Member ID</span>
+                        <span className="d-value member-id">{selectedMember.memberID}</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Publications (Fetched on demand) */}
-                  <div className="modal-section">
-                    <h4><FaFileAlt className="section-icon" /> Recent Publications</h4>
-                    {selectedMember.publications && selectedMember.publications.length > 0 ? (
+                  {selectedMember.publications && selectedMember.publications.length > 0 && (
+                    <div className="modal-section">
+                      <h4><FaBook /> Publications</h4>
                       <ul className="publications-list">
-                        {selectedMember.publications.map((pub, index) => (
+                        {selectedMember.publications.slice(0, 5).map((pub, index) => (
                           <li key={index} className="pub-item">
                             <span className="pub-year">{pub.year}</span>
                             <p className="pub-title">{pub.title}</p>
@@ -473,30 +546,40 @@ const FindMembers = () => {
                           </li>
                         ))}
                       </ul>
-                    ) : (
-                      <p className="no-data">No publications listed.</p>
-                    )}
-                  </div>
+                      {selectedMember.publications.length > 5 && (
+                        <p className="more-pubs">+ {selectedMember.publications.length - 5} more publications</p>
+                      )}
+                    </div>
+                  )}
 
-                  {/* Contact / Extra Info */}
                   <div className="modal-section">
-                    <h4>Contact & Socials</h4>
+                    <h4><FaGlobe /> Connect</h4>
                     <div className="modal-links">
                       {selectedMember.googleScholarProfile && (
-                        <a href={selectedMember.googleScholarProfile} target="_blank" rel="noreferrer" className="modal-link-btn">
-                          <FaBook /> View Google Scholar
+                        <a href={selectedMember.googleScholarProfile} target="_blank" rel="noreferrer" className="modal-link scholar">
+                          <FaBook /> Google Scholar
                         </a>
                       )}
                       {selectedMember.researchGateProfile && (
-                        <a href={selectedMember.researchGateProfile} target="_blank" rel="noreferrer" className="modal-link-btn">
-                          <FaResearchgate /> View ResearchGate
+                        <a href={selectedMember.researchGateProfile} target="_blank" rel="noreferrer" className="modal-link researchgate">
+                          <FaResearchgate /> ResearchGate
+                        </a>
+                      )}
+                      {selectedMember.linkedinProfile && (
+                        <a href={selectedMember.linkedinProfile} target="_blank" rel="noreferrer" className="modal-link linkedin">
+                          <FaLinkedin /> LinkedIn
+                        </a>
+                      )}
+                      {selectedMember.email && (
+                        <a href={`mailto:${selectedMember.email}`} className="modal-link email">
+                          <FaEnvelope /> Send Email
                         </a>
                       )}
                     </div>
                   </div>
-                </>
-              )}
-            </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import api from "../../utils/api"
-import "../../styles/announcements.css"
+import "../../styles/announcements.module.css"
 import Navbar from "../../components/NavBar"
 
 const Announcements = () => {

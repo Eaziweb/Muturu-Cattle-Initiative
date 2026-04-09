@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import api from "../../utils/api"
-import "../../styles/blogs.css"
+import "../../styles/blogs.module.css"
 import Navbar from "../../components/NavBar"
 
 const Blogs = () => {
