@@ -152,8 +152,6 @@ const Home = () => {
 <p>
   • To examine the historical significance and current status of Muturu cattle in West Africa.<br />
   • To promote awareness on the importance of conserving indigenous livestock genetic resources.<br />
-  • To foster collaboration among researchers, farmers, and key stakeholders in the livestock sector.<br />
-  • To explore sustainable strategies for improving productivity and conservation of Muturu cattle.
 </p>
             </div>
           </div>
