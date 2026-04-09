@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
+import {Logo} from "./Logo"
 import "../styles/navbar.css"
 
 const Navbar = () => {
@@ -48,7 +49,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          <div className="logo-box">MCI</div>
+          <Logo/>
         </Link>
 
         <div className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
