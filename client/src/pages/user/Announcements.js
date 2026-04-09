@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import api from "../../utils/api"
-import "../../styles/announcements.module.css"
+import styles from "../../styles/announcements.module.css"
 import Navbar from "../../components/NavBar"
 
 const Announcements = () => {
@@ -115,28 +115,28 @@ const Announcements = () => {
 
   if (loading && currentPage === 1) {
     return (
-      <div className="loading-container">
-        <div className="spinner"></div>
+      <div className={styles["loading-container"]}>
+        <div className={styles.spinner}></div>
         <p>Loading announcements...</p>
       </div>
     )
   }
 
   return (
-    <div className="announcements-page">
-             <Navbar />
-      <div className="container">
-        <div className="announcements-header">
+    <div className={styles["announcements-page"]}>
+      <Navbar />
+      <div className={styles.container}>
+        <div className={styles["announcements-header"]}>
           <h1>Announcements</h1>
           <p>Stay updated with the latest news and important information from our research community</p>
         </div>
 
-        <div className="announcements-filters">
-          <div className="filter-buttons">
+        <div className={styles["announcements-filters"]}>
+          <div className={styles["filter-buttons"]}>
             {["", "urgent", "event", "update", "general"].map((type) => (
               <button
                 key={type || "all"}
-                className={`filter-btn ${selectedType === type ? "active" : ""}`}
+                className={`${styles["filter-btn"]} ${selectedType === type ? styles.active : ""}`}
                 onClick={() => {
                   setSelectedType(type)
                   setCurrentPage(1)
@@ -148,51 +148,51 @@ const Announcements = () => {
           </div>
         </div>
 
-        <div className="announcements-grid">
+        <div className={styles["announcements-grid"]}>
           {announcements.length > 0 ? (
             announcements.map((announcement) => {
               const content = announcement.content || ""
               return (
                 <div
                   key={announcement._id}
-                  className={`announcement-card ${announcement.type || ""} ${announcement.priority || ""}`}
+                  className={`${styles["announcement-card"]} ${styles[announcement.type || ""]} ${styles[announcement.priority || ""]}`}
                   onClick={() => handleAnnouncementClick(announcement)}
                 >
-                  <div className="card-header">
-                    <div className="announcement-meta">
-                      <div className="type-icon">{getTypeIcon(announcement.type)}</div>
-                      <div className="type-info">
-                        <span className="type-badge">{announcement.type}</span>
-                        <span className="priority-badge">{announcement.priority}</span>
+                  <div className={styles["card-header"]}>
+                    <div className={styles["announcement-meta"]}>
+                      <div className={styles["type-icon"]}>{getTypeIcon(announcement.type)}</div>
+                      <div className={styles["type-info"]}>
+                        <span className={styles["type-badge"]}>{announcement.type}</span>
+                        <span className={styles["priority-badge"]}>{announcement.priority}</span>
                       </div>
                     </div>
-                    <span className="announcement-date">{formatDate(announcement.createdAt)}</span>
+                    <span className={styles["announcement-date"]}>{formatDate(announcement.createdAt)}</span>
                   </div>
 
                   {announcement.image && (
-                    <div className="card-image">
+                    <div className={styles["card-image"]}>
                       <img src={announcement.image || "/placeholder.svg"} alt={announcement.title} loading="lazy" />
                     </div>
                   )}
 
-                  <div className="card-content">
-                    <h3 className="announcement-title">{announcement.title}</h3>
-                    <p className="announcement-excerpt">
+                  <div className={styles["card-content"]}>
+                    <h3 className={styles["announcement-title"]}>{announcement.title}</h3>
+                    <p className={styles["announcement-excerpt"]}>
                       {content.length > 150 ? `${content.substring(0, 150)}...` : content}
                     </p>
                   </div>
 
-                  <div className="card-footer">
-                    <span className="view-count">{announcement.views || 0} views</span>
+                  <div className={styles["card-footer"]}>
+                    <span className={styles["view-count"]}>{announcement.views || 0} views</span>
                     {announcement.expiresAt && (
-                      <span className="expires-at">Expires: {formatDate(announcement.expiresAt)}</span>
+                      <span className={styles["expires-at"]}>Expires: {formatDate(announcement.expiresAt)}</span>
                     )}
                   </div>
                 </div>
               )
             })
           ) : (
-            <div className="no-announcements">
+            <div className={styles["no-announcements"]}>
               <h3>No announcements found</h3>
               <p>There are currently no announcements matching your criteria.</p>
             </div>
@@ -200,16 +200,16 @@ const Announcements = () => {
         </div>
 
         {totalPages > 1 && (
-          <div className="pagination">
+          <div className={styles.pagination}>
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="pagination-btn"
+              className={styles["pagination-btn"]}
             >
               Previous
             </button>
 
-            <div className="pagination-numbers">
+            <div className={styles["pagination-numbers"]}>
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                 let pageNum
                 if (totalPages <= 5) {
@@ -226,7 +226,7 @@ const Announcements = () => {
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`pagination-number ${currentPage === pageNum ? "active" : ""}`}
+                    className={`${styles["pagination-number"]} ${currentPage === pageNum ? styles.active : ""}`}
                   >
                     {pageNum}
                   </button>
@@ -237,7 +237,7 @@ const Announcements = () => {
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
-              className="pagination-btn"
+              className={styles["pagination-btn"]}
             >
               Next
             </button>
@@ -245,21 +245,21 @@ const Announcements = () => {
         )}
 
         {selectedAnnouncement && (
-          <div className="announcement-modal">
-            <div className="modal-container">
-              <div className="modal-header">
-                <div className="modal-meta">
-                  <div className="type-icon">{getTypeIcon(selectedAnnouncement.type)}</div>
-                  <div className="modal-info">
+          <div className={styles["announcement-modal"]}>
+            <div className={styles["modal-container"]}>
+              <div className={styles["modal-header"]}>
+                <div className={styles["modal-meta"]}>
+                  <div className={styles["type-icon"]}>{getTypeIcon(selectedAnnouncement.type)}</div>
+                  <div className={styles["modal-info"]}>
                     <h2>{selectedAnnouncement.title}</h2>
-                    <div className="modal-badges">
-                      <span className="type-badge">{selectedAnnouncement.type}</span>
-                      <span className="priority-badge">{selectedAnnouncement.priority}</span>
-                      <span className="date-badge">{formatDate(selectedAnnouncement.createdAt)}</span>
+                    <div className={styles["modal-badges"]}>
+                      <span className={styles["type-badge"]}>{selectedAnnouncement.type}</span>
+                      <span className={styles["priority-badge"]}>{selectedAnnouncement.priority}</span>
+                      <span className={styles["date-badge"]}>{formatDate(selectedAnnouncement.createdAt)}</span>
                     </div>
                   </div>
                 </div>
-                <button className="close-btn" onClick={() => setSelectedAnnouncement(null)}>
+                <button className={styles["close-btn"]} onClick={() => setSelectedAnnouncement(null)}>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" strokeWidth="2" />
                     <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" />
@@ -268,20 +268,20 @@ const Announcements = () => {
               </div>
 
               {selectedAnnouncement.image && (
-                <div className="modal-image">
+                <div className={styles["modal-image"]}>
                   <img src={selectedAnnouncement.image || "/placeholder.svg"} alt={selectedAnnouncement.title} />
                 </div>
               )}
 
-              <div className="modal-content">
-                <div className="announcement-content">
+              <div className={styles["modal-content"]}>
+                <div className={styles["announcement-content"]}>
                   {(selectedAnnouncement.content || "").split("\n\n").map((paragraph, index) => (
                     <p key={index}>{paragraph}</p>
                   ))}
                 </div>
 
-                <div className="modal-footer">
-                  <div className="announcement-stats">
+                <div className={styles["modal-footer"]}>
+                  <div className={styles["announcement-stats"]}>
                     <span>{selectedAnnouncement.views || 0} views</span>
                     {selectedAnnouncement.expiresAt && (
                       <span>Expires: {formatDate(selectedAnnouncement.expiresAt)}</span>
