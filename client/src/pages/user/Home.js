@@ -181,35 +181,14 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+    <div className="animate-on-scroll fade-up">
+        <PartnerWithUs />
+      </div>
       <div className="animate-on-scroll fade-up">
         <MuturuSectionSection />
       </div>
 
-      <div className="animate-on-scroll fade-up">
-        <PartnerWithUs />
-      </div>
-
-      {/* ── CTA ────────────────────────────────────────── */}
-      <section className="section cta-section">
-        <div className="container">
-          <div className="cta-content">
-            <div className="home_h2 animate-on-scroll fade-up">Join Our Research Network</div>
-            <div className="home_p animate-on-scroll fade-up delay-200">
-              Be part of the largest species-based research network in Sub-Saharan Africa. Collaborate with leading
-              scientists and contribute to preserving indigenous cattle breeds.
-            </div>
-            <div className="cta-buttons animate-on-scroll fade-up delay-400">
-              <Link to="/register" className="cta-btn primary">
-                Become a Member
-              </Link>
-              <Link to="/donate" className="cta-btn secondary">
-                Support Our Work
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+  
     </div>
   )
 }
