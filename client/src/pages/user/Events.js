@@ -20,6 +20,11 @@ const Events = () => {
     try {
       setLoading(true)
       const response = await api.get("/events")
+      console.log("Full events data:", response.data)
+      // Log the flyer structure for the first event to debug
+      if (response.data && response.data.length > 0) {
+        console.log("First event flyer structure:", response.data[0].flyer)
+      }
       setEvents(response.data)
     } catch (error) {
       setError("Failed to fetch events")
@@ -46,13 +51,34 @@ const Events = () => {
   }
 
   const getImageUrl = (flyer) => {
-    if (!flyer) return "/images/event-placeholder.jpg"
+    // Debug logging
+    console.log("getImageUrl received:", flyer)
+    
+    if (!flyer) {
+      console.log("No flyer provided, using placeholder")
+      return "/images/event-placeholder.jpg"
+    }
 
+    // If flyer is an object with url property (Cloudinary format)
     if (typeof flyer === "object" && flyer.url) {
+      console.log("Using Cloudinary URL:", flyer.url)
       return flyer.url
     }
 
-    return flyer
+    // If flyer is a string
+    if (typeof flyer === "string") {
+      // Check if it's a full URL (Cloudinary usually returns full URLs)
+      if (flyer.startsWith('http://') || flyer.startsWith('https://')) {
+        console.log("Using full URL string:", flyer)
+        return flyer
+      }
+      // If it's a relative path
+      console.log("Using relative path:", flyer)
+      return flyer.startsWith('/') ? flyer : `/${flyer}`
+    }
+
+    console.log("Unknown flyer format, using placeholder")
+    return "/images/event-placeholder.jpg"
   }
 
   if (loading)
@@ -86,7 +112,17 @@ const Events = () => {
           {events.map((event) => (
             <div key={event._id} className={styles["event-card"]} onClick={() => openEventModal(event)}>
               <div className={styles["event-image-wrapper"]}>
-                <img src={getImageUrl(event.flyer) || "/placeholder.svg"} alt={event.title} />
+                <img 
+                  src={getImageUrl(event.flyer)} 
+                  alt={event.title}
+                  onError={(e) => {
+                    console.error(`Failed to load image for event "${event.title}":`, e.target.src)
+                    console.log("Flyer data was:", event.flyer)
+                    e.target.onerror = null
+                    e.target.src = "/images/event-placeholder.jpg"
+                  }}
+                  onLoad={() => console.log(`Successfully loaded image for event: ${event.title}`)}
+                />
                 <div className={styles["event-date-badge"]}>
                   <span className={styles["date-day"]}>{new Date(event.date).getDate()}</span>
                   <span className={styles["date-month"]}>
@@ -128,7 +164,15 @@ const Events = () => {
             <div className={styles["modal-header"]}>
               {selectedEvent.flyer && (
                 <div className={styles["modal-image"]}>
-                  <img src={getImageUrl(selectedEvent.flyer) || "/placeholder.svg"} alt={selectedEvent.title} />
+                  <img 
+                    src={getImageUrl(selectedEvent.flyer)} 
+                    alt={selectedEvent.title}
+                    onError={(e) => {
+                      console.error("Modal image failed to load:", e.target.src)
+                      e.target.onerror = null
+                      e.target.src = "/images/event-placeholder.jpg"
+                    }}
+                  />
                 </div>
               )}
               <div className={styles["modal-title-section"]}>

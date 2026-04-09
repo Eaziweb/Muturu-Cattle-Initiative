@@ -91,9 +91,9 @@ const LegalPages = ({ page }) => {
               <p>
                 If you have questions about this Privacy Policy, please contact us at:
                 <br />
-                Email: privacy@mcrn.org
+                Email: muturucattleinitiative@gmail.com
                 <br />
-                Phone: +234 (0) 123 456 7890
+                Phone: +2348150420699
               </p>
             </section>
           </>
@@ -103,7 +103,7 @@ const LegalPages = ({ page }) => {
         return (
           <>
             <h1>Terms of Service</h1>
-            <p className="last-updated">Last Updated: January 2025</p>
+            <p className="last-updated">Last Updated: April 2026</p>
 
             <section>
               <h2>1. Acceptance of Terms</h2>
@@ -135,12 +135,12 @@ const LegalPages = ({ page }) => {
               <h3>Network Content</h3>
               <p>
                 All content on this website, including text, graphics, logos, and research materials, is the property of
-                MCRN or its content suppliers and is protected by copyright laws.
+                MCNI or its content suppliers and is protected by copyright laws.
               </p>
 
               <h3>User-Generated Content</h3>
               <p>
-                By submitting content to our platform, you grant MCRN a non-exclusive, worldwide, royalty-free license
+                By submitting content to our platform, you grant MCNI a non-exclusive, worldwide, royalty-free license
                 to use, reproduce, and distribute your content for research and educational purposes.
               </p>
             </section>
@@ -169,7 +169,7 @@ const LegalPages = ({ page }) => {
             <section>
               <h2>6. Limitation of Liability</h2>
               <p>
-                MCRN is not liable for any indirect, incidental, special, or consequential damages arising from your use
+                MCNI is not liable for any indirect, incidental, special, or consequential damages arising from your use
                 of our services. We provide the service "as is" without warranties of any kind.
               </p>
             </section>
@@ -195,9 +195,9 @@ const LegalPages = ({ page }) => {
               <p>
                 For questions about these Terms of Service, contact us at:
                 <br />
-                Email: legal@mcrn.org
+                Email: muturucattleinitiative@gmail.com
                 <br />
-                Phone: +234 (0) 123 456 7890
+                Phone: +2348103414050
               </p>
             </section>
           </>
@@ -212,11 +212,9 @@ const LegalPages = ({ page }) => {
               <h2>General Questions</h2>
 
               <div className="faq-item">
-                <h3>What is the Muturu Cattle Research Network?</h3>
+                <h3>What is the Muturu Cattle Network Initiative?</h3>
                 <p>
-                  The Muturu Cattle Research Network (MCRN) is the largest species-based research network in Sub-Saharan
-                  Africa, comprising 74 scientists across Nigeria, Ghana, and Benin Republic. We focus on preserving and
-                  improving the indigenous Muturu cattle breed through research and collaboration.
+                  The Muturu Cattle Network Initiative (MCNI), formerly the Muturu Cattle Research Network, is the largest species-based research network in Sub-Saharan Africa. It comprises over 100 scientists and livestock conservation enthusiasts across research and academic institutions in Nigeria, Ghana, Cameroon, and Benin Republic. </p> <p> Founded in 2024, MCNI focuses on preserving and improving the indigenous Muturu cattle breed and other local livestock species by bringing together researchers, veterinarians, geneticists, and other experts committed to sustainable livestock development in Africa.
                 </p>
               </div>
 
@@ -243,7 +241,7 @@ const LegalPages = ({ page }) => {
               <h2>Research and Collaboration</h2>
 
               <div className="faq-item">
-                <h3>How can I collaborate with MCRN researchers?</h3>
+                <h3>How can I collaborate with MCNI researchers?</h3>
                 <p>
                   Contact us through our website or reach out directly to specific researchers. We encourage
                   collaborative projects and can help facilitate partnerships between institutions and individual
@@ -316,18 +314,12 @@ const LegalPages = ({ page }) => {
               <div className="faq-item">
                 <h3>How can I contact MCRN?</h3>
                 <p>
-                  You can reach us via email at info@mcrn.org, by phone at +234 (0) 123 456 7890, or through our contact
+                  You can reach us via email at muturucattleinitiative@gmail.com, by phone at +2348150420699, or through our contact
                   form. We typically respond within 24-48 hours during business days.
                 </p>
               </div>
 
-              <div className="faq-item">
-                <h3>Where are you located?</h3>
-                <p>
-                  Our main office is located at the Muturu Cattle Research Institute, 123 Research Drive, Abuja,
-                  Nigeria. We also have regional coordinators in Ghana and Benin Republic.
-                </p>
-              </div>
+    
             </section>
           </>
         )

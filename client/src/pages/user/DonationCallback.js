@@ -90,7 +90,7 @@ const DonationCallback = () => {
             <h1>Thank You for Your Donation!</h1>
             <p className="success-message">
               Your generous contribution has been successfully processed and will make a real difference in advancing
-              Muturu cattle research and conservation.
+              Muturu cattle initiative and conservation.
             </p>
 
             {donationDetails && (

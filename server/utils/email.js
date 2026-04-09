@@ -18,7 +18,7 @@ const sendVerificationEmail = async (email, code, memberID) => {
     html: `
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
         <h2 style="color: #006400; text-align: center;">Verify Your Email</h2>
-        <p>Thank you for registering with the Muturu Cattle Initiative. Use the following code to verify your account:</p>
+        <p>Thank you for registering with the Muturu Cattle Network Initiative. Use the following code to verify your account:</p>
         
         <div style="text-align: center; margin: 30px 0;">
           <span style="font-size: 32px; font-weight: 800; letter-spacing: 10px; color: #006400; background: #f0fdf4; padding: 15px 30px; border-radius: 8px; border: 2px dashed #006400;">
@@ -40,7 +40,7 @@ const sendWelcomeEmail = async (email, fullName, memberID) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Welcome to Muturu Cattle Initiative!",
+    subject: "Welcome to Muturu Cattle Network Initiative!",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2>Congratulations ${fullName}!</h2>
@@ -65,7 +65,7 @@ const sendPasswordResetEmail = async (email, token) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Password Reset - Muturu Cattle Initiative",
+    subject: "Password Reset - Muturu Cattle Network Initiative",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2>Password Reset Request</h2>
@@ -87,7 +87,7 @@ const sendContactReplyEmail = async (email, name, originalMessage, replyText) =>
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: `RE: Contact Inquiry - Muturu Cattle Initiative`,
+    subject: `RE: Contact Inquiry - Muturu Cattle Network Initiative`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; line-height: 1.6;">
         <h2>Hello ${name},</h2>

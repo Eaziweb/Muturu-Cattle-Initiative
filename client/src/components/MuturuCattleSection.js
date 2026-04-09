@@ -17,17 +17,11 @@ const MuturuCattleSection = () => {
           <div className="muturu-intro">
             <div className="intro-text">
               <h3>About Muturu Cattle</h3>
-              <p>
-                The Muturu cattle are a unique indigenous breed of West Africa, particularly found in Nigeria. These
-                small-sized cattle are known for their hardiness, disease resistance, and adaptation to the humid forest
-                zones of West Africa. They represent an important genetic resource that has been shaped by centuries of
-                natural selection and traditional management practices.
-              </p>
-              <p>
-                Despite their valuable traits, Muturu cattle populations have been declining due to various factors
-                including crossbreeding with exotic breeds, habitat loss, and changing agricultural practices.
-                Conservation efforts are crucial to preserve this important genetic resource for future generations.
-              </p>
+<p> The global livestock industry is increasingly dominated by a few highly productive breeds, leading to the decline or replacement of local breeds through crossbreeding and genetic absorption. This trend threatens Africa’s largely untapped livestock genetic resources and poses risks to food security and sustainable livelihoods in Sub-Saharan Africa.
+
+Muturu cattle, a unique indigenous taurine breed of West Africa, were once prominent in Nigeria, Benin, and Ghana. These small-sized cattle are valued for their hardiness, disease resistance, short generation interval, and adaptability to humid forest environments. They represent a vital genetic resource shaped by centuries of natural selection and traditional practices. However, their population has significantly declined due to factors such as preference for breeds like White Fulani, crossbreeding, habitat loss, and changing agricultural systems.
+
+</p> <p> There is an urgent need for increased advocacy, policy support, research, and stakeholder collaboration to preserve and promote Muturu cattle and other indigenous livestock breeds for sustainable livestock development in Africa. </p>
               <Link to="/muturu-cattle" className="learn-more-btn">
                 Learn More <FaArrowRight />
               </Link>

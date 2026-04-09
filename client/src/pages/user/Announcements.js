@@ -17,6 +17,32 @@ const Announcements = () => {
     fetchAnnouncements()
   }, [currentPage, selectedType])
 
+const greenButtonStyles = {
+  default: {
+    backgroundColor: "transparent",
+    color: "#2e7d32",
+    border: "2px solid #2e7d32",
+    borderRadius: "8px",
+    padding: "10px 20px",
+    margin: "0 8px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "all 0.3s ease-in-out"
+  },
+  active: {
+    backgroundColor: "#2e7d32",
+    color: "white",
+    border: "2px solid #2e7d32",
+    borderRadius: "8px",
+    padding: "10px 20px",
+    margin: "0 8px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "all 0.3s ease-in-out"
+  }
+}
   const fetchAnnouncements = async () => {
     setLoading(true)
     try {
@@ -131,22 +157,35 @@ const Announcements = () => {
           <p>Stay updated with the latest news and important information from our research community</p>
         </div>
 
-        <div className={styles["announcements-filters"]}>
-          <div className={styles["filter-buttons"]}>
-            {["", "urgent", "event", "update", "general"].map((type) => (
-              <button
-                key={type || "all"}
-                className={`${styles["filter-btn"]} ${selectedType === type ? styles.active : ""}`}
-                onClick={() => {
-                  setSelectedType(type)
-                  setCurrentPage(1)
-                }}
-              >
-                {type ? type.charAt(0).toUpperCase() + type.slice(1) : "All Announcements"}
-              </button>
-            ))}
-          </div>
-        </div>
+        
+<div className={styles["announcements-filters"]}>
+  <div className={styles["filter-buttons"]}>
+    {["", "urgent", "event", "update", "general"].map((type) => (
+      <button
+        key={type || "all"}
+        onClick={() => {
+          setSelectedType(type)
+          setCurrentPage(1)
+        }}
+        style={selectedType === type ? greenButtonStyles.active : greenButtonStyles.default}
+        onMouseEnter={(e) => {
+          if (selectedType !== type) {
+            e.target.style.backgroundColor = "#e8f5e9"
+            e.target.style.transform = "translateY(-2px)"
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (selectedType !== type) {
+            e.target.style.backgroundColor = "transparent"
+            e.target.style.transform = "translateY(0)"
+          }
+        }}
+      >
+        {type ? type.charAt(0).toUpperCase() + type.slice(1) : "All Announcements"}
+      </button>
+    ))}
+  </div>
+</div>
 
         <div className={styles["announcements-grid"]}>
           {announcements.length > 0 ? (

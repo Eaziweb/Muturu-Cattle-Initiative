@@ -24,7 +24,7 @@ const Home = () => {
       {/* ── Hero ───────────────────────────────────────── */}
       <section className="home-hero">
         <div className="home-hero-content">
-          <h1 className="animate-on-scroll fade-up">Muturu Cattle Research Network</h1>
+          <h1 className="animate-on-scroll fade-up">Muturu Cattle Research Initiative</h1>
           <p className="animate-on-scroll fade-up delay-200">
             Preserving indigenous cattle breeds and advancing sustainable livestock genetics across West Africa
           </p>
@@ -48,15 +48,7 @@ const Home = () => {
             </div>
 
             <div className="about-text animate-on-scroll fade-right">
-              <p>
-                The Muturu Cattle Research Network comprises 74 scientists across research stations and academic
-                institutions in Nigeria, Ghana, and Benin Republic. We are the largest species-based research network in
-                Sub-Saharan Africa, dedicated to preserving and improving the Muturu cattle breed.
-              </p>
-              <p>
-                Our network focuses on genetic conservation, sustainable breeding practices, and empowering local
-                farmers with knowledge and resources to maintain this valuable indigenous breed.
-              </p>
+     <p> The Muturu Cattle Network Initiative (MCNI), formerly the Muturu Cattle Research Network, is the largest species-based research network in Sub-Saharan Africa. It comprises over 100 scientists and livestock conservation enthusiasts across research and academic institutions in Nigeria, Ghana, Cameroon, and Benin Republic. </p> <p> Founded in 2024, MCNI focuses on preserving and improving the indigenous Muturu cattle breed and other local livestock species by bringing together researchers, veterinarians, geneticists, and other experts committed to sustainable livestock development in Africa. </p> <p> MCNI works closely with farming communities, research institutions, government agencies, and international partners to ensure the long-term survival and productivity of African livestock genetic resources while supporting rural livelihoods and food security. </p>
               <Link to="/about" className="learn-more-btn">
                 Learn More About Us
               </Link>
@@ -146,24 +138,23 @@ const Home = () => {
             <div className="mission-card animate-on-scroll fade-up delay-100">
               <h3>Vision</h3>
               <p>
-                To be the leading research network for indigenous cattle conservation and sustainable livestock
-                development in West Africa, ensuring food security and economic prosperity for rural communities.
+  To protect and enhance Africa's native cattle breeds, ensuring resilient farming systems, improved productivity, and sustainable economic growth for rural communities while preserving valuable genetic resources for future generations.
               </p>
             </div>
             <div className="mission-card animate-on-scroll fade-up delay-300">
               <h3>Mission</h3>
               <p>
-                To conduct cutting-edge research on Muturu cattle genetics, promote sustainable breeding practices, and
-                empower farmers with knowledge and resources to preserve this valuable indigenous breed for future
-                generations.
+     The mission  of MCNI is to work closely with local farming communities, research stations, government agencies, and international partners to conserve and improve indigenous African livestock to build sustainable livelihoods for farmers and stakeholders.
               </p>
             </div>
             <div className="mission-card animate-on-scroll fade-up delay-500">
-              <h3>Objectives</h3>
-              <p>
-                Advance scientific understanding of Muturu cattle genetics • Build capacity among researchers and
-                farmers • Promote sustainable livestock practices • Preserve indigenous genetic resources
-              </p>
+             <h3>Objectives</h3>
+<p>
+  • To examine the historical significance and current status of Muturu cattle in West Africa.<br />
+  • To promote awareness on the importance of conserving indigenous livestock genetic resources.<br />
+  • To foster collaboration among researchers, farmers, and key stakeholders in the livestock sector.<br />
+  • To explore sustainable strategies for improving productivity and conservation of Muturu cattle.
+</p>
             </div>
           </div>
         </div>

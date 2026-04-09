@@ -116,7 +116,7 @@ const handleSubmit = async (e) => {
             </svg>
           </button>
           <h1>Join Our Initiative</h1>
-          <p>Register to become a member of the Muturu Cattle Initiative</p>
+          <p>Register to become a member of the Muturu Cattle Research Initiative</p>
         </div>
 
         {success && <div className={styles.successMessage}>{success}</div>}

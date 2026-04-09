@@ -91,7 +91,7 @@ const connectDB = async () => {
 }
 app.get('/', (req, res) => {
   res.status(200).json({
-    message: "Muturu Cattle Initiative API is live and connected!",
+    message: "Muturu Cattle Research Initiative API is live and connected!",
     status: "Healthy"
   });
 });

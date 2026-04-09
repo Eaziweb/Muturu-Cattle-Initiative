@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-section">
-          <h3>Muturu Cattle Initiative</h3>
+          <h3>Muturu Cattle Research Initiative</h3>
           <div className="ptag">Advancing livestock genetics and sustainable cattle farming across West Africa.</div>
           <div className="social-icons">
             <a href="https://facebook.com/mcrn" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
@@ -48,15 +48,15 @@ const Footer = () => {
               <FaPhone className="contact-icon" />
               <a href="tel:+2348150420699">+2348150420699</a>
             </p>
-            <p>PMB1515, Kwara, Nigeria</p>
-            <p>P.M.B 1515, Lagos</p>
+            <p>Beside Femtech Tank Offic, Tanke-Tipper Garage Road, Ilorin.</p>
+            <p> Kwara State, Nigeria</p>
           </div>
         </div>
       </div>
 
       <div className="footer-bottom">
         <div className="footer-bottom-content">
-          <p>&copy; {new Date().getFullYear()} Muturu Cattle Initiative. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Muturu Cattle Research Initiative. All rights reserved.</p>
           <div className="legal-links">
             <Link to="/privacy">Privacy Policy</Link>
             <Link to="/terms">Terms of Service</Link>

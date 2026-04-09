@@ -84,7 +84,7 @@ const Partnership = () => {
       <div className="container">
         {/* Hero Section */}
         <div className="partnership-hero">
-          <h1>Partner with MCRN</h1>
+          <h1>Partner with MCNI</h1>
           <p>Join us in advancing cattle research and sustainable livestock development across Nigeria and beyond.</p>
         </div>
 

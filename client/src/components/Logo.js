@@ -45,8 +45,7 @@ const Logo = () => {
       <div className="mcrn-logo__divider" aria-hidden="true" />
 
       <div className="mcrn-logo__text">
-        <span className="mcrn-logo__wordmark">MCRN</span>
-        <span className="mcrn-logo__tagline">Management System</span>
+        <span className="mcrn-logo__wordmark">MCNI</span>
       </div>
 
       <div className="mcrn-logo__shine" aria-hidden="true" />

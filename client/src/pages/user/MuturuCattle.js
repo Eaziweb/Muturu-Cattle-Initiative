@@ -24,15 +24,28 @@ const MuturuCattle = () => {
           <div className="intro-content">
             <h2>About Muturu Cattle</h2>
             <p>
-              The Muturu cattle are a unique indigenous breed of West Africa, particularly found in Nigeria. These
-              small-sized cattle are known for their hardiness, disease resistance, and adaptation to the humid forest
-              zones of West Africa. They represent an important genetic resource that has been shaped by centuries of
-              natural selection and traditional management practices.
+         The global livestock industry is currently dominated by a few highly productive breeds
+that are widely distributed across various regions. The resultant disappearance or
+extensive alteration of local breeds through crossbreeding, absorption, or outright
+replacement by exotic breeds poses significant risks to the significantly untapped
+African livestock genetic resources. It also portrays a grave prospect for food security
+and sustainable livelihood in developing countries, especially in Sub-Saharan Africa.
+Muturu cattle is a unique indigenous taurine cattle breed of West Africa. It was once a
+very prominent breed of cattle in Nigeria and other West African countries like Benin
+and Ghana. These small-sized cattle are known for their hardiness, disease resistance,
+short generation interval and adaptation to the humid forest zones of West Africa. They
+represent an important genetic resource that has been shaped by centuries of natural
+selection and traditional management practices. However, the population of Muturu
+cattle has gravely declined in the last few score years. The population has become
+threatened due to various factors including preference for other breeds like the White
+Fulani, crossbreeding with other breeds, habitat loss, and changing agricultural
+practices.
             </p>
             <p>
-              Despite their valuable traits, Muturu cattle populations have been declining due to various factors
-              including crossbreeding with exotic breeds, habitat loss, and changing agricultural practices.
-              Conservation efforts are crucial to preserve this important genetic resource for future generations.
+There is the need for special attention in the domain of advocacy for policy shift,
+research and collaborations among relevant stakeholders in the livestock value chain
+with a view to preserve and promote Muturu cattle and other indigenous livestock
+genetic resources for a diversified and sustainable livestock development in Africa.
             </p>
           </div>
         </div>

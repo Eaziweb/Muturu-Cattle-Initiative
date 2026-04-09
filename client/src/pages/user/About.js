@@ -12,52 +12,41 @@ const About = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
 
   // Executive team data
-  const executives = [
-    {
-      id: 1,
-      name: "Prof Fayeye Timothy Rotimi",
-      position: "President/Founder",
-      image: "/president.png",
-      bio: "Leading expert in cattle genetics with over 25 years of research experience",
-      education: "PhD in Animal Genetics, University of Ibadan",
-      specialization: "Genetic Conservation, Breeding Programs",
-      publications: "50+ peer-reviewed publications",
-      email: "fayetiro@gmail.com",
-    },
-    {
-      id: 2,
-      name: "Prof. Adebayo",
-      position: "Head of Research",
-      image: "/placeholder-exec2.jpg",
-      bio: "Renowned researcher in indigenous livestock breeds and sustainable agriculture",
-      education: "PhD in Animal Science, Ahmadu Bello University",
-      specialization: "Disease Resistance, Tropical Livestock",
-      publications: "40+ peer-reviewed publications",
-      email: "n.ekechi@mcrn.org",
-    },
-    {
-      id: 3,
-      name: "Dr. John",
-      position: "Regional Coordinator (Ghana)",
-      image: "/placeholder-exec3.jpg",
-      bio: "Expert in community-based livestock management and farmer education",
-      education: "PhD in Agricultural Extension, University of Ghana",
-      specialization: "Farmer Training, Community Development",
-      publications: "30+ peer-reviewed publications",
-      email: "k.mensah@mcrn.org",
-    },
-    {
-      id: 4,
-      name: "Mr Ezekiel Adeoluwa",
-      position: "Head of Human Relations",
-      image: "/exec3.jpg",
-      bio: "Specialist in molecular genetics and genomic analysis of cattle breeds",
-      education: "PhD in Molecular Biology, University of Lagos",
-      specialization: "Genomics, Molecular Markers",
-      publications: "35+ peer-reviewed publications",
-      email: "f.bello@mcrn.org",
-    },
-  ]
+const executives = [
+  {
+    id: 1,
+    name: "Prof. Timothy Rotimi Fayeye",
+    position: "President/Founder",
+    image: "/president.png",
+    bio: "Professor of Animal Breeding and Genetics at the University of Ilorin with over three decades of teaching and research experience in livestock genetics.",
+    education: "PhD in Animal Breeding and Genetics, University of Ilorin",
+    specialization: "Animal Breeding, Genetic Conservation, Livestock Improvement",
+    publications: "Author of Genetic Principles and Animal Breeding + numerous publications",
+    email: "fayetiro@gmail.com",
+  },
+  {
+    id: 2,
+    name: "Dr. Timothy Oluwafemi Ajiboye",
+    position: "Trustee",
+    image: "/trustee2.png",
+    bio: "Specialist in crop protection and genetic resource management, currently leading the Field Gene Bank at NACGRAB, Ibadan.",
+    education: "PhD in Crop Protection, University of Ilorin",
+    specialization: "Genetic Resources, Crop Protection, Biodiversity Conservation",
+    publications: "Research contributions in agriculture and genetic resource management",
+    email: "ajiboyefemi2002@yahoo.com",
+  },
+  {
+    id: 3,
+    name: "Mrs. Olanike Foluke Fayeye",
+    position: "Trustee",
+    image: "/trustee1.png",
+    bio: "Experienced educator with over 30 years in teaching, passionate about academic development and community impact.",
+    education: "M.Ed in Social Studies Education",
+    specialization: "Education, Curriculum Development, Community Engagement",
+    publications: "Educational contributions and teaching experience",
+    email: "olanikefolule@gmail.com",
+  },
+];
 
   // Auto-slide functionality
   useEffect(() => {
@@ -102,19 +91,23 @@ const About = () => {
           <h2 className="section-title">Who We Are as an Organization</h2>
           <div className="who-content">
             <p>
-              The Muturu Cattle Research Network (MCRN) is the largest species-based research network in Sub-Saharan
-              Africa, comprising 74 dedicated scientists across research stations and academic institutions in Nigeria,
-              Ghana, and Benin Republic.
+          The Muturu Cattle Network Initiative (MCNI) formerly called Muturu Cattle Research
+Network is the largest species-based research network in Sub-Saharan Africa,
+comprising over 100 dedicated scientists and livestock conservation enthusiast across
+research stations and academic institutions in Nigeria, Ghana, Cameroon and Benin
+Republic.
             </p>
             <p>
-              Founded to preserve and improve the indigenous Muturu cattle breed, our network brings together leading
-              researchers, veterinarians, geneticists, and agricultural specialists committed to sustainable livestock
-              development in West Africa.
+ Founded in 2024 to preserve and improve the indigenous muturu cattle breed and other
+indigenous livestock species, our network brings together leading researchers,
+veterinarians, geneticists, and other specialists who are committed to sustainable
+livestock development in Africa.
             </p>
             <p>
-              We work closely with local farming communities, government agencies, and international partners to ensure
-              the long-term survival and productivity of this valuable genetic resource while supporting rural
-              livelihoods and food security.
+          The goal of MCNI is to work closely with local farming communities, research stations,
+government agencies, and international partners to ensure the long-term survival and
+productivity of valuable African livestock genetic resources while supporting rural
+livelihoods and food security.
             </p>
           </div>
         </div>
@@ -176,21 +169,27 @@ const About = () => {
         <div className="container">
           <div className="vm-grid">
             <div className="vm-card vision-card">
-              <h2>Our Vision</h2>
+              <h2>Our Aims</h2>
               <p>
-                To be the leading research network for indigenous cattle conservation and sustainable livestock
-                development in West Africa, ensuring food security, economic prosperity, and environmental
-                sustainability for rural communities while preserving valuable genetic resources for future generations.
-              </p>
+               i. to promote the monitoring of population structure of Muturu cattle and other neglected
+livestock of African Origin   </p>
+<p> ii. to promote the conservation, management, genetic improvement and production
+sustainability of Muturu cattle and other neglected livestock of African Origin</p>
+<p>iii. to promote advocacy on improved government funding for conservation and
+genetic improvement of Muturu cattle and other neglected livestock of African Origin </p>
+<p>iv. to stimulate relevant stakeholders at subnational, national and international levels to
+evolve policies and programs that could salvage the fastly depleting genetic resource of
+African Origin.</p>
+            
             </div>
-            <div className="vm-card mission-card">
+            {/* <div className="vm-card mission-card">
               <h2>Our Mission</h2>
               <p>
                 To conduct cutting-edge research on Muturu cattle genetics, promote sustainable breeding practices,
                 build capacity among researchers and farmers, and create collaborative partnerships that advance
                 livestock science and improve livelihoods across West Africa.
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -249,29 +248,34 @@ const About = () => {
       </section>
 
       {/* Achievements */}
-      <section className="section achievements">
-        <div className="container">
-          <h2 className="section-title">Our Achievements</h2>
-          <div className="achievements-grid">
-            <div className="achievement-card">
-              <h3>Research Publications</h3>
-              <p>Over 200 peer-reviewed publications in international journals</p>
-            </div>
-            <div className="achievement-card">
-              <h3>Genetic Database</h3>
-              <p>Comprehensive genetic database of Muturu cattle across West Africa</p>
-            </div>
-            <div className="achievement-card">
-              <h3>Farmer Training</h3>
-              <p>5,000+ farmers trained in sustainable breeding practices</p>
-            </div>
-            <div className="achievement-card">
-              <h3>International Recognition</h3>
-              <p>Partnerships with leading research institutions worldwide</p>
-            </div>
-          </div>
-        </div>
-      </section>
+<section className="section achievements">
+  <div className="container">
+    <h2 className="section-title">Our Achievements</h2>
+    <div className="achievements-grid">
+      
+      <div className="achievement-card">
+        <h3>International Research Conference</h3>
+        <p>Successfully organized a global webinar bringing together experts from Nigeria, USA, Germany, and Benin to discuss Muturu cattle development.</p>
+      </div>
+
+      <div className="achievement-card">
+        <h3>Cross-Border Collaboration</h3>
+        <p>Established a network of over 100 researchers and stakeholders across multiple West African countries.</p>
+      </div>
+
+      <div className="achievement-card">
+        <h3>Knowledge Dissemination</h3>
+        <p>Promoted awareness of indigenous cattle conservation through academic discussions, public engagement, and digital platforms.</p>
+      </div>
+
+      <div className="achievement-card">
+        <h3>Stakeholder Engagement</h3>
+        <p>Connected researchers, farmers, and institutions to foster sustainable livestock practices and policy advocacy.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
 
       {/* Partner With Us section */}
       <PartnerWithUs />

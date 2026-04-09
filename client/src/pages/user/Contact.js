@@ -110,22 +110,19 @@ const Contact = () => {
             <div className="contact-methods">
               <div className="contact-method">
                 <h3><FaEnvelope /> Email</h3>
-                <p>info@mcrn.org</p>
-                <p>research@mcrn.org</p>
+                <p>muturucattleinitiative@gmail.com</p>
               </div>
 
               <div className="contact-method">
                 <h3><FaPhone /> Phone</h3>
-                <p>+234 (0) 123 456 7890</p>
-                <p>+234 (0) 987 654 3210</p>
+                <p>+2348150420699</p>
               </div>
 
               <div className="contact-method">
              
                 <h3><FaMapMarkerAlt /> Address</h3>
-                <p>Muturu Cattle Research Institute</p>
-                <p>123 Research Drive</p>
-                <p>Abuja, Nigeria</p>
+                <p>Muturu Cattle Research Initiative</p>
+                <p>Kwara, Nigeria</p>
               </div>
 
               <div className="contact-method">

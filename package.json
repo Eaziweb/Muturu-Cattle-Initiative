@@ -1,7 +1,7 @@
 {
-  "name": "mcrn-app",
+  "name": "mcNI-app",
   "version": "1.0.0",
-  "description": "Muturu Cattle Research Network Application",
+  "description": "Muturu Cattle Research Network Initiative Application",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",

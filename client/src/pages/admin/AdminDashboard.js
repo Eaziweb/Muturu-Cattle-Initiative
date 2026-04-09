@@ -204,7 +204,7 @@ const AdminDashboard = () => {
           <div className={styles.brandLogo}>
             <div className={styles.logoIcon}>M</div>
             <div className={styles.brandText}>
-              <h2>MCRN</h2>
+              <h2>MCNI</h2>
               <span>Admin Portal</span>
             </div>
           </div>
