@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
 import "../styles/footer.css"
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaEnvelope, FaPhone } from "react-icons/fa"
-import { Transform } from "node:stream"
 
 const Footer = () => {
   return (
