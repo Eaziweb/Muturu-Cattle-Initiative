@@ -1,109 +1,185 @@
-.logo-link {
+/* =============================================
+   MCRN Logo
+   ============================================= */
+
+.mcrn-logo {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  height: 100%;
-}
-
-.logo-box {
-  font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 18px;
-  background: linear-gradient(135deg, #006400 0%, #0d3513 100%);
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
+  gap: 14px;
+  padding: 10px 18px 10px 12px;
+  background: #0d3d14;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.25s ease,
+              border-color 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.logo-box::before {
-  content: '';
+.mcrn-logo:hover,
+.mcrn-logo--active {
+  transform: translateY(-2px);
+  background: #0f4818;
+  border-color: rgba(125, 232, 154, 0.2);
+}
+
+.mcrn-logo:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+/* ── Icon box ── */
+.mcrn-logo__icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.mcrn-logo:hover .mcrn-logo__icon,
+.mcrn-logo--active .mcrn-logo__icon {
+  background: rgba(125, 232, 154, 0.12);
+  border-color: rgba(125, 232, 154, 0.3);
+}
+
+/* ── Divider ── */
+.mcrn-logo__divider {
+  width: 1px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+/* ── Text group ── */
+.mcrn-logo__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mcrn-logo__wordmark {
+  font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 3.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1;
+  transition: letter-spacing 0.25s ease;
+}
+
+.mcrn-logo:hover .mcrn-logo__wordmark,
+.mcrn-logo--active .mcrn-logo__wordmark {
+  letter-spacing: 4px;
+}
+
+.mcrn-logo__tagline {
+  font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1;
+  transition: color 0.25s ease;
+}
+
+.mcrn-logo:hover .mcrn-logo__tagline,
+.mcrn-logo--active .mcrn-logo__tagline {
+  color: rgba(125, 232, 154, 0.75);
+}
+
+/* ── Shine sweep on hover ── */
+.mcrn-logo__shine {
   position: absolute;
   top: 0;
   left: -100%;
-  width: 100%;
+  width: 60%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.6s ease;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+  transition: left 0.55s ease;
+  pointer-events: none;
 }
 
-.logo-box:hover::before {
-  left: 100%;
+.mcrn-logo:hover .mcrn-logo__shine,
+.mcrn-logo--active .mcrn-logo__shine {
+  left: 160%;
 }
 
-.logo-box.hovered {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  background: linear-gradient(135deg, #0d3513 0%, #006400 100%);
-}
+/* =============================================
+   Mobile responsiveness
+   ============================================= */
 
-.logo-text {
-  font-size: 22px;
-  font-weight: 800;
-  color: white;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  line-height: 1;
-  margin-bottom: 4px;
-  position: relative;
-  z-index: 1;
-}
-
-.logo-subtitle {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.8);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-weight: 500;
-  position: relative;
-  z-index: 1;
-}
-
-/* Mobile responsiveness */
 @media (max-width: 768px) {
-  .logo-box {
-    padding: 8px 14px;
+  .mcrn-logo {
+    padding: 8px 14px 8px 10px;
+    gap: 11px;
+    border-radius: 11px;
   }
 
-  .logo-text {
-    font-size: 18px;
-    letter-spacing: 2px;
+  .mcrn-logo__icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
   }
 
-  .logo-subtitle {
-    font-size: 9px;
-    letter-spacing: 0.5px;
+  .mcrn-logo__wordmark {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+
+  .mcrn-logo__tagline {
+    font-size: 8px;
+    letter-spacing: 1.4px;
   }
 }
 
 @media (max-width: 480px) {
-  .logo-box {
-    padding: 6px 12px;
+  .mcrn-logo {
+    padding: 7px 12px 7px 9px;
+    gap: 9px;
   }
 
-  .logo-text {
-    font-size: 16px;
+  .mcrn-logo__icon {
+    width: 30px;
+    height: 30px;
   }
 
-  .logo-subtitle {
+  .mcrn-logo__divider,
+  .mcrn-logo__tagline {
     display: none;
+  }
+
+  .mcrn-logo__wordmark {
+    font-size: 13px;
+    letter-spacing: 2.5px;
   }
 }
 
-/* Active state animation */
-@keyframes logoFocus {
-  0% {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  }
-  50% {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  }
-  100% {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+/* =============================================
+   Accessibility
+   ============================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .mcrn-logo,
+  .mcrn-logo__icon,
+  .mcrn-logo__wordmark,
+  .mcrn-logo__tagline,
+  .mcrn-logo__shine {
+    transition: none !important;
   }
 }

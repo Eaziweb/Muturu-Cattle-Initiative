@@ -1,0 +1,200 @@
+/* ============================================
+   SKELETON LOADING EFFECT
+   ============================================ */
+
+@keyframes shimmer {
+  0% { background-position: -800px 0; }
+  100% { background-position: 800px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #e0e0e0 25%,
+    #f0f0f0 50%,
+    #e0e0e0 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 6px;
+  display: block;
+}
+
+/* Dark mode skeleton */
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #2a2a2a 25%,
+      #3a3a3a 50%,
+      #2a2a2a 75%
+    );
+    background-size: 800px 100%;
+  }
+}
+
+/* Image skeleton placeholder */
+.skeleton-img {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #e0e0e0 25%,
+    #f0f0f0 50%,
+    #e0e0e0 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+/* When image loads, fade out the skeleton */
+.img-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-wrapper img {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.img-wrapper img.loaded {
+  opacity: 1;
+}
+
+.img-wrapper img.loaded + .skeleton-img,
+.img-wrapper .skeleton-img.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Skeleton text lines */
+.skeleton-line {
+  height: 16px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.skeleton-line.short { width: 60%; }
+.skeleton-line.medium { width: 80%; }
+.skeleton-line.full { width: 100%; }
+.skeleton-line.title { height: 28px; margin-bottom: 16px; width: 70%; }
+
+/* Skeleton card blocks */
+.skeleton-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.skeleton-card .skeleton-img-block {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+/* Hero skeleton */
+.skeleton-hero-title {
+  height: 56px;
+  width: 70%;
+  margin: 0 auto 20px;
+  border-radius: 8px;
+}
+
+.skeleton-hero-subtitle {
+  height: 24px;
+  width: 55%;
+  margin: 0 auto 30px;
+  border-radius: 6px;
+}
+
+.skeleton-hero-btn {
+  height: 52px;
+  width: 180px;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+/* ============================================
+   SCROLL-TRIGGERED ANIMATION SYSTEM
+   ============================================ */
+
+/* Base state: elements start hidden/transformed */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.animate-on-scroll.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.animate-on-scroll.fade-in {
+  opacity: 0;
+  transform: translateY(0);
+}
+
+.animate-on-scroll.fade-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.animate-on-scroll.fade-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.animate-on-scroll.zoom-in {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+/* Animated state: when .in-view is applied by JS */
+.animate-on-scroll.in-view {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* Staggered delay helpers */
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+.delay-500 { transition-delay: 0.5s; }
+.delay-600 { transition-delay: 0.6s; }
+
+/* Impact numbers count-up visual polish */
+.home-impact-number {
+  transition: transform 0.3s ease;
+}
+
+.home-impact-card.in-view .home-impact-number {
+  transform: scale(1);
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll,
+  .skeleton,
+  .skeleton-img,
+  .img-wrapper img {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .img-wrapper img { opacity: 1 !important; }
+  .skeleton-img { display: none !important; }
+}

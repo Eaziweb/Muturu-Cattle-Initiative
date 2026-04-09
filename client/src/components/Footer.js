@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import "../styles/footer.css"
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaEnvelope, FaPhone } from "react-icons/fa"
+import { Transform } from "node:stream"
 
 const Footer = () => {
   return (
@@ -42,11 +43,11 @@ const Footer = () => {
           <div className="footer-contact-info">
             <p>
               <FaEnvelope className="contact-icon" />
-              <a href="mailto:info@mcrn.org">muturucattleinitiative@gmail.com</a>
+              <a href="mailto:muturucattleinitiative@gmail.com">muturucattleinitiative@gmail.com</a>
             </p>
             <p>
               <FaPhone className="contact-icon" />
-              <a href="tel:+2341234567890">+2348150420699</a>
+              <a href="tel:+2348150420699">+2348150420699</a>
             </p>
             <p>PMB1515, Kwara, Nigeria</p>
             <p>P.M.B 1515, Lagos</p>
