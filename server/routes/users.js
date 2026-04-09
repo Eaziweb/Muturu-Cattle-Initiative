@@ -8,43 +8,53 @@ const router = express.Router()
 
 // Update user profile
 // Update user profile
+// Update user profile
 router.put("/profile", auth, async (req, res) => {
   try {
-    const { 
-      title, 
-      academicQualifications, 
-      researchDisciplines, 
-      googleScholarProfile, 
-      researchGateProfile,
-      bio, // New field
-      phoneNumber, // New field
-      gender, // New field
-      profileImage 
-    } = req.body
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    const user = await User.findById(req.user.id)
-    if (!user) return res.status(404).json({ message: "User not found" })
+    // List of allowed fields to update from the request body
+    const allowedUpdates = [
+      "fullName",
+      "title",
+      "profession",
+      "academicQualifications",
+      "researchDisciplines",
+      "country",
+      "state",
+      "bio",
+      "phoneNumber",
+      "gender",
+      "googleScholarProfile",
+      "researchGateProfile",
+      "profileImage"
+    ];
 
-    // Update fields - adding more flexibility
-    user.title = title || user.title
-    user.academicQualifications = academicQualifications || user.academicQualifications
-    user.researchDisciplines = researchDisciplines || user.researchDisciplines
-    user.googleScholarProfile = googleScholarProfile || user.googleScholarProfile
-    user.researchGateProfile = researchGateProfile || user.researchGateProfile
-    user.bio = bio || user.bio
-    user.phoneNumber = phoneNumber || user.phoneNumber
-    user.gender = gender || user.gender
-    user.profileImage = profileImage || user.profileImage
+    // Dynamically update only the fields provided in req.body
+    // Using 'undefined' check allows users to send empty strings "" to clear a field
+    allowedUpdates.forEach((field) => {
+      if (req.body[field] !== undefined) {
+        user[field] = req.body[field];
+      }
+    });
 
-    await user.save()
+    await user.save();
 
-    const updatedUser = await User.findById(req.user.id).select("-password")
-    res.json(updatedUser)
+    // Fetch fresh user data without password
+    const updatedUser = await User.findById(req.user.id).select("-password");
+    
+    res.json(updatedUser);
   } catch (error) {
-    console.error("Profile update error:", error)
-    res.status(500).json({ message: "Server error during profile update" })
+    console.error("Profile update error:", error);
+    res.status(500).json({ 
+      message: "Server error during profile update",
+      details: error.message 
+    });
   }
-})
+});
  // Get single member full profile
 router.get("/profile/:id", async (req, res) => {
   try {

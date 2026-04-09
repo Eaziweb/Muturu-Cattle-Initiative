@@ -131,18 +131,23 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const value = {
-    user,
-    loading,
-    login,
-    register,
-    logout,
-    forgotPassword,
-    resetPassword,
-    verifyEmail,
-    resendCode,
-    fetchCurrentUser
-  }
+ const updateUser = (updatedUserData) => {
+  setUser(updatedUserData)
+  localStorage.setItem("user", JSON.stringify(updatedUserData))
+}
 
+const value = {
+  user,
+  loading,
+  login,
+  register,
+  logout,
+  forgotPassword,
+  resetPassword,
+  verifyEmail,
+  resendCode,
+  fetchCurrentUser,
+  updateUser
+}
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

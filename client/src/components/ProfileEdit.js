@@ -170,13 +170,16 @@ const ProfileEdit = ({ user }) => {
                   className="profile-image-preview" 
                 />
               ) : (
-                <div className="avatar-placeholder-circle">
-                  {formData.fullName
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")
-                    .toUpperCase()}
-                </div>
+             <div className="avatar-placeholder-circle">
+  {formData.fullName && formData.fullName.trim() !== "" 
+    ? formData.fullName
+        .split(" ")
+        .filter(Boolean) 
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+    : "???"} 
+</div>
               )}
               {uploadingImage && (
                 <div className="uploading-overlay">
