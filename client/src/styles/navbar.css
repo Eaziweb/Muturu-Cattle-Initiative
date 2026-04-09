@@ -1,4 +1,9 @@
+/* ============================================
+   MAIN_NAVIGATION_STYLES
+   More specific, maintainable class names
+   ============================================ */
 
+/* --- Root/Container Styles --- */
 .mci-nav {
   background: linear-gradient(135deg, #144d1b 0%, #0d3513 100%);
   position: fixed;
@@ -291,7 +296,6 @@
     gap: 0;
     max-height: calc(100vh - 70px);
     overflow-y: auto;
-    list-style: none;
   }
 
   .mci-nav__menu--open {
