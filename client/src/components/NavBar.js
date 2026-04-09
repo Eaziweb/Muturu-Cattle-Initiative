@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useContext } from "react"
+import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext"  // Use the useAuth hook instead
+import { useAuth } from "../contexts/AuthContext"
 import "../styles/navbar.css"
 
 const Navbar = () => {
@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isResourcesOpen, setIsResourcesOpen] = useState(false)
   const [isUpdatesOpen, setIsUpdatesOpen] = useState(false)
   const location = useLocation()
-  const { user, logout } = useAuth()  // Use the useAuth hook instead of useContext
+  const { user, logout } = useAuth()
 
   const isActive = (path) => location.pathname === path
 
@@ -18,18 +18,23 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
+  // Close everything (Menu and Dropdowns)
   const closeMenu = () => {
     setIsMenuOpen(false)
     setIsResourcesOpen(false)
     setIsUpdatesOpen(false)
   }
 
-  const toggleResources = () => {
+  // Toggle Resources Dropdown (Close the other one to keep it clean)
+  const toggleResources = (e) => {
+    e.stopPropagation() // Prevent bubbling issues
     setIsResourcesOpen(!isResourcesOpen)
     setIsUpdatesOpen(false)
   }
 
-  const toggleUpdates = () => {
+  // Toggle Updates Dropdown
+  const toggleUpdates = (e) => {
+    e.stopPropagation()
     setIsUpdatesOpen(!isUpdatesOpen)
     setIsResourcesOpen(false)
   }
@@ -40,7 +45,7 @@ const Navbar = () => {
   }
 
   return (
-    <navbar className="navbar">
+    <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo" onClick={closeMenu}>
           <div className="logo-box">MCI</div>
@@ -82,13 +87,15 @@ const Navbar = () => {
           {/* Resources Dropdown */}
           <div className="navbar-nav-dropdown">
             <div
-              className={`navbar-link nav-dropdown-toggle ${isActive("/publications") || isActive("/journals") ? "active" : ""}`} 
+              className={`navbar-link nav-dropdown-toggle ${
+                (isActive("/publications") || isActive("/journals")) || isResourcesOpen ? "active" : ""
+              }`} 
               onClick={toggleResources}
             >
               Resources
               <span className={`arrow ${isResourcesOpen ? "open" : ""}`}>▼</span>
             </div>
-            <div className="nav-dropdown-menu">
+            <div className={`nav-dropdown-menu ${isResourcesOpen ? "active" : ""}`}>
               <Link to="/publications" className="nav-dropdown-item" onClick={closeMenu}>
                 Publications
               </Link>
@@ -101,13 +108,15 @@ const Navbar = () => {
           {/* Updates Dropdown */}
           <div className="navbar-nav-dropdown">
             <div 
-              className={`navbar-link nav-dropdown-toggle ${isActive("/blogs") || isActive("/announcements") || isActive("/gallery") || isActive("/events") || isActive("/contact") ? "active" : ""}`} 
+              className={`navbar-link nav-dropdown-toggle ${
+                (isActive("/blogs") || isActive("/announcements") || isActive("/gallery") || isActive("/events") || isActive("/contact")) || isUpdatesOpen ? "active" : ""
+              }`} 
               onClick={toggleUpdates}
             >
               Updates
               <span className={`arrow ${isUpdatesOpen ? "open" : ""}`}>▼</span>
             </div>
-            <div className="nav-dropdown-menu">
+            <div className={`nav-dropdown-menu ${isUpdatesOpen ? "active" : ""}`}>
               <Link to="/blogs" className="nav-dropdown-item" onClick={closeMenu}>
                 Blog
               </Link>
@@ -158,7 +167,7 @@ const Navbar = () => {
           <span className="bar"></span>
         </div>
       </div>
-    </navbar>
+    </nav>
   )
 }
 

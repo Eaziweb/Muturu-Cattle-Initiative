@@ -1,4 +1,6 @@
-/* Enhanced Navbar Styles */
+/* ============================
+   BASE NAVBAR STYLES
+   ============================ */
 .navbar {
   background: linear-gradient(135deg, #144d1b 0%, #0d3513 100%);
   position: fixed;
@@ -104,7 +106,9 @@
   opacity: 1;
 }
 
-/* Dropdown Styles */
+/* ============================
+   DESKTOP DROPDOWN STYLES
+   ============================ */
 .navbar-nav-dropdown {
   position: relative;
   display: flex;
@@ -146,9 +150,8 @@
   padding: 0;
 }
 
-.navbar-nav-dropdown:hover .nav-dropdown-menu,
-.navbar-nav-dropdown:focus-within .nav-dropdown-menu,
-.nav-dropdown-menu.active {
+/* Show dropdown on Hover (Desktop Only) */
+.navbar-nav-dropdown:hover .nav-dropdown-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -169,14 +172,6 @@
   color: #0d3513;
   padding-left: 25px;
   border-left-color: #144d1b;
-}
-
-.nav-dropdown-item:first-child {
-  border-radius: 10px 10px 0 0;
-}
-
-.nav-dropdown-item:last-child {
-  border-radius: 0 0 10px 10px;
 }
 
 /* Button Styles */
@@ -208,10 +203,15 @@
   color: white;
   border: 2px solid white;
   padding: 10px 22px;
+  /* color: #144d1b; removed to keep text white on secondary button */
+}
+
+.navbar-button.secondary:hover {
+  background-color: white;
   color: #144d1b;
 }
 
-/* Hamburger Menu */
+/* Hamburger Menu (Hidden on Desktop) */
 .navbar-toggle {
   display: none;
   flex-direction: column;
@@ -224,10 +224,6 @@
   z-index: 999;
 }
 
-.navbar-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
 .bar {
   width: 25px;
   height: 3px;
@@ -238,7 +234,22 @@
   display: block;
 }
 
-/* Mobile Responsive Styles */
+/* Animation for hamburger menu */
+.navbar-toggle.active .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.navbar-toggle.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggle.active .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ============================
+   MOBILE RESPONSIVE STYLES
+   ============================ */
 @media (max-width: 1024px) {
   .navbar-container {
     padding: 0 20px;
@@ -265,6 +276,7 @@
     padding: 0 15px;
   }
 
+  /* Mobile Menu Container */
   .navbar-menu {
     position: fixed;
     left: -100%;
@@ -286,10 +298,13 @@
     left: 0;
   }
 
+  /* Mobile Link Items */
   .navbar-link {
     padding: 16px 25px;
     width: 100%;
-    display: block;
+    display: flex; /* Flex for alignment of text and arrow */
+    justify-content: space-between;
+    align-items: center;
     text-align: left;
     border-radius: 0;
     font-size: 16px;
@@ -297,95 +312,81 @@
 
   .navbar-link:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    padding-left: 30px;
+    padding-left: 30px; /* Simple hover effect */
   }
 
-  .navbar-link.active {
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
+  /* Hide the desktop bottom border on active */
   .navbar-link.active::after {
     display: none;
   }
 
-  .navbar-button {
-    margin: 15px 25px;
-    display: inline-block;
-    width: calc(100% - 50px);
-  }
-
-  .nav-dropdown-menu {
-    position: static;
-    box-shadow: none;
-    background-color: #0d3513;
-    margin-top: 0;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    transition: max-height 0.3s ease;
-    max-height: 0;
-    overflow: hidden;
-    border-radius: 0;
-  }
-
-  .nav-dropdown-menu.active {
-    max-height: 500px;
-  }
-
+  /* Mobile Dropdown Container */
   .navbar-nav-dropdown {
     width: 100%;
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 
-  
-.nav-dropdown-toggle {
+  /* Mobile Dropdown Toggle Button */
+  .nav-dropdown-toggle {
     width: 100%;
     justify-content: space-between;
     padding: 16px 25px;
     background: transparent;
   }
 
+  /* Mobile Dropdown Menu Content (FIXED) */
   .nav-dropdown-menu {
-    position: static;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.2); /* Slightly darker for contrast */
-    box-shadow: none;
-    margin: 0;
+    /* RESET Desktop Styles to prevent conflicts */
+    position: static !important; 
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
     padding: 0;
+    background-color: rgba(0, 0, 0, 0.2); /* Darker background for sub-menu */
     
-    /* This is the key for the smooth slide effect */
-    display: block; 
-    visibility: visible;
-    opacity: 1;
-    transform: none;
-    max-height: 0;
+    width: 100%;
+    max-height: 0; /* Hidden by default */
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 0;
   }
 
-  /* When the active class is added via JS */
+  /* When Active Class is added via JS */
   .nav-dropdown-menu.active {
-    max-height: 500px; /* Large enough to fit all items */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    max-height: 500px; /* Large enough to fit content */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
+  /* Mobile Dropdown Items */
   .nav-dropdown-item {
-    color: white;
-    padding: 12px 40px; /* Indent sub-items */
+    color: #e0e0e0;
+    padding: 14px 40px; /* Indented */
     background: transparent;
     border-left: 4px solid transparent;
+    font-size: 15px;
   }
 
   .nav-dropdown-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
     padding-left: 45px;
     border-left-color: #a8d5a8;
+    color: white;
   }
 
   .nav-dropdown-item:first-child,
   .nav-dropdown-item:last-child {
     border-radius: 0;
+  }
+
+  /* Mobile Buttons */
+  .navbar-button {
+    margin: 15px 25px;
+    display: inline-block;
+    width: calc(100% - 50px);
+    text-align: center;
   }
 }
 
@@ -414,19 +415,6 @@
     width: 22px;
     height: 2.5px;
   }
-}
-
-/* Animation for hamburger menu */
-.navbar-toggle.active .bar:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-
-.navbar-toggle.active .bar:nth-child(2) {
-  opacity: 0;
-}
-
-.navbar-toggle.active .bar:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* Ensure no layout shift */
