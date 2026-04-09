@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import api from "../../utils/api"
-import "../../styles/members.module.css"
+import "../../styles/members.css"
 import Navbar from "../../components/NavBar"
 import { 
   FaSearch, FaTimes, FaUser, FaMapMarkerAlt, FaGraduationCap, 
