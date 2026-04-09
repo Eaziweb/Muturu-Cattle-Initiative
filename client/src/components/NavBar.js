@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
-import {Logo} from "./Logo"
 import "../styles/navbar.css"
 
 const Navbar = () => {
@@ -48,9 +47,9 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          <Logo/>
-        </Link>
+<Link to="/" className="navbar-logo" onClick={closeMenu}>
+  <img src="/MCNI-LOGO.png" alt="Muturu Cattle Research Network" className="logo-image" />
+</Link>
 
         <div className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
           <Link to="/" className={`navbar-link ${isActive("/") ? "active" : ""}`} onClick={closeMenu}>
