@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import api from "../../utils/api"
-import "../../styles/Gallery.module.css"
+import styles from "../../styles/Gallery.module.css"
 import Navbar from "../../components/NavBar"
 
 const Gallery = () => {
@@ -81,46 +81,46 @@ const Gallery = () => {
 
   if (loading)
     return (
-      <div className="loading-container">
-        <div className="loadingSpinner"></div>
+      <div className={styles["loading-container"]}>
+        <div className={styles.loadingSpinner}></div>
         <p>Loading galleries...</p>
       </div>
     )
-  if (error) return <div className="error-container">{error}</div>
+  if (error) return <div className={styles["error-container"]}>{error}</div>
 
   return (
-    <div className="gallery-page">
-                   <Navbar />
+    <div className={styles["gallery-page"]}>
+      <Navbar />
 
-      <div className="gallery-hero">
+      <div className={styles["gallery-hero"]}>
         <h1>Photo Gallery</h1>
         <p>Explore our collection of memorable moments from events, research activities, and field work</p>
       </div>
 
       {galleries.length === 0 ? (
-        <div className="no-galleries">
+        <div className={styles["no-galleries"]}>
           <h3>No galleries available</h3>
           <p>Check back later for photo collections!</p>
         </div>
       ) : (
-        <div className="galleries-container">
+        <div className={styles["galleries-container"]}>
           {galleries.map((gallery) => (
-            <div key={gallery._id} className="gallery-card" onClick={() => openGalleryModal(gallery)}>
-              <div className="gallery-preview-grid">
+            <div key={gallery._id} className={styles["gallery-card"]} onClick={() => openGalleryModal(gallery)}>
+              <div className={styles["gallery-preview-grid"]}>
                 {gallery.images.length > 0 ? (
                   <>
-                    <div className="main-preview">
+                    <div className={styles["main-preview"]}>
                       <img src={getImageUrl(gallery.images[0]) || "/placeholder.svg"} alt="Main preview" />
                     </div>
                     {gallery.images.length > 1 && (
-                      <div className="secondary-previews">
+                      <div className={styles["secondary-previews"]}>
                         {gallery.images.slice(1, 4).map((image, index) => (
-                          <div key={index} className="secondary-preview">
+                          <div key={index} className={styles["secondary-preview"]}>
                             <img src={getImageUrl(image) || "/placeholder.svg"} alt={`Preview ${index + 2}`} />
                           </div>
                         ))}
                         {gallery.images.length > 4 && (
-                          <div className="more-images-overlay">
+                          <div className={styles["more-images-overlay"]}>
                             <span>+{gallery.images.length - 4} more</span>
                           </div>
                         )}
@@ -128,18 +128,18 @@ const Gallery = () => {
                     )}
                   </>
                 ) : (
-                  <div className="no-images-placeholder">
+                  <div className={styles["no-images-placeholder"]}>
                     <span>📷</span>
                     <p>No images</p>
                   </div>
                 )}
               </div>
-              <div className="gallery-info">
+              <div className={styles["gallery-info"]}>
                 <h2>{gallery.title}</h2>
                 <p>{gallery.description}</p>
-                <div className="gallery-meta">
-                  <span className="image-count">📸 {gallery.images.length} photos</span>
-                  <span className="view-gallery">View Gallery →</span>
+                <div className={styles["gallery-meta"]}>
+                  <span className={styles["image-count"]}>📸 {gallery.images.length} photos</span>
+                  <span className={styles["view-gallery"]}>View Gallery →</span>
                 </div>
               </div>
             </div>
@@ -148,28 +148,28 @@ const Gallery = () => {
       )}
 
       {selectedGallery && (
-        <div className="modal-overlay" onClick={closeGalleryModal}>
-          <div className="gallery-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="close-modal" onClick={closeGalleryModal}>
+        <div className={styles["modal-overlay"]} onClick={closeGalleryModal}>
+          <div className={styles["gallery-modal"]} onClick={(e) => e.stopPropagation()}>
+            <button className={styles["close-modal"]} onClick={closeGalleryModal}>
               ×
             </button>
 
-            <div className="modal-header">
+            <div className={styles["modal-header"]}>
               <h2>{selectedGallery.title}</h2>
               <p>{selectedGallery.description}</p>
-              <span className="photo-count">{selectedGallery.images.length} Photos</span>
+              <span className={styles["photo-count"]}>{selectedGallery.images.length} Photos</span>
             </div>
 
-            <div className="modal-images-grid">
+            <div className={styles["modal-images-grid"]}>
               {selectedGallery.images.map((image, index) => (
                 <div
                   key={index}
-                  className="modal-image-item"
+                  className={styles["modal-image-item"]}
                   onClick={() => openImageModal(image, selectedGallery, index)}
                 >
                   <img src={getImageUrl(image) || "/placeholder.svg"} alt={image.caption || `Image ${index + 1}`} />
                   {image.caption && (
-                    <div className="image-caption-overlay">
+                    <div className={styles["image-caption-overlay"]}>
                       <p>{image.caption}</p>
                     </div>
                   )}
@@ -181,12 +181,12 @@ const Gallery = () => {
       )}
 
       {selectedImage && (
-        <div className="lightbox-overlay" onClick={closeImageModal}>
-          <button className="close-lightbox" onClick={closeImageModal}>
+        <div className={styles["lightbox-overlay"]} onClick={closeImageModal}>
+          <button className={styles["close-lightbox"]} onClick={closeImageModal}>
             ×
           </button>
           <button
-            className="lightbox-nav prev"
+            className={`${styles["lightbox-nav"]} ${styles.prev}`}
             onClick={(e) => {
               e.stopPropagation()
               prevImage()
@@ -195,7 +195,7 @@ const Gallery = () => {
             ‹
           </button>
           <button
-            className="lightbox-nav next"
+            className={`${styles["lightbox-nav"]} ${styles.next}`}
             onClick={(e) => {
               e.stopPropagation()
               nextImage()
@@ -204,13 +204,13 @@ const Gallery = () => {
             ›
           </button>
 
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+          <div className={styles["lightbox-content"]} onClick={(e) => e.stopPropagation()}>
             <img src={getImageUrl(selectedImage) || "/placeholder.svg"} alt={selectedImage.caption} />
             {selectedImage.caption && (
-              <div className="lightbox-caption">
+              <div className={styles["lightbox-caption"]}>
                 <h4>{selectedImage.galleryTitle}</h4>
                 <p>{selectedImage.caption}</p>
-                <span className="image-counter">
+                <span className={styles["image-counter"]}>
                   {currentImageIndex + 1} / {selectedImage.images.length}
                 </span>
               </div>

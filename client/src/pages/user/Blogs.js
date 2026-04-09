@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import api from "../../utils/api"
-import "../../styles/blogs.module.css"
+import styles from "../../styles/blogs.module.css"
 import Navbar from "../../components/NavBar"
 
 const Blogs = () => {
@@ -72,44 +72,47 @@ const Blogs = () => {
 
   if (loading && currentPage === 1) {
     return (
-      <div className="loading-container">
-        <div className="loadingSpinner"></div>
+      <div className={styles["loading-container"]}>
+        <div className={styles.loadingSpinner}></div>
         <p>Loading blogs...</p>
       </div>
     )
   }
 
   return (
-    <div className="blogs-page">
-             <Navbar />
+    <div className={styles["blogs-page"]}>
+      <Navbar />
 
-      <div className="container">
-        <div className="blogs-header">
+      <div className={styles.container}>
+        <div className={styles["blogs-header"]}>
           <h1>Research Blog</h1>
           <p>Stay updated with the latest insights and discoveries in Muturu cattle research</p>
         </div>
 
-        <div className="blogs-controls">
-          <div className="search-section">
+        <div className={styles["blogs-controls"]}>
+          <div className={styles["search-section"]}>
             <input
               type="text"
               placeholder="Search articles..."
               value={searchTerm}
               onChange={handleSearch}
-              className="search-input"
+              className={styles["search-input"]}
             />
           </div>
 
-          <div className="tags-section">
+          <div className={styles["tags-section"]}>
             <h3>Filter by Topic</h3>
-            <div className="tags-container">
-              <button className={`tag-btn ${selectedTag === "" ? "active" : ""}`} onClick={() => handleTagFilter("")}>
+            <div className={styles["tags-container"]}>
+              <button 
+                className={`${styles["tag-btn"]} ${selectedTag === "" ? styles.active : ""}`} 
+                onClick={() => handleTagFilter("")}
+              >
                 All Topics
               </button>
               {allTags.map((tag) => (
                 <button
                   key={tag}
-                  className={`tag-btn ${selectedTag === tag ? "active" : ""}`}
+                  className={`${styles["tag-btn"]} ${selectedTag === tag ? styles.active : ""}`}
                   onClick={() => handleTagFilter(tag)}
                 >
                   {tag}
@@ -119,41 +122,41 @@ const Blogs = () => {
           </div>
         </div>
 
-        <div className="blogs-grid">
+        <div className={styles["blogs-grid"]}>
           {blogs.length > 0 ? (
             blogs.map((blog) => (
-              <article key={blog._id} className="blog-card">
-                <div className="blog-image">
+              <article key={blog._id} className={styles["blog-card"]}>
+                <div className={styles["blog-image"]}>
                   <img src={getImageUrl(blog.image) || "/placeholder.svg"} alt={blog.title} loading="lazy" />
-                  {blog.featured && <span className="featured-badge">Featured</span>}
+                  {blog.featured && <span className={styles["featured-badge"]}>Featured</span>}
                 </div>
-                <div className="blog-content">
-                  <div className="blog-meta">
-                    <span className="blog-author">By {blog.author}</span>
-                    <span className="blog-date">{formatDate(blog.createdAt)}</span>
+                <div className={styles["blog-content"]}>
+                  <div className={styles["blog-meta"]}>
+                    <span className={styles["blog-author"]}>By {blog.author}</span>
+                    <span className={styles["blog-date"]}>{formatDate(blog.createdAt)}</span>
                   </div>
-                  <h2 className="blog-title">
+                  <h2 className={styles["blog-title"]}>
                     <Link to={`/blog/${blog._id}`}>{blog.title}</Link>
                   </h2>
-                  <p className="blog-excerpt">{blog.excerpt}</p>
-                  <div className="blog-tags">
+                  <p className={styles["blog-excerpt"]}>{blog.excerpt}</p>
+                  <div className={styles["blog-tags"]}>
                     {blog.tags.slice(0, 3).map((tag) => (
-                      <span key={tag} className="blog-tag">
+                      <span key={tag} className={styles["blog-tag"]}>
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <div className="blog-footer">
-                    <Link to={`/blog/${blog._id}`} className="read-more-btn">
+                  <div className={styles["blog-footer"]}>
+                    <Link to={`/blog/${blog._id}`} className={styles["read-more-btn"]}>
                       Read More
                     </Link>
-                    <span className="blog-views">{blog.views} views</span>
+                    <span className={styles["blog-views"]}>{blog.views} views</span>
                   </div>
                 </div>
               </article>
             ))
           ) : (
-            <div className="no-blogs">
+            <div className={styles["no-blogs"]}>
               <h3>No articles found</h3>
               <p>Try adjusting your search terms or filters</p>
             </div>
@@ -161,16 +164,16 @@ const Blogs = () => {
         </div>
 
         {totalPages > 1 && (
-          <div className="pagination">
+          <div className={styles.pagination}>
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="pagination-btn"
+              className={styles["pagination-btn"]}
             >
               Previous
             </button>
 
-            <div className="pagination-numbers">
+            <div className={styles["pagination-numbers"]}>
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                 let pageNum
                 if (totalPages <= 5) {
@@ -187,7 +190,7 @@ const Blogs = () => {
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`pagination-number ${currentPage === pageNum ? "active" : ""}`}
+                    className={`${styles["pagination-number"]} ${currentPage === pageNum ? styles.active : ""}`}
                   >
                     {pageNum}
                   </button>
@@ -198,7 +201,7 @@ const Blogs = () => {
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
-              className="pagination-btn"
+              className={styles["pagination-btn"]}
             >
               Next
             </button>

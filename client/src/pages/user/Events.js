@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import api from "../../utils/api"
-import "../../styles/Events.module.css"
+import styles from "../../styles/Events.module.css"
 import Navbar from "../../components/NavBar"
 import { FaCalendarAlt, FaMapMarkerAlt, FaMoneyBillWave } from "react-icons/fa"
 
@@ -57,18 +57,18 @@ const Events = () => {
 
   if (loading)
     return (
-      <div className="loading-container">
-        <div className="loadingSpinner"></div>
+      <div className={styles["loading-container"]}>
+        <div className={styles.loadingSpinner}></div>
         <p>Loading events...</p>
       </div>
     )
-  if (error) return <div className="error-container">{error}</div>
+  if (error) return <div className={styles["error-container"]}>{error}</div>
 
   return (
-    <div className="events-page">
+    <div className={styles["events-page"]}>
       <Navbar />
 
-      <div className="events-hero">
+      <div className={styles["events-hero"]}>
         <h1>Upcoming Events</h1>
         <p>
           Join us for conferences, workshops, and seminars on Muturu cattle research and sustainable livestock
@@ -77,41 +77,41 @@ const Events = () => {
       </div>
 
       {events.length === 0 ? (
-        <div className="no-events">
+        <div className={styles["no-events"]}>
           <h3>No events available at the moment</h3>
           <p>Check back later for upcoming events!</p>
         </div>
       ) : (
-        <div className="events-container">
+        <div className={styles["events-container"]}>
           {events.map((event) => (
-            <div key={event._id} className="event-card" onClick={() => openEventModal(event)}>
-              <div className="event-image-wrapper">
+            <div key={event._id} className={styles["event-card"]} onClick={() => openEventModal(event)}>
+              <div className={styles["event-image-wrapper"]}>
                 <img src={getImageUrl(event.flyer) || "/placeholder.svg"} alt={event.title} />
-                <div className="event-date-badge">
-                  <span className="date-day">{new Date(event.date).getDate()}</span>
-                  <span className="date-month">
+                <div className={styles["event-date-badge"]}>
+                  <span className={styles["date-day"]}>{new Date(event.date).getDate()}</span>
+                  <span className={styles["date-month"]}>
                     {new Date(event.date).toLocaleDateString("en-US", { month: "short" })}
                   </span>
                 </div>
               </div>
-              <div className="event-content">
+              <div className={styles["event-content"]}>
                 <h2>{event.title}</h2>
-                <p className="event-theme">{event.theme}</p>
-                <div className="event-meta">
-                  <div className="meta-item">
-                    <span className="meta-icon"><FaCalendarAlt /></span>
+                <p className={styles["event-theme"]}>{event.theme}</p>
+                <div className={styles["event-meta"]}>
+                  <div className={styles["meta-item"]}>
+                    <span className={styles["meta-icon"]}><FaCalendarAlt /></span>
                     <span>{formatDate(event.date)}</span>
                   </div>
-                  <div className="meta-item">
-                    <span className="meta-icon"><FaMapMarkerAlt /></span>
+                  <div className={styles["meta-item"]}>
+                    <span className={styles["meta-icon"]}><FaMapMarkerAlt /></span>
                     <span>{event.location}</span>
                   </div>
-                  <div className="meta-item">
-                    <span className="meta-icon"><FaMoneyBillWave /></span>
+                  <div className={styles["meta-item"]}>
+                    <span className={styles["meta-icon"]}><FaMoneyBillWave /></span>
                     <span>{event.registrationFee}</span>
                   </div>
                 </div>
-                <button className="view-details-btn">View Full Details</button>
+                <button className={styles["view-details-btn"]}>View Full Details</button>
               </div>
             </div>
           ))}
@@ -119,42 +119,42 @@ const Events = () => {
       )}
 
       {selectedEvent && (
-        <div className="modal-overlay" onClick={closeEventModal}>
-          <div className="event-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="close-modal" onClick={closeEventModal}>
+        <div className={styles["modal-overlay"]} onClick={closeEventModal}>
+          <div className={styles["event-modal"]} onClick={(e) => e.stopPropagation()}>
+            <button className={styles["close-modal"]} onClick={closeEventModal}>
               ×
             </button>
 
-            <div className="modal-header">
+            <div className={styles["modal-header"]}>
               {selectedEvent.flyer && (
-                <div className="modal-image">
+                <div className={styles["modal-image"]}>
                   <img src={getImageUrl(selectedEvent.flyer) || "/placeholder.svg"} alt={selectedEvent.title} />
                 </div>
               )}
-              <div className="modal-title-section">
+              <div className={styles["modal-title-section"]}>
                 <h2>{selectedEvent.title}</h2>
-                <p className="modal-theme">{selectedEvent.theme}</p>
+                <p className={styles["modal-theme"]}>{selectedEvent.theme}</p>
               </div>
             </div>
 
-            <div className="modal-body">
-              <div className="modal-info-grid">
-                <div className="info-card">
-                  <span className="info-icon"><FaCalendarAlt /></span>
+            <div className={styles["modal-body"]}>
+              <div className={styles["modal-info-grid"]}>
+                <div className={styles["info-card"]}>
+                  <span className={styles["info-icon"]}><FaCalendarAlt /></span>
                   <div>
                     <h4>Date</h4>
                     <p>{formatDate(selectedEvent.date)}</p>
                   </div>
                 </div>
-                <div className="info-card">
-                  <span className="info-icon"><FaMapMarkerAlt /></span>
+                <div className={styles["info-card"]}>
+                  <span className={styles["info-icon"]}><FaMapMarkerAlt /></span>
                   <div>
                     <h4>Location</h4>
                     <p>{selectedEvent.location}</p>
                   </div>
                 </div>
-                <div className="info-card">
-                  <span className="info-icon"><FaMoneyBillWave /></span>
+                <div className={styles["info-card"]}>
+                  <span className={styles["info-icon"]}><FaMoneyBillWave /></span>
                   <div>
                     <h4>Registration Fee</h4>
                     <p>{selectedEvent.registrationFee}</p>
@@ -162,15 +162,15 @@ const Events = () => {
                 </div>
               </div>
 
-              <div className="modal-section">
+              <div className={styles["modal-section"]}>
                 <h3>About This Event</h3>
                 <p>{selectedEvent.description}</p>
               </div>
 
               {selectedEvent.objectives && selectedEvent.objectives.length > 0 && (
-                <div className="modal-section">
+                <div className={styles["modal-section"]}>
                   <h3>Event Objectives</h3>
-                  <ul className="objectives-list">
+                  <ul className={styles["objectives-list"]}>
                     {selectedEvent.objectives.map((objective, index) => (
                       <li key={index}>{objective}</li>
                     ))}
@@ -179,7 +179,7 @@ const Events = () => {
               )}
 
               {selectedEvent.callForAbstracts && (
-                <div className="modal-section call-for-abstracts">
+                <div className={`${styles["modal-section"]} ${styles["call-for-abstracts"]}`}>
                   <h3>Call for Abstracts</h3>
                   <p>We invite researchers to submit abstracts for presentation at this event.</p>
                   <p>
@@ -189,18 +189,18 @@ const Events = () => {
               )}
 
               {selectedEvent.accountDetails && selectedEvent.accountDetails.bankName && (
-                <div className="modal-section payment-details">
+                <div className={`${styles["modal-section"]} ${styles["payment-details"]}`}>
                   <h3>Payment Information</h3>
-                  <div className="payment-info-grid">
-                    <div className="payment-item">
+                  <div className={styles["payment-info-grid"]}>
+                    <div className={styles["payment-item"]}>
                       <strong>Bank Name:</strong>
                       <span>{selectedEvent.accountDetails.bankName}</span>
                     </div>
-                    <div className="payment-item">
+                    <div className={styles["payment-item"]}>
                       <strong>Account Number:</strong>
                       <span>{selectedEvent.accountDetails.accountNumber}</span>
                     </div>
-                    <div className="payment-item">
+                    <div className={styles["payment-item"]}>
                       <strong>Account Name:</strong>
                       <span>{selectedEvent.accountDetails.accountName}</span>
                     </div>
