@@ -169,27 +169,25 @@ livelihoods and food security.
         <div className="container">
           <div className="vm-grid">
             <div className="vm-card vision-card">
-              <h2>Our Aims</h2>
+              <h2>Our Aims-I</h2>
               <p>
-               i. to promote the monitoring of population structure of Muturu cattle and other neglected
+               i. To promote the monitoring of population structure of Muturu cattle and other neglected
 livestock of African Origin   </p>
-<p> ii. to promote the conservation, management, genetic improvement and production
+<p> ii. To promote the conservation, management, genetic improvement and production
 sustainability of Muturu cattle and other neglected livestock of African Origin</p>
-<p>iii. to promote advocacy on improved government funding for conservation and
-genetic improvement of Muturu cattle and other neglected livestock of African Origin </p>
-<p>iv. to stimulate relevant stakeholders at subnational, national and international levels to
-evolve policies and programs that could salvage the fastly depleting genetic resource of
-African Origin.</p>
+
             
             </div>
-            {/* <div className="vm-card mission-card">
-              <h2>Our Mission</h2>
+            <div className="vm-card mission-card">
+              <h2>Our Aims-II</h2>
               <p>
-                To conduct cutting-edge research on Muturu cattle genetics, promote sustainable breeding practices,
-                build capacity among researchers and farmers, and create collaborative partnerships that advance
-                livestock science and improve livelihoods across West Africa.
-              </p>
-            </div> */}
+             iii. to promote advocacy on improved government funding for conservation and
+genetic improvement of Muturu cattle and other neglected livestock of African Origin  </p>
+ <p>iv. to stimulate relevant stakeholders at subnational, national and international levels to
+evolve policies and programs that could salvage the fastly depleting genetic resource of
+African Origin. </p>
+             
+            </div>
           </div>
         </div>
       </section>
