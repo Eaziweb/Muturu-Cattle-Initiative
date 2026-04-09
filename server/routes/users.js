@@ -45,6 +45,17 @@ router.put("/profile", auth, async (req, res) => {
     res.status(500).json({ message: "Server error during profile update" })
   }
 })
+ // Get single member full profile
+router.get("/profile/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+      .select("-password -notifications"); // Exclude sensitive info but include Bio/Academic info
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 // Upload profile image
 router.post("/profile-image", auth, profileUpload.single('profileImage'), async (req, res) => {
