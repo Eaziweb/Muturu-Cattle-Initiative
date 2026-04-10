@@ -1,126 +1,92 @@
+// routes/notificationRoutes.js
 const express = require("express")
-const jwt = require("jsonwebtoken")
-const multer = require("multer")
-const cloudinary = require("cloudinary").v2
+const router = express.Router()
 const Notification = require("../models/Notification")
 const User = require("../models/User")
-const router = express.Router()
-const {adminAuth } = require("../middleware/adminAuth")
 const { auth } = require("../middleware/auth")
-// Configure multer for file uploads
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
-  },
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "application/pdf", "application/msword"]
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true)
-    } else {
-      cb(new Error("Only images, PDFs, and documents are allowed"), false)
-    }
-  },
+const { adminAuth } = require("../middleware/adminAuth")
+
+// ==================== USER ROUTES ====================
+
+// Get all notifications for authenticated user
+router.get("/notifications", auth, async (req, res) => {
+  try {
+    const { page = 1, limit = 20 } = req.query
+    
+    const result = await Notification.getForUser(
+      req.userId,
+      parseInt(page),
+      parseInt(limit)
+    )
+    
+    res.json({
+      success: true,
+      data: result,
+    })
+  } catch (error) {
+    console.error("Get notifications error:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch notifications",
+      error: error.message,
+    })
+  }
 })
 
-// // Middleware to verify user JWT token
-// const auth = (req, res, next) => {
-//   const token = req.headers.authorization?.split(" ")[1]
+// Get unread notifications count
+router.get("/notifications/unread/count", auth, async (req, res) => {
+  try {
+    const unreadNotifications = await Notification.getUnreadForUser(req.userId)
+    
+    res.json({
+      success: true,
+      data: {
+        unreadCount: unreadNotifications.length,
+      },
+    })
+  } catch (error) {
+    console.error("Get unread count error:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch unread count",
+    })
+  }
+})
 
-//   if (!token) {
-//     return res.status(401).json({
-//       success: false,
-//       message: "No token provided",
-//     })
-//   }
-
-//   try {
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-//     if (decoded.type !== "user") {
-//       return res.status(403).json({
-//         success: false,
-//         message: "Access denied",
-//       })
-//     }
-//     req.userId = decoded.id
-//     next()
-//   } catch (error) {
-//     return res.status(401).json({
-//       success: false,
-//       message: "Invalid token",
-//     })
-//   }
-// }
-
-// // Middleware to verify admin JWT token
-// const adminAuth = (req, res, next) => {
-//   const token = req.headers.authorization?.split(" ")[1]
-
-//   if (!token) {
-//     return res.status(401).json({
-//       success: false,
-//       message: "No token provided",
-//     })
-//   }
-
-//   try {
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-//     if (decoded.type !== "admin") {
-//       return res.status(403).json({
-//         success: false,
-//         message: "Access denied",
-//       })
-//     }
-//     req.adminId = decoded.id
-//     next()
-//   } catch (error) {
-//     return res.status(401).json({
-//       success: false,
-//       message: "Invalid token",
-//     })
-//   }
-// }
-
-// Get notifications for members
-
-
-// Mark notification as read
-router.post("/:id/read", auth, async (req, res) => {
+// Mark single notification as read
+router.put("/notifications/:id/read", auth, async (req, res) => {
   try {
     const notification = await Notification.findById(req.params.id)
-
+    
     if (!notification) {
       return res.status(404).json({
         success: false,
         message: "Notification not found",
       })
     }
-
-    // Check if already read by this user
-    const alreadyRead = notification.readBy.some((read) => read.userId.toString() === req.userId)
-
-    if (!alreadyRead) {
-      // Add to readBy array
-      notification.readBy.push({
-        userId: req.userId,
-        readAt: new Date(),
+    
+    // Check if user should have access to this notification
+    const hasAccess = notification.sendToAll || 
+      notification.specificUsers.some(id => id.toString() === req.userId)
+    
+    if (!hasAccess) {
+      return res.status(403).json({
+        success: false,
+        message: "You don't have access to this notification",
       })
-
-      // Update stats
-      notification.stats.uniqueViews += 1
-      await notification.save()
     }
-
-    // Always increment total views
-    notification.stats.totalViews += 1
-    await notification.save()
-
+    
+    await notification.markAsRead(req.userId)
+    
     res.json({
       success: true,
       message: "Notification marked as read",
+      data: {
+        isRead: true,
+      },
     })
   } catch (error) {
-    console.error("Mark notification as read error:", error)
+    console.error("Mark as read error:", error)
     res.status(500).json({
       success: false,
       message: "Failed to mark notification as read",
@@ -128,133 +94,198 @@ router.post("/:id/read", auth, async (req, res) => {
   }
 })
 
-// Get single notification details
-router.get("/:id", auth, async (req, res) => {
+// Mark all notifications as read
+router.put("/notifications/read-all", auth, async (req, res) => {
   try {
-    const notification = await Notification.findById(req.params.id).populate("createdBy", "name")
+    const unreadNotifications = await Notification.getUnreadForUser(req.userId)
+    
+    await Promise.all(
+      unreadNotifications.map(notification => notification.markAsRead(req.userId))
+    )
+    
+    res.json({
+      success: true,
+      message: "All notifications marked as read",
+      data: {
+        markedCount: unreadNotifications.length,
+      },
+    })
+  } catch (error) {
+    console.error("Mark all as read error:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to mark all notifications as read",
+    })
+  }
+})
 
+// Delete notification for user (hide from their view)
+router.delete("/notifications/:id/hide", auth, async (req, res) => {
+  try {
+    // Instead of deleting, we could add a hiddenBy array
+    // For now, just mark as read
+    const notification = await Notification.findById(req.params.id)
+    
     if (!notification) {
       return res.status(404).json({
         success: false,
         message: "Notification not found",
       })
     }
-
-    // Check if user has read this notification
-    const hasRead = notification.readBy.some((read) => read.userId.toString() === req.userId)
-
+    
+    await notification.markAsRead(req.userId)
+    
     res.json({
       success: true,
-      data: {
-        ...notification.toObject(),
-        hasRead,
-      },
+      message: "Notification hidden",
     })
   } catch (error) {
-    console.error("Get notification details error:", error)
+    console.error("Hide notification error:", error)
     res.status(500).json({
       success: false,
-      message: "Failed to fetch notification details",
+      message: "Failed to hide notification",
     })
   }
 })
 
-// Admin: Create new notification
-router.post("/admin", adminAuth, upload.array("attachments", 5), async (req, res) => {
+// ==================== ADMIN ROUTES ====================
+
+// Send notification to members
+router.post("/admin/send-notification", adminAuth, async (req, res) => {
   try {
-    const { title, content, type, priority, targetAudience, expiryDate } = req.body
-
-    // Upload attachments to Cloudinary
-    const attachments = []
-    if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        const uploadResult = await new Promise((resolve, reject) => {
-          const resourceType = file.mimetype.startsWith("image/") ? "image" : "raw"
-
-          cloudinary.uploader
-            .upload_stream(
-              {
-                resource_type: resourceType,
-                folder: "mcrn/notifications",
-                public_id: `notification_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-              },
-              (error, result) => {
-                if (error) reject(error)
-                else resolve(result)
-              },
-            )
-            .end(file.buffer)
-        })
-
-        attachments.push({
-          type: file.mimetype.startsWith("image/") ? "image" : file.mimetype === "application/pdf" ? "pdf" : "document",
-          filename: file.originalname,
-          url: uploadResult.secure_url,
-          size: file.size,
+    const {
+      title,
+      message,
+      image,
+      sendToAll = true,
+      userIds = [],
+      type = "announcement",
+      priority = "medium",
+      scheduledFor = null,
+      expiresAt = null,
+    } = req.body
+    
+    // Validation
+    if (!title || !message) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and message are required",
+      })
+    }
+    
+    let specificUsers = []
+    
+    if (!sendToAll && userIds && userIds.length > 0) {
+      // Verify users exist and are active
+      const users = await User.find({
+        _id: { $in: userIds },
+        isActive: true,
+      }).select("_id email fullName")
+      
+      if (users.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No active users found with the provided IDs",
         })
       }
+      
+      specificUsers = users.map(u => u._id)
     }
-
+    
     // Create notification
     const notification = new Notification({
       title,
-      content,
-      type: type || "announcement",
-      priority: priority || "medium",
-      targetAudience: targetAudience || "all",
-      expiryDate: expiryDate ? new Date(expiryDate) : undefined,
-      attachments,
+      message,
+      image: image || null,
+      sendToAll: sendToAll && specificUsers.length === 0,
+      specificUsers,
+      type,
+      priority,
+      scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
+      expiresAt: expiresAt ? new Date(expiresAt) : null,
       createdBy: req.adminId,
+      stats: {
+        totalSent: sendToAll ? await User.countDocuments({ isActive: true }) : specificUsers.length,
+        totalRead: 0,
+        uniqueReaders: 0,
+      },
     })
-
+    
     await notification.save()
-
+    
+    // TODO: Implement real-time notifications via WebSocket/SSE here
+    
     res.status(201).json({
       success: true,
-      message: "Notification created successfully",
-      data: notification,
+      message: "Notification sent successfully",
+      data: {
+        notification: {
+          id: notification._id,
+          title: notification.title,
+          message: notification.message,
+          sendToAll: notification.sendToAll,
+          recipientCount: notification.stats.totalSent,
+        },
+      },
     })
   } catch (error) {
-    console.error("Create notification error:", error)
+    console.error("Send notification error:", error)
     res.status(500).json({
       success: false,
-      message: "Failed to create notification",
+      message: "Failed to send notification",
+      error: error.message,
     })
   }
 })
 
-// Admin: Get all notifications with stats
-router.get("/admin/all", adminAuth, async (req, res) => {
+// Get all notifications (admin)
+router.get("/admin/notifications", adminAuth, async (req, res) => {
   try {
-    const page = Number.parseInt(req.query.page) || 1
-    const limit = Number.parseInt(req.query.limit) || 20
-    const skip = (page - 1) * limit
-
-    const filter = {}
-    if (req.query.type) {
-      filter.type = req.query.type
+    const {
+      page = 1,
+      limit = 20,
+      type,
+      priority,
+      sendToAll,
+      isActive,
+      startDate,
+      endDate,
+    } = req.query
+    
+    const query = {}
+    
+    if (type) query.type = type
+    if (priority) query.priority = priority
+    if (sendToAll !== undefined) query.sendToAll = sendToAll === "true"
+    if (isActive !== undefined) query.isActive = isActive === "true"
+    
+    if (startDate || endDate) {
+      query.createdAt = {}
+      if (startDate) query.createdAt.$gte = new Date(startDate)
+      if (endDate) query.createdAt.$lte = new Date(endDate)
     }
-    if (req.query.targetAudience) {
-      filter.targetAudience = req.query.targetAudience
-    }
-
-    const notifications = await Notification.find(filter)
-      .populate("createdBy", "name")
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-
-    const total = await Notification.countDocuments(filter)
-
+    
+    const skip = (parseInt(page) - 1) * parseInt(limit)
+    
+    const [notifications, total] = await Promise.all([
+      Notification.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit))
+        .populate("createdBy", "name email")
+        .populate("specificUsers", "fullName email"),
+      Notification.countDocuments(query),
+    ])
+    
     res.json({
       success: true,
       data: {
         notifications,
         pagination: {
-          current: page,
-          total: Math.ceil(total / limit),
-          count: notifications.length,
+          currentPage: parseInt(page),
+          totalPages: Math.ceil(total / parseInt(limit)),
           totalNotifications: total,
+          hasNext: skip + notifications.length < total,
         },
       },
     })
@@ -267,32 +298,113 @@ router.get("/admin/all", adminAuth, async (req, res) => {
   }
 })
 
-// Admin: Update notification
-router.put("/admin/:id", adminAuth, async (req, res) => {
+// Get notification statistics (admin)
+router.get("/admin/notifications/stats", adminAuth, async (req, res) => {
   try {
-    const { title, content, type, priority, targetAudience, expiryDate, isActive } = req.body
-
-    const notification = await Notification.findByIdAndUpdate(
-      req.params.id,
-      {
-        title,
-        content,
-        type,
-        priority,
-        targetAudience,
-        expiryDate: expiryDate ? new Date(expiryDate) : undefined,
-        isActive,
+    const [
+      totalSent,
+      totalRead,
+      averageReadRate,
+      notificationsByType,
+      notificationsByPriority,
+    ] = await Promise.all([
+      Notification.aggregate([
+        { $group: { _id: null, total: { $sum: "$stats.totalSent" } } },
+      ]),
+      Notification.aggregate([
+        { $group: { _id: null, total: { $sum: "$stats.totalRead" } } },
+      ]),
+      Notification.aggregate([
+        {
+          $group: {
+            _id: null,
+            avgReadRate: {
+              $avg: {
+                $cond: [
+                  { $eq: ["$stats.totalSent", 0] },
+                  0,
+                  {
+                    $multiply: [
+                      { $divide: ["$stats.totalRead", "$stats.totalSent"] },
+                      100,
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      ]),
+      Notification.aggregate([
+        { $group: { _id: "$type", count: { $sum: 1 } } },
+      ]),
+      Notification.aggregate([
+        { $group: { _id: "$priority", count: { $sum: 1 } } },
+      ]),
+    ])
+    
+    res.json({
+      success: true,
+      data: {
+        totalSent: totalSent[0]?.total || 0,
+        totalRead: totalRead[0]?.total || 0,
+        averageReadRate: Math.round(averageReadRate[0]?.avgReadRate || 0),
+        notificationsByType: notificationsByType.reduce((acc, curr) => {
+          acc[curr._id] = curr.count
+          return acc
+        }, {}),
+        notificationsByPriority: notificationsByPriority.reduce((acc, curr) => {
+          acc[curr._id] = curr.count
+          return acc
+        }, {}),
       },
-      { new: true },
-    )
+    })
+  } catch (error) {
+    console.error("Get notification stats error:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch statistics",
+    })
+  }
+})
 
+// Update notification (admin)
+router.put("/admin/notifications/:id", adminAuth, async (req, res) => {
+  try {
+    const {
+      title,
+      message,
+      image,
+      type,
+      priority,
+      sendToAll,
+      specificUsers,
+      isActive,
+      expiresAt,
+    } = req.body
+    
+    const notification = await Notification.findById(req.params.id)
+    
     if (!notification) {
       return res.status(404).json({
         success: false,
         message: "Notification not found",
       })
     }
-
+    
+    // Update fields
+    if (title) notification.title = title
+    if (message) notification.message = message
+    if (image !== undefined) notification.image = image
+    if (type) notification.type = type
+    if (priority) notification.priority = priority
+    if (sendToAll !== undefined) notification.sendToAll = sendToAll
+    if (specificUsers) notification.specificUsers = specificUsers
+    if (isActive !== undefined) notification.isActive = isActive
+    if (expiresAt) notification.expiresAt = new Date(expiresAt)
+    
+    await notification.save()
+    
     res.json({
       success: true,
       message: "Notification updated successfully",
@@ -307,18 +419,18 @@ router.put("/admin/:id", adminAuth, async (req, res) => {
   }
 })
 
-// Admin: Delete notification
-router.delete("/admin/:id", adminAuth, async (req, res) => {
+// Delete notification (admin)
+router.delete("/admin/notifications/:id", adminAuth, async (req, res) => {
   try {
     const notification = await Notification.findByIdAndDelete(req.params.id)
-
+    
     if (!notification) {
       return res.status(404).json({
         success: false,
         message: "Notification not found",
       })
     }
-
+    
     res.json({
       success: true,
       message: "Notification deleted successfully",
@@ -332,5 +444,36 @@ router.delete("/admin/:id", adminAuth, async (req, res) => {
   }
 })
 
-module.exports = router
+// Bulk delete notifications (admin)
+router.delete("/admin/notifications/bulk", adminAuth, async (req, res) => {
+  try {
+    const { notificationIds } = req.body
     
+    if (!notificationIds || !Array.isArray(notificationIds) || notificationIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No notification IDs provided",
+      })
+    }
+    
+    const result = await Notification.deleteMany({
+      _id: { $in: notificationIds },
+    })
+    
+    res.json({
+      success: true,
+      message: `${result.deletedCount} notifications deleted successfully`,
+      data: {
+        deletedCount: result.deletedCount,
+      },
+    })
+  } catch (error) {
+    console.error("Bulk delete error:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete notifications",
+    })
+  }
+})
+
+module.exports = router

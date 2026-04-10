@@ -439,7 +439,91 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+/* Add these styles to your existing CSS */
+.statsContainer {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
 
+.statBadge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.statBadge.unread {
+  background: #dc3545;
+  color: white;
+}
+
+.statBadge.read {
+  background: #28a745;
+  color: white;
+}
+
+.statBadge.replied {
+  background: #17a2b8;
+  color: white;
+}
+
+.filterSection {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.filterSelect {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.refreshBtn {
+  padding: 8px 16px;
+  background: #144d1b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.refreshBtn:hover {
+  background: #1a6625;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+.statusBadge.unread {
+  background: #dc3545;
+  color: white;
+}
+
+.statusBadge.read {
+  background: #28a745;
+  color: white;
+}
+
+.statusBadge.replied {
+  background: #17a2b8;
+  color: white;
+}
 /* Responsive Design */
 @media (max-width: 1024px) {
   .tableHeader,

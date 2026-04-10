@@ -1,10 +1,15 @@
-/* ===== ANNOUNCEMENTS PAGE - BEAUTIFUL DESIGN ===== */
+/* ===== ANNOUNCEMENTS PAGE - COMPLETE FIXED VERSION ===== */
 
 .announcements-page {
   padding: 100px 40px 60px;
   min-height: 100vh;
   background: linear-gradient(135deg, #fafbfc 0%, #f3f5f8 100%);
   overflow-x: hidden;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 /* ===== HEADER ===== */
@@ -33,7 +38,7 @@
   line-height: 1.8;
 }
 
-/* ===== FILTERS ===== */
+/* ===== FILTERS - FIXED VERSION ===== */
 .announcements-filters {
   margin-bottom: 50px;
 }
@@ -55,10 +60,11 @@
   font-size: 0.95rem;
   font-weight: 700;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .filter-btn::before {
@@ -73,13 +79,25 @@
   z-index: -1;
 }
 
-.filter-btn:hover,
-.filter-btn.active {
+.filter-btn:hover {
   color: white;
-  border-color: #144d1b;
-  left: 0;
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(20, 77, 27, 0.3);
+}
+
+.filter-btn:hover::before {
+  left: 0;
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #144d1b, #1a6625);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(20, 77, 27, 0.3);
+}
+
+.filter-btn.active::before {
+  display: none;
 }
 
 /* ===== ANNOUNCEMENTS GRID ===== */
@@ -88,9 +106,6 @@
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 32px;
   margin-bottom: 60px;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* ===== ANNOUNCEMENT CARD ===== */
@@ -104,7 +119,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  position: relative;
 }
 
 .announcement-card:hover {
@@ -134,6 +148,7 @@
   display: flex;
   align-items: center;
   font-size: 1.5rem;
+  flex-shrink: 0;
 }
 
 .type-info {
@@ -150,24 +165,25 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+  display: inline-block;
+  width: fit-content;
 }
 
 .type-badge {
   background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
   color: #144d1b;
-  width: fit-content;
 }
 
 .priority-badge {
   background: linear-gradient(135deg, #fff9e6, #ffe8b3);
   color: #b88c00;
-  width: fit-content;
 }
 
 .announcement-date {
   font-size: 0.8rem;
   color: #999;
   font-weight: 500;
+  flex-shrink: 0;
 }
 
 /* ===== CARD IMAGE ===== */
@@ -254,9 +270,6 @@
   gap: 12px;
   margin-top: 60px;
   flex-wrap: wrap;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .pagination-btn {
@@ -301,6 +314,9 @@
   font-weight: 700;
   transition: all 0.3s ease;
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pagination-number:hover {
@@ -359,6 +375,10 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
 }
 
 .modal-meta {
@@ -420,8 +440,6 @@
   width: 100%;
   max-height: 400px;
   overflow: hidden;
-  border-radius: 12px;
-  margin-bottom: 24px;
 }
 
 .modal-image img {
@@ -614,16 +632,5 @@
     width: 35px;
     height: 35px;
     font-size: 0.75rem;
-  }
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }

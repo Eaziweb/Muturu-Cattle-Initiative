@@ -17,32 +17,6 @@ const Announcements = () => {
     fetchAnnouncements()
   }, [currentPage, selectedType])
 
-const greenButtonStyles = {
-  default: {
-    backgroundColor: "transparent",
-    color: "#2e7d32",
-    border: "2px solid #2e7d32",
-    borderRadius: "8px",
-    padding: "10px 20px",
-    margin: "0 8px",
-    fontSize: "14px",
-    fontWeight: "600",
-    cursor: "pointer",
-    transition: "all 0.3s ease-in-out"
-  },
-  active: {
-    backgroundColor: "#2e7d32",
-    color: "white",
-    border: "2px solid #2e7d32",
-    borderRadius: "8px",
-    padding: "10px 20px",
-    margin: "0 8px",
-    fontSize: "14px",
-    fontWeight: "600",
-    cursor: "pointer",
-    transition: "all 0.3s ease-in-out"
-  }
-}
   const fetchAnnouncements = async () => {
     setLoading(true)
     try {
@@ -111,13 +85,14 @@ const greenButtonStyles = {
               d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
               stroke="currentColor"
               strokeWidth="2"
+              fill="none"
             />
           </svg>
         )
       case "event":
         return (
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="2" />
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="2" fill="none" />
             <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="2" />
             <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="2" />
             <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="2" />
@@ -126,18 +101,26 @@ const greenButtonStyles = {
       case "update":
         return (
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="2" />
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="2" fill="none" />
           </svg>
         )
       default:
         return (
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
             <path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="2" />
           </svg>
         )
     }
   }
+
+  const filterTypes = [
+    { value: "", label: "All Announcements" },
+    { value: "urgent", label: "Urgent" },
+    { value: "event", label: "Event" },
+    { value: "update", label: "Update" },
+    { value: "general", label: "General" }
+  ]
 
   if (loading && currentPage === 1) {
     return (
@@ -157,35 +140,22 @@ const greenButtonStyles = {
           <p>Stay updated with the latest news and important information from our research community</p>
         </div>
 
-        
-<div className={styles["announcements-filters"]}>
-  <div className={styles["filter-buttons"]}>
-    {["", "urgent", "event", "update", "general"].map((type) => (
-      <button
-        key={type || "all"}
-        onClick={() => {
-          setSelectedType(type)
-          setCurrentPage(1)
-        }}
-        style={selectedType === type ? greenButtonStyles.active : greenButtonStyles.default}
-        onMouseEnter={(e) => {
-          if (selectedType !== type) {
-            e.target.style.backgroundColor = "#e8f5e9"
-            e.target.style.transform = "translateY(-2px)"
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (selectedType !== type) {
-            e.target.style.backgroundColor = "transparent"
-            e.target.style.transform = "translateY(0)"
-          }
-        }}
-      >
-        {type ? type.charAt(0).toUpperCase() + type.slice(1) : "All Announcements"}
-      </button>
-    ))}
-  </div>
-</div>
+        <div className={styles["announcements-filters"]}>
+          <div className={styles["filter-buttons"]}>
+            {filterTypes.map((filter) => (
+              <button
+                key={filter.value}
+                onClick={() => {
+                  setSelectedType(filter.value)
+                  setCurrentPage(1)
+                }}
+                className={`${styles["filter-btn"]} ${selectedType === filter.value ? styles["active"] : ""}`}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <div className={styles["announcements-grid"]}>
           {announcements.length > 0 ? (
@@ -194,15 +164,15 @@ const greenButtonStyles = {
               return (
                 <div
                   key={announcement._id}
-                  className={`${styles["announcement-card"]} ${styles[announcement.type || ""]} ${styles[announcement.priority || ""]}`}
+                  className={styles["announcement-card"]}
                   onClick={() => handleAnnouncementClick(announcement)}
                 >
                   <div className={styles["card-header"]}>
                     <div className={styles["announcement-meta"]}>
                       <div className={styles["type-icon"]}>{getTypeIcon(announcement.type)}</div>
                       <div className={styles["type-info"]}>
-                        <span className={styles["type-badge"]}>{announcement.type}</span>
-                        <span className={styles["priority-badge"]}>{announcement.priority}</span>
+                        <span className={styles["type-badge"]}>{announcement.type || "general"}</span>
+                        <span className={styles["priority-badge"]}>{announcement.priority || "normal"}</span>
                       </div>
                     </div>
                     <span className={styles["announcement-date"]}>{formatDate(announcement.createdAt)}</span>
@@ -222,7 +192,6 @@ const greenButtonStyles = {
                   </div>
 
                   <div className={styles["card-footer"]}>
-                    <span className={styles["view-count"]}>{announcement.views || 0} views</span>
                     {announcement.expiresAt && (
                       <span className={styles["expires-at"]}>Expires: {formatDate(announcement.expiresAt)}</span>
                     )}
@@ -284,16 +253,16 @@ const greenButtonStyles = {
         )}
 
         {selectedAnnouncement && (
-          <div className={styles["announcement-modal"]}>
-            <div className={styles["modal-container"]}>
+          <div className={styles["announcement-modal"]} onClick={() => setSelectedAnnouncement(null)}>
+            <div className={styles["modal-container"]} onClick={(e) => e.stopPropagation()}>
               <div className={styles["modal-header"]}>
                 <div className={styles["modal-meta"]}>
                   <div className={styles["type-icon"]}>{getTypeIcon(selectedAnnouncement.type)}</div>
                   <div className={styles["modal-info"]}>
                     <h2>{selectedAnnouncement.title}</h2>
                     <div className={styles["modal-badges"]}>
-                      <span className={styles["type-badge"]}>{selectedAnnouncement.type}</span>
-                      <span className={styles["priority-badge"]}>{selectedAnnouncement.priority}</span>
+                      <span className={styles["type-badge"]}>{selectedAnnouncement.type || "general"}</span>
+                      <span className={styles["priority-badge"]}>{selectedAnnouncement.priority || "normal"}</span>
                       <span className={styles["date-badge"]}>{formatDate(selectedAnnouncement.createdAt)}</span>
                     </div>
                   </div>
@@ -321,9 +290,9 @@ const greenButtonStyles = {
 
                 <div className={styles["modal-footer"]}>
                   <div className={styles["announcement-stats"]}>
-                    <span>{selectedAnnouncement.views || 0} views</span>
+                    <span>📊 {selectedAnnouncement.views || 0} views</span>
                     {selectedAnnouncement.expiresAt && (
-                      <span>Expires: {formatDate(selectedAnnouncement.expiresAt)}</span>
+                      <span>⏰ Expires: {formatDate(selectedAnnouncement.expiresAt)}</span>
                     )}
                   </div>
                 </div>
