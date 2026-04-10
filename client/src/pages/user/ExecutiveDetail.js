@@ -21,7 +21,7 @@ const ExecutiveDetail = () => {
       specialization: "Animal Breeding, Genetic Conservation, Livestock Improvement, Population Genetics",
       publications: "Author of 'Genetic Principles and Animal Breeding' + over 80 peer-reviewed publications in international journals",
       email: "fayetiro@gmail.com",
-      phone: "+234 (0) 803 456 7890",
+      // phone: "+234 (0) 803 456 7890",
       achievements: [
         "Established the Muturu Cattle Research Network (MCRN) as a leading research institution",
         "Authored the first comprehensive textbook on Genetic Principles and Animal Breeding in Nigeria",
@@ -49,14 +49,14 @@ const ExecutiveDetail = () => {
       id: 2,
       name: "Dr. Timothy Oluwafemi Ajiboye",
       position: "Trustee",
-      image: "/trustee2.png",
+      image: "/trustee2.PNG",
       bio: "Specialist in crop protection and genetic resource management, currently leading the Field Gene Bank at the National Centre for Genetic Resources and Biotechnology (NACGRAB), Ibadan. His expertise bridges the gap between crop and animal genetic resource conservation.",
       fullBio: "Dr. Timothy Oluwafemi Ajiboye is a renowned specialist in crop protection and genetic resource management with over 15 years of experience at NACGRAB, Ibadan. As the Head of the Field Gene Bank, he manages one of West Africa's most important collections of plant genetic resources. His interdisciplinary approach has fostered collaboration between crop and livestock genetic conservation programs, creating integrated strategies for agricultural biodiversity preservation. Dr. Ajiboye has published extensively on genetic resource management and has trained numerous scientists across the region.",
       education: "PhD in Crop Protection, University of Ilorin",
       specialization: "Genetic Resources, Crop Protection, Biodiversity Conservation, Germplasm Management",
       publications: "45+ research contributions in agriculture and genetic resource management, including book chapters and peer-reviewed articles",
       email: "ajiboyefemi2002@yahoo.com",
-      phone: "+234 (0) 802 345 6789",
+      // phone: "+234 (0) 802 345 6789",
       achievements: [
         "Led the expansion of NACGRAB's Field Gene Bank to include over 2,000 accessions",
         "Developed innovative conservation protocols for endangered crop species",
@@ -84,14 +84,14 @@ const ExecutiveDetail = () => {
       id: 3,
       name: "Mrs. Olanike Foluke Fayeye",
       position: "Trustee",
-      image: "/trustee1.png",
+      image: "/trustee1.PNG",
       bio: "Experienced educator with over 30 years in teaching, passionate about academic development and community impact. She brings invaluable expertise in educational program development and community outreach initiatives.",
       fullBio: "Mrs. Olanike Foluke Fayeye is a distinguished educator with over three decades of experience in the Nigerian educational system. Her career has been marked by a deep commitment to academic excellence and community development. As a trustee of MCRN, she has been instrumental in developing educational outreach programs that translate complex scientific concepts into accessible knowledge for rural farming communities. Mrs. Fayeye has designed and implemented numerous adult education programs that have empowered thousands of farmers with essential skills in livestock management and record-keeping.",
       education: "M.Ed in Social Studies Education",
       specialization: "Education, Curriculum Development, Community Engagement, Adult Education",
       publications: "Educational contributions including curriculum frameworks and teacher training manuals",
       email: "olanikefolule@gmail.com",
-      phone: "+234 (0) 805 678 9012",
+      // phone: "+234 (0) 805 678 9012",
       achievements: [
         "Developed award-winning community education programs reaching 10,000+ rural farmers",
         "Created innovative curriculum materials for adult agricultural education",
@@ -159,10 +159,10 @@ const ExecutiveDetail = () => {
                 <FaEnvelope className="contact-icon" />
                 <strong>Email:</strong> {executive.email}
               </p>
-              <p>
+              {/* <p>
                 <FaPhone className="contact-icon" />
                 <strong>Phone:</strong> {executive.phone}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
