@@ -10,16 +10,16 @@ const Footer = () => {
           <h3>Muturu Cattle Research Initiative</h3>
           <div className="ptag">Advancing livestock genetics and sustainable cattle farming across West Africa.</div>
           <div className="social-icons">
-            <a href="https://facebook.com/mcrn" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <a href="https://web.facebook.com/share/g/1Dypy6tKaf/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <FaFacebook />
             </a>
-            <a href="https://twitter.com/mcrn" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
               <FaTwitter />
             </a>
-            <a href="https://instagram.com/mcrn" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <FaInstagram />
             </a>
-            <a href="https://linkedin.com/company/mcrn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <FaLinkedin />
             </a>
           </div>
