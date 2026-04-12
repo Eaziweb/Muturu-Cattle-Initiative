@@ -56,6 +56,38 @@ const Dashboard = () => {
     })
   }, [])
 
+  // Function to extract URLs from text and make them clickable
+  const parseMessageWithLinks = useCallback((message) => {
+    if (!message) return null;
+    
+    // URL regex pattern
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = message.split(urlRegex);
+    
+    return parts.map((part, index) => {
+      if (urlRegex.test(part)) {
+        // Re-test because split doesn't preserve the regex state
+        const urlMatch = part.match(urlRegex);
+        if (urlMatch) {
+          const url = urlMatch[0];
+          return (
+            <a
+              key={index}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="notification-link"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {url.length > 50 ? url.substring(0, 47) + '...' : url}
+            </a>
+          );
+        }
+      }
+      return part;
+    });
+  }, []);
+
   const stats = useMemo(
     () => [
       { title: "Member Since", value: formatDate(user?.createdAt) },
@@ -113,7 +145,7 @@ const Dashboard = () => {
                 </div>
               )}
             </div>
-            <div>
+            <div className="user-text-info">
               <h1>Welcome back, {user?.fullName}!</h1>
               <p className="member-id">Member ID: {user?.memberID}</p>
             </div>
@@ -213,7 +245,9 @@ const Dashboard = () => {
                         <h4>{notification.title}</h4>
                         <span className="notification-date">{formatDate(notification.createdAt)}</span>
                       </div>
-                      <p className="notification-message">{notification.message}</p>
+                      <div className="notification-message">
+                        {parseMessageWithLinks(notification.message)}
+                      </div>
                       {notification.image && (
                         <div className="notification-image">
                           <img src={notification.image || "/placeholder.svg"} alt="Notification" />

@@ -508,16 +508,6 @@ const FindMembers = () => {
                             <FaResearchgate /> ResearchGate
                           </a>
                         )}
-                        {member.linkedinProfile && (
-                          <a
-                            href={member.linkedinProfile}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="profile-link linkedin"
-                          >
-                            <FaUser /> LinkedIn
-                          </a>
-                        )}
                       </div>
 
                       <div className="member-card-footer">
